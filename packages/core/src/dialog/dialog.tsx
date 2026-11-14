@@ -12,6 +12,7 @@ import { omit, Show, type ComponentProps } from "solid-js";
 
 import { cn, cnState } from "../cn/index.ts";
 import { withAfter } from "../internal/index.ts";
+import { useUiMessages } from "../provider/index.ts";
 
 /** A modal window. Holds open state; renders no element. */
 export { DialogPart as Dialog };
@@ -38,7 +39,7 @@ export function DialogClose(props: DialogCloseProps): JSX.Element {
 export type DialogContentProps = ComponentProps<typeof DialogContentPart> & {
   /** Adds an × button in the corner that closes the dialog. Defaults to true. */
   showClose?: boolean;
-  /** Accessible name of the × button. Defaults to "Close". */
+  /** Accessible name of the × button. Defaults to the provider's `close` string ("Close" in English). */
   closeLabel?: string;
 };
 
@@ -59,7 +60,9 @@ const CORNER_CLOSE =
   "focus-visible:ring-3 focus-visible:ring-ring/50";
 
 function CornerClose(props: { label: string | undefined }): JSX.Element {
-  return <DialogClosePart aria-label={props.label ?? "Close"} data-icon="x" class={CORNER_CLOSE} />;
+  const messages = useUiMessages();
+
+  return <DialogClosePart aria-label={props.label ?? messages.close} data-icon="x" class={CORNER_CLOSE} />;
 }
 
 /** The dialog's window, centered over a dimmed backdrop. */

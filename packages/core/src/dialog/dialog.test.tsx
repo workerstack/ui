@@ -4,6 +4,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { mounted } from "../test/dom.ts";
 import { required } from "../test/required.ts";
 import { ShareDialog } from "./__fixtures__/share-dialog.fixture.tsx";
+import { TranslatedShareDialog } from "./__fixtures__/translated-share-dialog.fixture.tsx";
 
 afterEach(cleanup);
 
@@ -51,4 +52,17 @@ it("Dialog leaves the × out with showClose={false}", async () => {
   await open();
   expect(screen.queryByRole("button", { name: "Close" })).toBeNull();
   expect(screen.getByRole("button", { name: "Done" })).toBeTruthy();
+});
+
+it("Dialog names the corner × Close without a provider", async () => {
+  render(() => <ShareDialog />);
+  await open();
+  expect(screen.getByRole("button", { name: "Close" })).toBeTruthy();
+});
+
+it("Dialog names the corner × from the provider's close message", async () => {
+  render(() => <TranslatedShareDialog messages={{ close: "Zatvori" }} />);
+  await open();
+  expect(screen.getByRole("button", { name: "Zatvori" })).toBeTruthy();
+  expect(screen.queryByRole("button", { name: "Close" })).toBeNull();
 });

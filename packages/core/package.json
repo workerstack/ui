@@ -35,6 +35,10 @@
       "types": "./dist/cn/index.d.ts",
       "default": "./dist/cn/index.js"
     },
+    "./locale": {
+      "types": "./dist/locale/index.d.ts",
+      "default": "./dist/locale/index.js"
+    },
     "./button": {
       "types": "./dist/button/index.d.ts",
       "solid": "./dist/button/index.js",
@@ -54,6 +58,11 @@
       "types": "./dist/select/index.d.ts",
       "solid": "./dist/select/index.js",
       "default": "./dist/select/index.js"
+    },
+    "./provider": {
+      "types": "./dist/provider/index.d.ts",
+      "solid": "./dist/provider/index.js",
+      "default": "./dist/provider/index.js"
     },
     "./dialog": {
       "types": "./dist/dialog/index.d.ts",

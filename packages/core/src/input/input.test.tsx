@@ -4,6 +4,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { InvalidEmailField } from "../field/__fixtures__/invalid-email-field.fixture.tsx";
 import { Field, FieldDescription, FieldLabel } from "../field/index.ts";
 import { inputElement, mounted, type } from "../test/dom.ts";
+import { ClearInput } from "./__fixtures__/clear-input.fixture.tsx";
 import { Input, InputClear, InputGroup, type InputProps } from "./index.ts";
 
 type OnValueChange = NonNullable<InputProps["onValueChange"]>;
@@ -53,4 +54,20 @@ it("InputGroup clears the input with InputClear", async () => {
   expect(input.value).toBe("solid");
   fireEvent.click(await screen.findByRole("button", { name: "Clear search" }));
   expect(input.value).toBe("");
+});
+
+it("InputClear is named Clear by default", async () => {
+  render(() => <ClearInput />);
+  expect(await screen.findByRole("button", { name: "Clear" })).toBeTruthy();
+});
+
+it("InputClear is named from the provider's clear message", async () => {
+  render(() => <ClearInput messages={{ clear: "Očisti" }} />);
+  expect(await screen.findByRole("button", { name: "Očisti" })).toBeTruthy();
+});
+
+it("InputClear keeps a passed aria-label over the provider's message", async () => {
+  render(() => <ClearInput ariaLabel="Clear search" messages={{ clear: "Očisti" }} />);
+  expect(await screen.findByRole("button", { name: "Clear search" })).toBeTruthy();
+  expect(screen.queryByRole("button", { name: "Očisti" })).toBeNull();
 });

@@ -3,6 +3,7 @@ import { Input as InputPart, InputClear as InputClearPart, InputGroup as InputGr
 import { omit, type ComponentProps } from "solid-js";
 
 import { cnState } from "../cn/index.ts";
+import { useUiMessages } from "../provider/index.ts";
 
 const CONTROL = [
   "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs outline-none",
@@ -50,14 +51,20 @@ export function InputGroup(props: InputGroupProps): JSX.Element {
 /** UI SDK's input clear props; children replace the × icon. */
 export type InputClearProps = ComponentProps<typeof InputClearPart>;
 
-/** Empties the Input in its group and returns focus to it. Shows an × unless given children. */
+/**
+ * Empties the Input in its group and returns focus to it. Shows an × unless given children. Its
+ * accessible name defaults to the provider's `clear` string ("Clear" in English); pass `aria-label`
+ * to override it.
+ */
 export function InputClear(props: InputClearProps): JSX.Element {
-  const rest = omit(props, "class");
+  const messages = useUiMessages();
+  const rest = omit(props, "class", "aria-label");
 
   return (
     <InputClearPart
       data-icon="x"
       {...rest}
+      aria-label={props["aria-label"] ?? messages.clear}
       class={cnState(
         [
           "inline-flex size-5 shrink-0 cursor-pointer items-center justify-center [--ui-icon-size:0.875rem]",
