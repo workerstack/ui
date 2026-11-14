@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "wdomitrz.simple-lsp-client",
+    "bradlc.vscode-tailwindcss",
+    "TypeScriptTeam.native-preview",
+    "vitest.explorer"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "types": ["node", "vite/client"]
+  },
+  "extends": "../../tsconfig.base.json",
+  "include": ["scripts", "src", "vitest.*.ts", "*.shared.ts"]
+}

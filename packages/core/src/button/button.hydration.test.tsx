@@ -1,0 +1,28 @@
+import { expect, it } from "vitest";
+import { page, userEvent } from "vitest/browser";
+
+import { hydrator, mismatch } from "../test/hydration.ts";
+import { required } from "../test/required.ts";
+import { ButtonFixture } from "./__fixtures__/button.hydration.fixture.tsx";
+
+const hydrate = hydrator(new URL("./__fixtures__/button.hydration.fixture.tsx", import.meta.url), { ButtonFixture });
+
+it("hydrating Button claims the server's nodes without warnings", async () => {
+  expect(mismatch(await hydrate("ButtonFixture"))).toStrictEqual({});
+});
+
+it("hydrating Button runs the handler on the server's button and updates its text", async () => {
+  const hydrated = await hydrate("ButtonFixture");
+  const server = required(hydrated.container.querySelector("button"), "the server's button");
+  await userEvent.click(page.getByRole("button", { name: "Clicked 0" }));
+  await expect.element(page.getByRole("button", { name: "Clicked 1" })).toBeInTheDocument();
+  expect(hydrated.container.querySelector("button")).toBe(server);
+});
+
+it("hydrating Button keeps the disabled button disabled", async () => {
+  await hydrate("ButtonFixture");
+  const disabled = page.getByRole("button", { name: "Disabled" }).element();
+  expect(disabled).toBeInstanceOf(HTMLButtonElement);
+  expect(disabled.matches(":disabled")).toBe(true);
+  expect(disabled.hasAttribute("data-disabled")).toBe(true);
+});

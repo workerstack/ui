@@ -1,0 +1,13 @@
+[
+  "packages/core/src/dialog/dialog.server.test.tsx > Dialog on the server describes an open dialog by its description in the HTML",
+  "packages/core/src/field/field.server.test.tsx > Field on the server describes the control by a matched error in the HTML",
+  "packages/core/src/field/field.server.test.tsx > Field on the server describes the control only by parts that are in the HTML",
+  "packages/core/src/input/input.hydration.test.tsx > hydrating Input adds nothing the server didn't render",
+  "packages/core/src/input/input.server.test.tsx > InputGroup on the server renders the clear button of a filled group",
+  "packages/core/src/menu/menu.server.test.tsx > Menu on the server renders without warnings",
+  "packages/core/src/select/select.hydration.test.tsx > hydrating Select claims the server's nodes and adds none (items as children)",
+  "packages/core/src/select/select.hydration.test.tsx > hydrating Select claims the server's nodes of an open select",
+  "packages/core/src/select/select.hydration.test.tsx > hydrating Select gets one listbox from the server for an open select",
+  "packages/core/src/select/select.server.test.tsx > Select on the server renders the selected item's label from children",
+  "packages/core/src/select/select.server.test.tsx > Select on the server renders without warnings"
+]

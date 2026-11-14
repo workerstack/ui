@@ -1,0 +1,95 @@
+/*
+ * @workerstack/ui theme. Import it after Tailwind, below a `@layer ui-sdk;` line:
+ *
+ *   @layer ui-sdk;
+ *   @import "tailwindcss";
+ *   @import "@workerstack/ui/theme.css";
+ *
+ * Colors, sizes and icons are UI SDK's `--ui-*` tokens; set them in your own `:root`. Dark mode is
+ * `color-scheme`: `.dark` / `.light` (or `data-theme`) force one, neither follows the system.
+ */
+
+/* UI SDK's tokens and part styles, in the `ui-sdk` layer below Tailwind's. */
+@import "@ui-sdk/core/web.css";
+
+/* The components' classes live next to this file. */
+@source "./";
+
+:root {
+  --ui-radius: 0.5rem;
+}
+
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+.light,
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-background: var(--ui-background);
+  --color-foreground: var(--ui-foreground);
+  --color-muted: var(--ui-muted);
+  --color-muted-foreground: var(--ui-muted-foreground);
+  --color-border: var(--ui-border);
+  --color-input: var(--ui-input);
+  --color-ring: var(--ui-ring);
+  --color-ring-border: var(--ui-ring-border);
+  --color-primary: var(--ui-primary);
+  --color-primary-foreground: var(--ui-primary-foreground);
+  --color-destructive: var(--ui-destructive);
+  --color-overlay: var(--ui-overlay);
+
+  /* Not in UI SDK's palette: derived from it, the way UI SDK derives its own states. */
+  --color-popover: var(--ui-background);
+  --color-popover-foreground: var(--ui-foreground);
+  --color-secondary: var(--ui-muted);
+  --color-secondary-foreground: var(--ui-foreground);
+  --color-accent: var(--ui-muted);
+  --color-accent-foreground: var(--ui-foreground);
+  --color-destructive-foreground: var(--ui-background);
+  --radius-sm: calc(var(--ui-radius) * 0.5);
+  --radius-md: calc(var(--ui-radius) * 0.75);
+  --radius-lg: var(--ui-radius);
+  --radius-xl: calc(var(--ui-radius) * 1.5);
+  --shadow-popup: var(--ui-shadow);
+  --font-sans: var(--ui-font-sans);
+  --font-mono: var(--ui-font-mono);
+}
+
+@layer ui-sdk {
+  /* Our own icon parts (a dialog's close, an input's clear), drawn like UI SDK draws its own:
+     a mask over currentColor, replaced by any <svg> child. */
+  [data-icon]:not(:has(svg))::before {
+    flex-shrink: 0;
+    width: var(--ui-icon-size, 1rem);
+    height: var(--ui-icon-size, 1rem);
+    content: "";
+    background: currentcolor;
+    mask: var(--ui-icon) center / contain no-repeat;
+  }
+
+  [data-icon="x"] {
+    --ui-icon: var(--ui-icon-x);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    color: var(--color-foreground);
+    background-color: var(--color-background);
+  }
+
+  /* A Button's pending content: `data-show="idle"` / `data-show="pending"` children. */
+  [data-slot="button"]:not([data-pending]) [data-show="pending"],
+  [data-slot="button"][data-pending] [data-show="idle"] {
+    display: none;
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@workerstack/playground",
+  "private": true,
+  "description": "Every @workerstack/ui component on one page, imported the way an app imports them",
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "build": "vite build",
+    "dev": "bun scripts/dev.ts",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@solidjs/web": "catalog:",
+    "@ui-sdk/core": "catalog:",
+    "@ui-sdk/solid": "catalog:",
+    "@workerstack/ui": "workspace:*",
+    "cn": "catalog:",
+    "solid-js": "catalog:"
+  },
+  "devDependencies": {
+    "@solidjs/vite-plugin": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

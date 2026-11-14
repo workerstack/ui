@@ -1,0 +1,5 @@
+/* The setup the @workerstack/ui README asks of an app. */
+@layer ui-sdk;
+
+@import "tailwindcss";
+@import "@workerstack/ui/theme.css";

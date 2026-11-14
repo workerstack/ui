@@ -1,0 +1,4 @@
+{
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/__fixtures__", "src/test", "vitest.*.ts", "*.shared.ts"],
+  "extends": ["./tsconfig.json", "@workerstack/repo/tsconfig/strict"]
+}

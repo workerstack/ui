@@ -1,0 +1,4 @@
+{
+  "exclude": ["vite.config.ts"],
+  "extends": ["./tsconfig.json", "@workerstack/repo/tsconfig/strict"]
+}
