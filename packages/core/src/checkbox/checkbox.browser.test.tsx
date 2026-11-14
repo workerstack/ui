@@ -2,7 +2,7 @@ import { cleanup, render } from "@solidjs/testing-library";
 import { afterEach, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { drawnIcon, glyph, part, rect, settled, style, token } from "../test/browser.ts";
+import { drawnIcon, glyph, NO_RING, part, rect, settled, style, token } from "../test/browser.ts";
 import { TermsCheckbox, type TermsCheckboxProps } from "./__fixtures__/terms-checkbox.fixture.tsx";
 
 afterEach(cleanup);
@@ -85,4 +85,12 @@ it("Checkbox draws a disabled box dimmed and an invalid box with the destructive
   cleanup();
   render(() => <TermsCheckbox invalid />);
   expect(style(box().element()).borderTopColor).toBe(token("--ui-destructive"));
+});
+
+it("Checkbox read-only keeps its look with a default cursor and no resting shadow", () => {
+  render(() => <TermsCheckbox readOnly defaultChecked />);
+  const el = box().element();
+  expect(style(el).cursor).toBe("default");
+  expect(style(el).boxShadow).toMatch(NO_RING);
+  expect(style(el).backgroundColor).toBe(token("--ui-primary"));
 });

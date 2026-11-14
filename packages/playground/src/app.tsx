@@ -25,6 +25,7 @@ import { TextInputs } from "./sections/text-inputs.tsx";
 import { Textareas } from "./sections/textareas.tsx";
 import { Toasts } from "./sections/toasts.tsx";
 import { Tooltips } from "./sections/tooltips.tsx";
+import { Views } from "./sections/views.tsx";
 
 const NAV = [
   { id: "button", label: "Button" },
@@ -46,6 +47,7 @@ const NAV = [
   { id: "toast", label: "Toast" },
   { id: "badge", label: "Badge" },
   { id: "card", label: "Card" },
+  { id: "view", label: "View" },
 ] as const;
 
 function ThemeToggle(): JSX.Element {
@@ -120,6 +122,7 @@ function Sections(): JSX.Element {
       <Toasts />
       <Badges />
       <Cards />
+      <Views />
     </main>
   );
 }

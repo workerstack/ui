@@ -3,10 +3,11 @@ import { page, userEvent } from "vitest/browser";
 
 import { hydrator, mismatch } from "../test/hydration.ts";
 import { required } from "../test/required.ts";
-import { RadioGroupFixture } from "./__fixtures__/radio-group.hydration.fixture.tsx";
+import { RadioGroupFixture, RadioGroupViewFixture } from "./__fixtures__/radio-group.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/radio-group.hydration.fixture.tsx", import.meta.url), {
   RadioGroupFixture,
+  RadioGroupViewFixture,
 });
 
 function radio(name: string): ReturnType<typeof page.getByRole> {
@@ -40,4 +41,9 @@ it("hydrating RadioGroup moves the selection with the arrow keys after hydration
   await userEvent.keyboard("{ArrowDown}");
   await expect.element(radio("Team")).toBeChecked();
   await expect.element(page.getByRole("status")).toHaveTextContent("team");
+});
+
+it("hydrating RadioGroupView claims the server's nodes and keeps its text", async () => {
+  expect(mismatch(await hydrate("RadioGroupViewFixture"))).toStrictEqual({});
+  await expect.element(page.getByRole("group", { name: "Plan" })).toHaveTextContent("PlanBusiness");
 });

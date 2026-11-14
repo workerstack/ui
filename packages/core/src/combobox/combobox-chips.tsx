@@ -8,8 +8,9 @@ import {
 import { omit, type ComponentProps } from "solid-js";
 
 import { cn, cnState } from "../cn/index.ts";
-import { withAfter } from "../internal/index.ts";
+import { withAfter, withBefore } from "../internal/index.ts";
 import { useUiMessages } from "../provider/index.ts";
+import { ComboboxColorDot } from "./combobox-dot.tsx";
 import { BARE_INPUT, CHIPS_BOX, ICON_BUTTON } from "./combobox-styles.ts";
 
 /** UI SDK's combobox chips props. */
@@ -27,7 +28,8 @@ export type ComboboxChipProps<T = string> = Parameters<typeof ComboboxChipPart<T
 
 /**
  * One chosen value, with a button that removes it. Give it the value's label as children (the
- * labels of ComboboxValue's state), or none to show UI SDK's label for the value.
+ * labels of ComboboxValue's state), or none to show UI SDK's label for the value. A value with a
+ * color shows a dot first.
  */
 export function ComboboxChip<T = string>(props: ComboboxChipProps<T>): JSX.Element {
   const rest = omit(props, "class", "children");
@@ -44,13 +46,16 @@ export function ComboboxChip<T = string>(props: ComboboxChipProps<T>): JSX.Eleme
         props.class,
       )}
     >
-      {withAfter(
-        props.children,
-        <ComboboxChipRemove
-          data-icon="x"
-          aria-label={messages.remove}
-          class={cn(ICON_BUTTON, "[--ui-icon-size:0.75rem]")}
-        />,
+      {withBefore(
+        <ComboboxColorDot value={props.value} />,
+        withAfter(
+          props.children,
+          <ComboboxChipRemove
+            data-icon="x"
+            aria-label={messages.remove}
+            class={cn(ICON_BUTTON, "[--ui-icon-size:0.75rem]")}
+          />,
+        ),
       )}
     </ComboboxChipPart>
   );

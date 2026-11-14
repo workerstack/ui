@@ -26,3 +26,13 @@ it("hydrating Button keeps the disabled button disabled", async () => {
   expect(disabled.matches(":disabled")).toBe(true);
   expect(disabled.hasAttribute("data-disabled")).toBe(true);
 });
+
+it("hydrating Button keeps the loading button busy, disabled and showing its spinner", async () => {
+  await hydrate("ButtonFixture");
+  const loading = page.getByRole("button", { name: /Loading/ }).element();
+  expect(loading.getAttribute("aria-busy")).toBe("true");
+  expect(loading.matches(":disabled")).toBe(true);
+  expect(getComputedStyle(required(loading.querySelector("[data-slot=button-spinner]"), "a spinner")).display).toBe(
+    "flex",
+  );
+});

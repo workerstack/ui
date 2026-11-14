@@ -7,12 +7,14 @@ import {
   ComboboxChildrenFixture,
   ComboboxChipsFixture,
   ComboboxFixture,
+  ComboboxViewFixture,
 } from "./__fixtures__/combobox.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/combobox.hydration.fixture.tsx", import.meta.url), {
   ComboboxChildrenFixture,
   ComboboxChipsFixture,
   ComboboxFixture,
+  ComboboxViewFixture,
 });
 
 // The server's own warnings are left out: UI SDK 0.1.0-beta.2's ComboboxContent writes a signal on
@@ -72,4 +74,9 @@ it("hydrating Combobox multiple adds a chip and removes one", async () => {
   await expect.element(page.getByTestId("value")).toHaveTextContent("apple,banana");
   await userEvent.click(page.getByRole("button", { name: "Remove" }).first());
   await expect.element(page.getByTestId("value")).toHaveTextContent("banana");
+});
+
+it("hydrating ComboboxView claims the server's nodes and keeps its labels", async () => {
+  expect(mismatch(await hydrate("ComboboxViewFixture"))).toStrictEqual({});
+  await expect.element(page.getByRole("status", { name: "Fruit" })).toHaveTextContent("Apple, Banana");
 });

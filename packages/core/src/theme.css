@@ -29,6 +29,10 @@
   color-scheme: light;
 }
 
+/* The last input was the pointer (UiProvider's `data-focus-source`): a wrapper that rings for its
+   read-only field clears that ring with `pointer-focus:has-[[readonly]:focus-visible]:ring-0`. */
+@custom-variant pointer-focus (:root[data-focus-source="pointer"] &);
+
 @theme inline {
   --color-background: var(--ui-background);
   --color-foreground: var(--ui-foreground);
@@ -91,5 +95,55 @@
   [data-slot="button"]:not([data-pending]) [data-show="pending"],
   [data-slot="button"][data-pending] [data-show="idle"] {
     display: none;
+  }
+}
+
+/* A read-only text field rings only when the keyboard brought focus there: Chrome counts a click
+   into a read-only input or textarea as `:focus-visible`, and a read-only field looks like text.
+   UiProvider keeps `data-focus-source` on <html>; while it is the pointer, the field drops its
+   ring. Unlayered, so it wins over the ring utilities. */
+:root[data-focus-source="pointer"] :is(input, textarea)[readonly]:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Autofill: a no-op animation every engine starts when it fills a field (`:autofill`), so a
+   control can hear the fill. The two selectors stay separate: one unknown selector would drop the
+   whole rule. */
+@keyframes ui-autofill {
+  from {
+    outline-color: inherit;
+  }
+
+  to {
+    outline-color: inherit;
+  }
+}
+
+:where(input, select, textarea):autofill {
+  animation: ui-autofill 1ms;
+}
+
+:where(input, select, textarea):-webkit-autofill {
+  animation: ui-autofill 1ms;
+}
+
+@layer base {
+  /* A form's mark after a label or legend (`data-mark` and `data-mark-text`): drawn, not text, so
+     a label keeps its text and its control's name; the empty alternative keeps it from screen
+     readers, since a required control says so itself. */
+  [data-mark]::after {
+    font-weight: 400;
+    color: var(--ui-muted-foreground);
+    content: attr(data-mark-text) / "";
+  }
+
+  [data-mark="required"]::after {
+    font-weight: inherit;
+    color: var(--ui-destructive);
+  }
+
+  [data-slot="fieldset-legend"][data-mark]::after {
+    margin-inline-start: 0.375rem;
   }
 }

@@ -2,7 +2,7 @@ import { cleanup, render } from "@solidjs/testing-library";
 import { afterEach, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { drawnIcon, glyph, part, rect, settled, style, token } from "../test/browser.ts";
+import { drawsIcon, part, rect, settled, style, token } from "../test/browser.ts";
 import { required } from "../test/required.ts";
 import { CreateCombobox } from "./__fixtures__/create-combobox.fixture.tsx";
 import { FruitCombobox, type FruitValueChange } from "./__fixtures__/fruit-combobox.fixture.tsx";
@@ -97,7 +97,7 @@ it("Combobox closes on a click outside", async () => {
 it("Combobox draws the chevron after the input with UI SDK's icon", () => {
   render(() => <FruitCombobox />);
   const trigger = part(box(), "combobox-trigger");
-  expect(drawnIcon(trigger, "::after")).toBe(glyph("--ui-icon-chevron"));
+  expect(drawsIcon(trigger, "::after", "--ui-icon-chevron")).toBe(true);
 });
 
 it("Combobox draws the box and its focus ring like an Input", async () => {
@@ -114,7 +114,7 @@ it("Combobox draws a check in the selected option", async () => {
   render(() => <FruitCombobox defaultValue="cherry" />);
   await openWithClick();
   const cherry = page.getByRole("option", { name: "Cherry" }).element();
-  expect(drawnIcon(part(cherry, "combobox-item-indicator"), "::before")).toBe(glyph("--ui-icon-check"));
+  expect(drawsIcon(part(cherry, "combobox-item-indicator"), "::before", "--ui-icon-check")).toBe(true);
 });
 
 it("Combobox highlights the option under the arrow keys", async () => {
@@ -129,7 +129,7 @@ it("Combobox highlights the option under the arrow keys", async () => {
 it("Combobox draws an × in the clear button", async () => {
   render(() => <FruitCombobox defaultValue="apple" showClear />);
   const clear = page.getByRole("button", { name: "Clear" }).element();
-  expect(drawnIcon(clear, "::before")).toBe(glyph("--ui-icon-x"));
+  expect(drawsIcon(clear, "::before", "--ui-icon-x")).toBe(true);
   await userEvent.click(clear);
   await expect.element(input()).toHaveValue("");
 });
@@ -140,7 +140,7 @@ it("Combobox draws the create row with a plus and a disabled hint", async () => 
   const hint = page.getByRole("option", { name: "Type to create an option" });
   await expect.element(hint).toBeVisible();
   const plus = required(hint.element().querySelector('[data-icon="plus"]'), "the hint's plus");
-  expect(drawnIcon(plus, "::before")).toBe(glyph("--ui-icon-plus"));
+  expect(drawsIcon(plus, "::before", "--ui-icon-plus")).toBe(true);
   await userEvent.keyboard("Docs");
   await expect.element(page.getByRole("option", { name: "Create “Docs”" })).toBeVisible();
 });
@@ -148,7 +148,7 @@ it("Combobox draws the create row with a plus and a disabled hint", async () => 
 it("Combobox multiple draws chips with an × to remove each and a popup as wide as the chips box", async () => {
   render(() => <TagCombobox defaultValue={["bug"]} />);
   const chip = page.getByRole("button", { name: "Remove" }).element();
-  expect(drawnIcon(chip, "::before")).toBe(glyph("--ui-icon-x"));
+  expect(drawsIcon(chip, "::before", "--ui-icon-x")).toBe(true);
   await userEvent.click(input("Tags"));
   await expect.element(listbox()).toBeVisible();
   await settled(popup());

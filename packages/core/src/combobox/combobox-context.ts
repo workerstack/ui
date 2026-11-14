@@ -1,6 +1,7 @@
 import type { ComboboxController, ListData } from "@ui-sdk/solid/combobox";
 import { createContext, createMemo, createSignal, useContext, type Accessor, type Context } from "solid-js";
 
+import type { OptionColor } from "../internal/index.ts";
 import { useUiLocale } from "../provider/index.ts";
 
 export type ComboboxContextValue<T> = {
@@ -10,6 +11,8 @@ export type ComboboxContextValue<T> = {
   typed: Accessor<string>;
   // Whether the combobox refuses changes, so the create hints stay hidden.
   readOnly: Accessor<boolean>;
+  // The color of an item's value, for the dot beside it; none for a plain item.
+  colorOf: (value: T) => OptionColor | undefined;
   // Selects `value` as if it were picked, adding it to the chosen ones with `multiple`.
   select: (value: T) => void;
   // Tells the combobox an item with this label is rendered; returns the undo.

@@ -20,6 +20,7 @@ import { createSignal } from "solid-js";
 
 import { useLog } from "../log.tsx";
 import { Example, Section } from "../section.tsx";
+import { Filterable, LabelsAndLinks } from "./menus-more.tsx";
 
 function ActionItems(): JSX.Element {
   return (
@@ -115,12 +116,18 @@ function CheckboxAndRadio(): JSX.Element {
   );
 }
 
-/** Actions, a submenu, shortcuts, checkbox and radio items. */
+/** Actions, a submenu, shortcuts, checkbox and radio items, links, and a filter. */
 export function Menus(): JSX.Element {
   return (
-    <Section id="menu" title="Menu" description="Actions, a submenu, shortcuts, checkbox and radio items.">
+    <Section
+      id="menu"
+      title="Menu"
+      description="Actions, a submenu, shortcuts, checkbox and radio items, links, and a filter."
+    >
       <Actions />
       <CheckboxAndRadio />
+      <LabelsAndLinks />
+      <Filterable />
     </Section>
   );
 }

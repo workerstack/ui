@@ -3,6 +3,7 @@ import { createContext, createSignal, onSettled, useContext } from "solid-js";
 
 import { formatLocale, type LocaleResolution, readCookie, REGION_COOKIE, regionOfTimeZone } from "../locale/index.ts";
 import { UI_MESSAGES_EN, type UiMessages } from "./messages.ts";
+import { TranslatedMessages } from "./translated-messages.ts";
 
 const DEFAULT_LOCALE = "en-US";
 const REGION_COOKIE_MAX_AGE = 31_536_000;
@@ -67,43 +68,47 @@ function createFormatLocale(props: UiProviderProps): () => string {
   };
 }
 
-// One getter per key, so every string read tracks `messages` and a language switch re-renders in place.
-function translated(source: { messages?: Partial<UiMessages> | undefined }): UiMessages {
-  return {
-    get clear() {
-      return source.messages?.clear ?? UI_MESSAGES_EN.clear;
-    },
-    get close() {
-      return source.messages?.close ?? UI_MESSAGES_EN.close;
-    },
-    get comboboxCreate() {
-      return source.messages?.comboboxCreate ?? UI_MESSAGES_EN.comboboxCreate;
-    },
-    get comboboxCreateEmpty() {
-      return source.messages?.comboboxCreateEmpty ?? UI_MESSAGES_EN.comboboxCreateEmpty;
-    },
-    get comboboxCreateExists() {
-      return source.messages?.comboboxCreateExists ?? UI_MESSAGES_EN.comboboxCreateExists;
-    },
-    get comboboxCreateNew() {
-      return source.messages?.comboboxCreateNew ?? UI_MESSAGES_EN.comboboxCreateNew;
-    },
-    get noResults() {
-      return source.messages?.noResults ?? UI_MESSAGES_EN.noResults;
-    },
-    get remove() {
-      return source.messages?.remove ?? UI_MESSAGES_EN.remove;
-    },
-  };
+type FocusSource = "keyboard" | "pointer";
+
+function setFocusSource(source: FocusSource): void {
+  const root = document.documentElement;
+
+  if (root.dataset["focusSource"] !== source) root.dataset["focusSource"] = source;
+}
+
+function onPointerDown(): void {
+  setFocusSource("pointer");
+}
+
+function onKeyDown(): void {
+  setFocusSource("keyboard");
+}
+
+// Whether the last input was the pointer or the keyboard, on <html data-focus-source>: a read-only
+// field rings only from the keyboard (theme.css). Set after mount, removed on dispose.
+function trackFocusSource(): void {
+  onSettled(() => {
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown, true);
+
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("keydown", onKeyDown, true);
+      delete document.documentElement.dataset["focusSource"];
+    };
+  });
 }
 
 /**
  * Root of an app on `@workerstack/ui`: provides the translated built-in strings and the format
- * locale. Reading direction and the CSP nonce come from the page, not from here.
+ * locale, and keeps `data-focus-source` ("keyboard" or "pointer") on `<html>` for the theme.
+ * Reading direction and the CSP nonce come from the page, not from here.
  */
 export function UiProvider(props: UiProviderProps): JSX.Element {
-  const messages = translated(props);
+  const messages = new TranslatedMessages(() => props.messages);
   const locale = createFormatLocale(props);
+
+  trackFocusSource();
 
   return (
     <LOCALE_CONTEXT value={locale}>

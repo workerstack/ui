@@ -3,69 +3,71 @@ import { Button as ButtonPart, type ButtonState } from "@ui-sdk/solid/button";
 import { omit, type ComponentProps } from "solid-js";
 
 import { cn, cnState } from "../cn/index.ts";
+import { withAfter } from "../internal/index.ts";
+import { useUiMessages } from "../provider/index.ts";
+import { buttonClass, type ButtonInlineSize, type ButtonSize, type ButtonVariant } from "./button-class.ts";
 
-/** How a button looks: `primary` for the main action, `destructive` for ones that delete. */
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "destructive" | "link";
+const SPINNER = "pointer-events-none absolute inset-0 flex items-center justify-center";
+const RING = "size-4 animate-spin rounded-full border-2 border-current border-t-transparent motion-reduce:animate-none";
+const CHEVRON = "[--ui-icon:var(--ui-icon-chevron)] [--ui-icon-size:1rem]";
 
-/** A button's height and padding; `icon` is square, for a lone icon. */
-export type ButtonSize = "sm" | "md" | "lg" | "icon";
-
-const BASE = [
-  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm",
-  "font-medium outline-none transition-[color,background-color,border-color,box-shadow] delay-0",
-  "focus-visible:ring-3 focus-visible:ring-ring/50 data-disabled:pointer-events-none data-disabled:opacity-50",
-  "data-pending:cursor-progress [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-];
-
-const variants: Record<ButtonVariant, string> = {
-  destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive/40",
-  ghost: "hover:bg-accent hover:text-accent-foreground",
-  link: "h-auto px-0 text-primary underline-offset-4 hover:underline",
-  outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-  primary: "bg-primary text-primary-foreground hover:bg-primary/90",
-  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-};
-
-const sizes: Record<ButtonSize, string> = {
-  icon: "size-9",
-  lg: "h-10 px-6",
-  md: "h-9 px-4",
-  sm: "h-8 px-3 text-xs",
-};
-
-/** A Button's classes, for things that should look like one without being one (a plain link, a trigger). */
-export function buttonClass(
-  options: {
-    /** Defaults to `primary`. */
-    variant?: ButtonVariant | undefined;
-    /** Defaults to `md`. */
-    size?: ButtonSize | undefined;
-  } = {},
-): string {
-  const variant = options.variant ?? "primary";
-
-  return cn(BASE, sizes[options.size ?? "md"], variants[variant]);
-}
-
-/** UI SDK's button props, plus how it looks. */
+/** UI SDK's button props, plus how it looks and a `loading` state. */
 export type ButtonProps = ComponentProps<typeof ButtonPart> & {
   /** Defaults to `primary`. */
   variant?: ButtonVariant;
   /** Defaults to `md`. */
   size?: ButtonSize;
+  /** Defaults to `auto`; `fill` stretches the button to its row. */
+  inlineSize?: ButtonInlineSize;
+  /** Shows a spinner in place of the content, disables the button and sets `aria-busy`. The width stays. */
+  loading?: boolean;
+  /** Appends the chevron of a menu trigger. */
+  disclosure?: boolean;
 };
+
+// The spinner covers the content, which stays in the layout so the width does not change.
+function Spinner(): JSX.Element {
+  const messages = useUiMessages();
+
+  return (
+    <output data-slot="button-spinner" aria-label={messages.loading} class={SPINNER}>
+      <span aria-hidden="true" class={RING} />
+    </output>
+  );
+}
+
+function ButtonBody(props: { busy: boolean; children: JSX.Element }): JSX.Element {
+  return (
+    <>
+      {props.busy ? <Spinner /> : null}
+      <span data-slot="button-content" class={cn("inline-flex items-center gap-[inherit]", props.busy && "invisible")}>
+        {props.children}
+      </span>
+    </>
+  );
+}
 
 /**
  * A button. Return a Promise from `onClick` and it stays pending (`data-pending`) until it settles;
  * mark children `data-show="idle"` / `data-show="pending"` to swap what it shows meanwhile.
+ * `loading` and a pending Promise both show the spinner over the content, at the same width.
  */
 export function Button(props: ButtonProps): JSX.Element {
-  const rest = omit(props, "class", "variant", "size");
+  const rest = omit(props, "class", "variant", "size", "inlineSize", "loading", "disclosure", "disabled", "children");
+  const chevron = <span data-icon="chevron" aria-hidden="true" class={CHEVRON} />;
+  const content = withAfter<ButtonState>(props.children, props.disclosure === true ? chevron : null);
 
   return (
     <ButtonPart
       {...rest}
-      class={cnState<ButtonState>(buttonClass({ size: props.size, variant: props.variant }), props.class)}
-    />
+      disabled={props.loading === true || props.disabled === true}
+      aria-busy={props.loading === true ? "true" : props["aria-busy"]}
+      class={cnState<ButtonState>(
+        cn("group/button", buttonClass(props), props.loading === true && "data-disabled:opacity-100"),
+        props.class,
+      )}
+    >
+      {(state: ButtonState) => <ButtonBody busy={props.loading === true || state.pending}>{content(state)}</ButtonBody>}
+    </ButtonPart>
   );
 }

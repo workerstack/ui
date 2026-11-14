@@ -5,9 +5,11 @@ import {
   RadioIndicator,
   type RadioGroupOptions,
 } from "@ui-sdk/solid/radio";
-import { omit, type ComponentProps } from "solid-js";
+import { omit, untrack, type ComponentProps } from "solid-js";
 
 import { cn, cnState, type ClassValue } from "../cn/index.ts";
+import { callRef, createRequiredChoice } from "../internal/index.ts";
+import { useUiMessages } from "../provider/index.ts";
 
 /** What a RadioGroup tells `onValueChange` about the change: its `reason` and `cancel()`. */
 export type RadioGroupChangeDetails<Value extends string = string> = Parameters<
@@ -27,17 +29,42 @@ export type RadioGroupProps<Value extends string = string> = Omit<
   onValueChange?: (value: Value, details: RadioGroupChangeDetails<Value>) => void;
 };
 
+// The group's hidden radio inputs, which carry its native `required`.
+function radioInputs(group: HTMLElement | undefined): HTMLInputElement[] {
+  return [...(group?.querySelectorAll<HTMLInputElement>('[data-slot="radio-input"]') ?? [])];
+}
+
 /**
  * Radios that share one value, with one tab stop and arrow keys between them. Put it in a Field
- * and the field's label names the group. Without a Field, name it with `aria-label`.
+ * and the field's label names the group. Without a Field, name it with `aria-label`. `readOnly`
+ * shows the choice without letting it change. While `required` and nothing is chosen it reports
+ * the provider's `requiredChoice`; the Field's label is marked through `useRequiredMark`.
  */
 export function RadioGroup<Value extends string = string>(props: RadioGroupProps<Value>): JSX.Element {
-  const rest = omit(props, "class", "onValueChange");
+  const rest = omit(props, "class", "onValueChange", "ref");
+  const messages = useUiMessages();
+  let group: HTMLElement | undefined;
+
+  const chosen = createRequiredChoice<Value | null>({
+    controlled: () => props.value !== undefined,
+    initial: untrack(() => props.defaultValue) ?? null,
+    inputs: () => radioInputs(group),
+    isMissing: (value) => value === null,
+    message: () => messages.requiredChoice,
+    required: () => props.required,
+    value: () => props.value ?? null,
+  });
 
   return (
     <RadioGroupPart<Value>
       {...rest}
+      ref={(element) => {
+        group = element;
+        callRef(props.ref, element);
+      }}
       onValueChange={(value, details) => {
+        chosen.set(value);
+
         if (value !== null) props.onValueChange?.(value, details);
       }}
       class={cnState("group/radio-group grid gap-3", props.class)}
@@ -78,6 +105,8 @@ export function Radio(props: RadioProps): JSX.Element {
           "group-aria-invalid/radio-group:border-destructive group-aria-invalid/radio-group:ring-destructive/20",
           "group-aria-invalid/radio-group:data-checked:border-destructive",
           "data-disabled:cursor-not-allowed data-disabled:opacity-50",
+          // Read-only keeps the look and loses the feedback: no pointer, no resting shadow.
+          "data-readonly:cursor-default data-readonly:shadow-none",
         ])}
       >
         <RadioIndicator />

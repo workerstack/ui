@@ -16,7 +16,7 @@ it("Button on the server renders a type=button with its variant and size classes
   expect(button.attrs.type).toBe("button");
   expect(button.attrs.class).toContain("border-input");
   expect(button.attrs.class).toContain("h-8");
-  expect(html).toContain(">Save</button>");
+  expect(html).toContain(">Save</span></button>");
   expect(warnings).toStrictEqual([]);
 });
 
@@ -42,4 +42,19 @@ it("Button on the server resolves a class that is a function of its state", () =
   ));
 
   expect(slot(html, "button").attrs.class).toContain("is-idle");
+});
+
+it("Button on the server renders loading as busy and disabled, with its spinner shown", () => {
+  const { html } = renderServer(() => <Button loading>Save</Button>);
+  const button = slot(html, "button");
+  expect(button.attrs["aria-busy"]).toBe("true");
+  expect(button.attrs).toHaveProperty("disabled");
+  const spinner = slot(html, "button-spinner");
+  expect(spinner.attrs["aria-label"]).toBe("Loading");
+});
+
+it("Button on the server renders no spinner when it is not loading", () => {
+  const { html } = renderServer(() => <Button>Save</Button>);
+  expect(html).not.toContain("button-spinner");
+  expect(slot(html, "button").attrs).not.toHaveProperty("aria-busy");
 });

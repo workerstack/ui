@@ -103,3 +103,11 @@ it("Textarea in an invalid Field is marked invalid", () => {
   expect(box().getAttribute("aria-invalid")).toBe("true");
   expect(required(screen.getByText("Notes"), "the label").hasAttribute("data-invalid")).toBe(true);
 });
+
+it("Textarea still calls a consumer's onInput", async () => {
+  const onInput = vi.fn<() => void>();
+  render(() => <NotesTextarea onInput={onInput} />);
+  await mounted();
+  type(box(), "hello");
+  expect(onInput).toHaveBeenCalledTimes(1);
+});

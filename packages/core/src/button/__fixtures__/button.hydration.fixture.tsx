@@ -10,6 +10,7 @@ export function ButtonFixture() {
         Clicked {count()}
       </Button>
       <Button disabled>Disabled</Button>
+      <Button loading>Saving</Button>
     </div>
   )
 }

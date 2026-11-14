@@ -14,6 +14,9 @@ const EDGE = 16;
 /** How far a swipe drags, past UI SDK's dismissal threshold. */
 const SWIPE = 120;
 
+/** A short toast life, so the paused countdown is seen to outlast it. */
+const LIFE = 2000;
+
 /** The drag's moves on the way. */
 const SWIPE_STEPS = [10, 40, SWIPE];
 
@@ -74,14 +77,15 @@ it("Toast spreads the stack upward, each toast whole, while hovered", async () =
 });
 
 it("Toast pauses its countdown while hovered and resumes it after", async () => {
-  render(() => <ToastDemo duration={700} />);
+  render(() => <ToastDemo duration={LIFE} />);
   await press("Save");
-  await stackOf(1);
+  // Hover as soon as it shows: under load, waiting for the stack to settle first can outlast its life.
+  await expect.poll(() => toasts().length).toBe(1);
   await userEvent.hover(required(toasts()[0], "a toast"));
-  await new Promise((resolve) => setTimeout(resolve, 1200));
+  await new Promise((resolve) => setTimeout(resolve, LIFE * 2));
   expect(toasts()).toHaveLength(1);
   await userEvent.unhover(required(toasts()[0], "a toast"));
-  await expect.poll(() => toasts().length, { timeout: 3000 }).toBe(0);
+  await expect.poll(() => toasts().length, { timeout: LIFE * 2 }).toBe(0);
 });
 
 it("Toast dismisses on Escape", async () => {

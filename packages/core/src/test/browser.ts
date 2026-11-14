@@ -54,6 +54,11 @@ export function glyph(name: `--ui-icon-${string}`): string {
   return image;
 }
 
+/** Whether the element draws the UI SDK icon `name` on a pseudo-element. */
+export function drawsIcon(el: Element, pseudo: "::after" | "::before", name: `--ui-icon-${string}`): boolean {
+  return drawnIcon(el, pseudo) === glyph(name);
+}
+
 /** A computed box-shadow that draws nothing: `none`, or only transparent zero-size shadows. */
 export const NO_RING = /^(none|((rgba\(0, 0, 0, 0\)|oklab\(0 0 0 \/ 0\)) 0px 0px 0px 0px(, )?)+)$/;
 

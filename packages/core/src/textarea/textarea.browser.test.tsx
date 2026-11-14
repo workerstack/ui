@@ -3,7 +3,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
 import { NO_RING, rect, settled, style, token } from "../test/browser.ts";
-import { InvalidNotesTextarea, NotesTextarea } from "./__fixtures__/textarea.fixture.tsx";
+import { InvalidNotesTextarea, LimitedNotes, NotesTextarea } from "./__fixtures__/textarea.fixture.tsx";
 import type { TextareaProps } from "./index.ts";
 
 type OnValueChange = NonNullable<TextareaProps["onValueChange"]>;
@@ -68,4 +68,27 @@ it("Textarea draws an invalid border in the destructive color", () => {
 it("Textarea fades when disabled", () => {
   render(() => <NotesTextarea disabled />);
   expect(style(box()).opacity).toBe("0.5");
+});
+
+it("Textarea puts the counter under the box, at its end, and turns it destructive past the limit", async () => {
+  render(() => <LimitedNotes />);
+  const count = page.getByText("0/10").element();
+  expect(rect(count).top).toBeGreaterThanOrEqual(rect(box()).bottom);
+  expect(Math.round(rect(count).right)).toBe(Math.round(rect(box()).right));
+  expect(style(count).color).toBe(token("--ui-muted-foreground"));
+  await userEvent.type(page.getByRole("textbox", { name: "Notes" }), "abcdefghijk");
+  await expect.element(page.getByText("11/10")).toBeVisible();
+  expect(style(page.getByText("11/10").element()).color).toBe(token("--ui-destructive"));
+});
+
+it("Textarea read-only has no border and no placeholder but keeps its size", () => {
+  render(() => <NotesTextarea placeholder="Write" />);
+  const editable = rect(box()).height;
+  const border = style(box()).borderTopColor;
+  cleanup();
+  render(() => <NotesTextarea readonly placeholder="Write" defaultValue="Hi" />);
+  expect(box().placeholder).toBe("");
+  expect(style(box()).borderTopColor).not.toBe(border);
+  expect(style(box()).borderTopColor).toBe("rgba(0, 0, 0, 0)");
+  expect(rect(box()).height).toBe(editable);
 });

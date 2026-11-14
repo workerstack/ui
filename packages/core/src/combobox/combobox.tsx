@@ -7,6 +7,7 @@ import {
 } from "@ui-sdk/solid/combobox";
 import { createSignal } from "solid-js";
 
+import { optionColor, type OptionColor } from "../internal/index.ts";
 import {
   COMBOBOX_CONTEXT,
   createLabelMatcher,
@@ -16,7 +17,13 @@ import {
 } from "./combobox-context.ts";
 
 /** UI SDK's combobox props: `items`, `multiple`, `value`, `filter`, `onValueChange`, … */
-export type ComboboxProps<T = string, Multiple extends boolean | undefined = false> = ComboboxPartProps<T, Multiple>;
+export type ComboboxProps<T = string, Multiple extends boolean | undefined = false> = ComboboxPartProps<T, Multiple> & {
+  /**
+   * A value's color, when `items` can't tell it. A colored item shows a dot in the list and in its
+   * chip; `items` entries may carry their own `color`.
+   */
+  itemToColor?: (value: T) => OptionColor | undefined;
+};
 
 // The state the parts share: the typed text, the box the popup lines up with, and the item labels.
 function createContextValue<T, Multiple extends boolean | undefined>(
@@ -28,6 +35,7 @@ function createContextValue<T, Multiple extends boolean | undefined>(
   const registry = createLabelRegistry();
 
   return {
+    colorOf: (value) => props.itemToColor?.(value) ?? optionColor(props.items, value),
     group,
     has: createLabelMatcher(() => props.items, registry.labels),
     readOnly: () => props.readOnly === true,

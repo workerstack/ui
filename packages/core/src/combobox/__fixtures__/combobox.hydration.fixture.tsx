@@ -12,6 +12,7 @@ import {
   ComboboxItem,
   ComboboxList,
   ComboboxValue,
+  ComboboxView,
 } from "../index.ts";
 import { fruits } from "./fruit-combobox.fixture.tsx";
 
@@ -82,5 +83,15 @@ export function ComboboxChipsFixture() {
       </Field>
       <output data-testid="value">{value().join(",")}</output>
     </div>
+  );
+}
+
+/** The read-only view of a multiple combobox, under a Field label. */
+export function ComboboxViewFixture() {
+  return (
+    <Field>
+      <FieldLabel>Fruit</FieldLabel>
+      <ComboboxView items={fruits} value={["apple", "banana"]} />
+    </Field>
   );
 }

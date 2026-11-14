@@ -25,3 +25,15 @@ export function ComboboxMessagesProbe() {
     </output>
   );
 }
+
+/** Shows a plain required-field string and the text-too-long string, which takes a length and a limit. */
+export function ValidityMessagesProbe() {
+  const messages = useUiMessages();
+
+  return (
+    <output>
+      <span data-testid="required-field">{messages.requiredField}</span>
+      <span data-testid="too-long">{messages.textTooLong(12, 10)}</span>
+    </output>
+  );
+}

@@ -78,3 +78,19 @@ it.fails("Select on the server renders the selected item's label from children",
 
   expect(text(html)).toContain("Editor");
 });
+
+it("Select on the server renders a read-only trigger that says so and shows the value", () => {
+  const { html } = renderServer(() => (
+    <Select items={roles} defaultValue="editor" readOnly>
+      <SelectTrigger aria-label="Role" size="sm">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent />
+    </Select>
+  ));
+
+  const trigger = slot(html, "select-trigger");
+  expect(trigger.attrs["aria-readonly"]).toBe("true");
+  expect(trigger.attrs["data-size"]).toBe("sm");
+  expect(text(html)).toContain("Editor");
+});

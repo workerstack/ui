@@ -1,10 +1,11 @@
 import type { JSX } from "@solidjs/web";
-import { Checkbox, CheckboxGroup } from "@workerstack/ui/checkbox";
-import { Field, FieldLabel } from "@workerstack/ui/field";
+import { Checkbox, CheckboxGroup, CheckboxGroupView, CheckboxView } from "@workerstack/ui/checkbox";
+import { Field, FieldError, FieldLabel } from "@workerstack/ui/field";
 import { For } from "solid-js";
 
 import { useLog } from "../log.tsx";
 import { Example, Section } from "../section.tsx";
+import { RequiredForm } from "./required-form.tsx";
 import { ControlStates } from "./states.tsx";
 
 const TOPPINGS = [
@@ -32,6 +33,75 @@ function Single(): JSX.Element {
 
 function States(): JSX.Element {
   return <ControlStates control={(state) => <Checkbox defaultChecked readOnly={state === "read-only"} />} />;
+}
+
+function ToppingBoxes(): JSX.Element {
+  return (
+    <For each={TOPPINGS}>
+      {(topping) => (
+        <label class="flex items-center gap-2 text-sm">
+          <Checkbox value={topping.value} />
+          {topping.label}
+        </label>
+      )}
+    </For>
+  );
+}
+
+function Required(): JSX.Element {
+  return (
+    <RequiredForm>
+      <Field name="agree" required>
+        <FieldLabel>I agree</FieldLabel>
+        <Checkbox required />
+        <FieldError />
+      </Field>
+      <Field name="toppings" required>
+        <FieldLabel>Pick a topping</FieldLabel>
+        <CheckboxGroup required>
+          <For each={TOPPINGS}>
+            {(topping) => (
+              <label class="flex items-center gap-2 text-sm">
+                <Checkbox value={topping.value} />
+                {topping.label}
+              </label>
+            )}
+          </For>
+        </CheckboxGroup>
+        <FieldError />
+      </Field>
+    </RequiredForm>
+  );
+}
+
+function GroupReadOnly(): JSX.Element {
+  return (
+    <Example align="start" label="Read-only group">
+      <CheckboxGroup aria-label="Toppings" defaultValue={["ham", "olive"]} readOnly>
+        <ToppingBoxes />
+      </CheckboxGroup>
+    </Example>
+  );
+}
+
+function Views(): JSX.Element {
+  return (
+    <Example align="start" label="Views">
+      <Field>
+        <FieldLabel>Terms</FieldLabel>
+        <CheckboxView value />
+      </Field>
+      <Field>
+        <FieldLabel>Newsletter</FieldLabel>
+        <CheckboxView value={false} />
+      </Field>
+      <CheckboxGroupView
+        legend={<span class="text-sm font-medium">Toppings</span>}
+        items={TOPPINGS}
+        value={["ham", "olive"]}
+      />
+    </Example>
+  );
 }
 
 function Toppings(): JSX.Element {
@@ -73,6 +143,9 @@ export function Checkboxes(): JSX.Element {
       <Single />
       <States />
       <Toppings />
+      <Required />
+      <GroupReadOnly />
+      <Views />
     </Section>
   );
 }

@@ -18,3 +18,19 @@ export function TextInputFixture(): JSX.Element {
     </div>
   );
 }
+
+/** An uncontrolled TextInput, read-only and editable, with default values, inside a form. */
+export function DefaultsForm(): JSX.Element {
+  return (
+    <form>
+      <Field name="company">
+        <FieldLabel>Company</FieldLabel>
+        <TextInput readonly defaultValue="Analytical Engines Ltd" />
+      </Field>
+      <Field name="team">
+        <FieldLabel>Team</FieldLabel>
+        <TextInput defaultValue="Research" />
+      </Field>
+    </form>
+  );
+}

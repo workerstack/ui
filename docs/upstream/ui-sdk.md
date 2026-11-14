@@ -14,6 +14,12 @@ Version: `0.1.0-beta.2` unless noted. Source locations are in the published `dis
 | [UISDK-6](#uisdk-6) | Open Dialog's server HTML has no `aria-describedby` | core: dialog | Medium: a11y before hydration | open | — |
 | [UISDK-7](#uisdk-7) | InputClear is missing from the server HTML of a filled InputGroup, and appears on hydration | core: input | Low: layout shift | open | — |
 | [UISDK-8](#uisdk-8) | Combobox create option treats `minLength: 0` as 1, so it can't be offered with no text | core: combobox | Low: no way to start "create new…" from an empty box | open | — |
+| [UISDK-9](#uisdk-9) | Open Popover's server HTML names it by its trigger, not its title | core: popover | Medium: a11y name changes on hydration | open | — |
+| [UISDK-10](#uisdk-10) | FieldSet's `aria-describedby` and `aria-labelledby` appear only after mount | core: field | Medium: a11y before hydration | open | — |
+| [UISDK-11](#uisdk-11) | FieldError leaves at once when the field turns valid, with no ending style | core: field | Low: no exit animation | open | — |
+| [UISDK-12](#uisdk-12) | A read-only Select still opens on a click and on keys | core: select | Medium: read-only control looks editable | open | — |
+| [UISDK-13](#uisdk-13) | Input ignores a fill that sends only `change` (no `input`) | core: input | Medium: autofilled value never reaches state or validity | open | — |
+| [UISDK-14](#uisdk-14) | Menu has no public call to highlight an item | core: menu | Low: feature request | open | — |
 
 ---
 
@@ -121,6 +127,51 @@ Version: `0.1.0-beta.2` unless noted. Source locations are in the published `dis
 - **Where:** `@ui-sdk/core/dist/foundation/popups/popup-slots.js:149-153`. `popupTitle` sets the `titled` flag only in `bind` (`flagWhileBound(store, "titled", { now: true })`), which runs after mount. Same root cause as UISDK-6.
 - **Fix idea:** mark `titled` and `described` while rendering, when the title and description parts render (server-safe, see UISDK-1).
 - **Pinned by:** `packages/core/src/popover/popover.server.test.tsx` ("names an open popover by its title in the HTML").
+
+## UISDK-10
+
+**A FieldSet's `aria-describedby` and `aria-labelledby` appear only after mount.**
+
+- **Repro:** `<FieldSet><FieldSetLegend/><FieldSetDescription/>…</FieldSet>` rendered on the server. The `<fieldset>` has no `aria-describedby`, so the group is not tied to its description until scripts run.
+- **Where:** `@ui-sdk/core/dist/components/field/field-set.js:40-62`. Legends and descriptions add their ids in `register`, inside a `queueMicrotask` after they bind. The set's attrs (lines 71-72) read those lists, which are empty while rendering.
+- **Fix idea:** register the part ids while rendering (server-safe, see UISDK-1), and keep the microtask only for parts that bind late.
+- **Pinned by:** `packages/core/src/field/fieldset.server.test.tsx` ("describes the group by its description in the HTML").
+
+## UISDK-11
+
+**A FieldError leaves the page at once when the field turns valid.**
+
+- **Repro:** a Field with a FieldError shown after a failed check. Fix the value. The error is removed in the same frame, and it never gets `data-ending-style`, so a closing transition cannot run. Opening does get `data-starting-style`.
+- **Where:** `@ui-sdk/core/dist/components/field/field.js:375`. The error's `present` is `errorShown(…)` only, with no exit phase like the popups have.
+- **Fix idea:** give the error part the same presence lifecycle as popups: keep it mounted with `data-ending-style` until its transitions end.
+- **Pinned by:** `packages/core/src/field/field-motion.browser.test.tsx` ("FieldError animates out when the field turns valid").
+
+## UISDK-12
+
+**A read-only Select still opens on a click and on keys.**
+
+- **Repro:** `<Select readOnly defaultValue="admin">…`. Click the trigger or press ArrowDown. The list opens. `readOnly` keeps the value from changing, but an open list tells the user they can pick.
+- **Where:** `@ui-sdk/core/dist/components/select/select-api.js:204-214`. `open()` returns early for `isDisabled(…)` only. Value changes check `state.readOnly` (lines 270, 283, 289), but opening does not.
+- **Fix idea:** return early in `open()` when `state.readOnly` too, like a native `<select>` with `aria-readonly`. Our Select holds the list closed until then.
+- **Pinned by:** `packages/core/src/select/select.test.tsx` ("UI SDK's read-only Select does not open on a click").
+
+## UISDK-13
+
+**Input ignores a fill that sends only `change`.**
+
+- **Repro:** some password managers and engines fill a text box and dispatch only `change`, with no `input`. UI SDK's Input (`@ui-sdk/core/dist/components/input/input.js`) hears typing only through `input`, so the filled value never reaches `onValueChange`, the group's `filled` state or the Field's validity.
+- **Fix idea:** on `change`, if the value differs from the last value seen through `input`, treat it as an input.
+- **Workaround:** `packages/core/src/input/input-autofill.ts` sends the missing `input` (as `insertReplacementText`).
+- **Pinned by:** `packages/core/src/input/input.autofill.browser.test.tsx`. It tests our relay, so it passes. It is not an `it.fails`: there is no way to make UI SDK alone pass it from our side.
+
+## UISDK-14
+
+**Menu has no public call to highlight an item.** (Feature request.)
+
+- **Need:** a filter box in a menu should highlight the first match, so Enter runs it. The menu API has `highlight(key)`, but only under `internal` (`@ui-sdk/core/dist/components/menu/menu-api.js:268`, `:426`).
+- **Fix idea:** expose `highlight(key)` (or `highlightFirst()`) on the menu API and through Solid's menu context.
+- **Workaround:** `packages/core/src/menu/wire-filter-input.ts` sends the menu a synthetic `Home` keydown, which highlights its first item.
+- **Pinned by:** no test; this is a missing feature, not a wrong one.
 
 ---
 

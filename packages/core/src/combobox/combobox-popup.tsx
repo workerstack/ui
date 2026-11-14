@@ -14,9 +14,10 @@ import {
 import { omit, onSettled, type ComponentProps } from "solid-js";
 
 import { cnState } from "../cn/index.ts";
-import { optionRow, popupMotion, withAfter } from "../internal/index.ts";
+import { optionRow, popupMotion, withAfter, withBefore } from "../internal/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 import { isText, useComboboxContext } from "./combobox-context.ts";
+import { ComboboxColorDot } from "./combobox-dot.tsx";
 
 /** UI SDK's combobox content props. */
 export type ComboboxContentProps = ComponentProps<typeof ComboboxContentPart>;
@@ -71,8 +72,9 @@ function labelOf<T>(props: ComboboxItemProps<T>): string | undefined {
 }
 
 /**
- * An option. Shows a check while it is selected. Give it a `label` when its content is not plain
- * text: the input shows the label once the item is chosen, and the create row compares it.
+ * An option. Shows a check while it is selected, and a dot first when the item has a color. Give it
+ * a `label` when its content is not plain text: the input shows the label once the item is chosen,
+ * and the create row compares it.
  */
 export function ComboboxItem<T = string>(props: ComboboxItemProps<T>): JSX.Element {
   const rest = omit(props, "class", "children");
@@ -86,9 +88,12 @@ export function ComboboxItem<T = string>(props: ComboboxItemProps<T>): JSX.Eleme
 
   return (
     <ComboboxItemPart<T> {...rest} class={cnState(optionRow, props.class)}>
-      {withAfter(
-        props.children,
-        <ComboboxItemIndicator class="absolute right-2 flex size-4 items-center justify-center" />,
+      {withBefore(
+        <ComboboxColorDot value={props.value} />,
+        withAfter(
+          props.children,
+          <ComboboxItemIndicator class="absolute right-2 flex size-4 items-center justify-center" />,
+        ),
       )}
     </ComboboxItemPart>
   );

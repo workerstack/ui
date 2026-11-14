@@ -144,6 +144,11 @@
       "solid": "./dist/toast/index.js",
       "default": "./dist/toast/index.js"
     },
+    "./view": {
+      "types": "./dist/view/index.d.ts",
+      "solid": "./dist/view/index.js",
+      "default": "./dist/view/index.js"
+    },
     "./theme.css": "./dist/theme.css",
     "./package.json": "./package.json"
   },

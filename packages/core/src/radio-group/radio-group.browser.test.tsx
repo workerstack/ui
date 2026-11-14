@@ -2,7 +2,8 @@ import { cleanup, render } from "@solidjs/testing-library";
 import { afterEach, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { part, rect, style, token } from "../test/browser.ts";
+import { NO_RING, part, rect, style, token } from "../test/browser.ts";
+import { required } from "../test/required.ts";
 import { PlanGroup, type PlanGroupProps } from "./__fixtures__/plan-group.fixture.tsx";
 
 afterEach(cleanup);
@@ -132,4 +133,13 @@ it("RadioGroup takes one Tab to enter and one to leave", async () => {
   await userEvent.tab();
   expect(document.activeElement).not.toBe(radio("Free").element());
   expect(document.activeElement).not.toBe(radio("Team").element());
+});
+
+it("RadioGroup read-only keeps its look with a default cursor and no resting shadow", () => {
+  render(() => <PlanGroup readOnly defaultValue="pro" />);
+  const el = radio("Pro").element();
+  expect(style(el).cursor).toBe("default");
+  expect(style(el).boxShadow).toMatch(NO_RING);
+  expect(style(el).borderTopColor).toBe(token("--ui-primary"));
+  expect(style(required(el.closest("label"), "the radio's label")).cursor).toBe("default");
 });

@@ -61,3 +61,18 @@ export function SelectOpenFixture() {
     </Select>
   )
 }
+
+/** A read-only Select: its value shows, and it opens nothing. */
+export function SelectReadOnlyFixture() {
+  return (
+    <Field>
+      <FieldLabel>Role</FieldLabel>
+      <Select items={roles} defaultValue="editor" readOnly>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent />
+      </Select>
+    </Field>
+  )
+}

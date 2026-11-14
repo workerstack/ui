@@ -18,6 +18,7 @@ import { createSignal, For } from "solid-js";
 
 import { useLog } from "../log.tsx";
 import { Example, Section } from "../section.tsx";
+import { ReadOnlyAndView, StartAndColor } from "./comboboxes-more.tsx";
 
 const FRUITS: ListItem[] = [
   { label: "Apple", value: "apple" },
@@ -163,6 +164,8 @@ export function Comboboxes(): JSX.Element {
       <States />
       <Multiple />
       <Create />
+      <StartAndColor />
+      <ReadOnlyAndView />
     </Section>
   );
 }

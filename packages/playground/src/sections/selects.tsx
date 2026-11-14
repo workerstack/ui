@@ -9,6 +9,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
+  SelectView,
 } from "@workerstack/ui/select";
 import { For } from "solid-js";
 
@@ -103,12 +104,58 @@ function Groups(): JSX.Element {
   );
 }
 
-/** Items as children, items as data, groups, and disabled. */
+function ReadOnlyAndView(): JSX.Element {
+  return (
+    <>
+      <div class="w-56">
+        <Field>
+          <FieldLabel>Read-only</FieldLabel>
+          <Select items={ROLES} defaultValue="admin" readOnly>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+          </Select>
+        </Field>
+      </div>
+      <div class="w-56">
+        <Field>
+          <FieldLabel>View</FieldLabel>
+          <SelectView items={ROLES} value="admin" />
+        </Field>
+      </div>
+    </>
+  );
+}
+
+function SizeAndReadOnly(): JSX.Element {
+  return (
+    <Example align="start" label="Small, read-only, view">
+      <div class="w-56">
+        <Field>
+          <FieldLabel>Small</FieldLabel>
+          <Select items={ROLES} defaultValue="editor">
+            <SelectTrigger size="sm">
+              <SelectValue />
+            </SelectTrigger>
+          </Select>
+        </Field>
+      </div>
+      <ReadOnlyAndView />
+    </Example>
+  );
+}
+
+/** Items as children, items as data, groups, sizes, read-only and view. */
 export function Selects(): JSX.Element {
   return (
-    <Section id="select" title="Select" description="Items as children, items as data, groups, and disabled.">
+    <Section
+      id="select"
+      title="Select"
+      description="Items as children, items as data, groups, sizes, read-only and view."
+    >
       <Children />
       <Groups />
+      <SizeAndReadOnly />
     </Section>
   );
 }

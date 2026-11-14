@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
 import { Field, FieldDescription, FieldLabel } from "@workerstack/ui/field";
-import { TextInput } from "@workerstack/ui/text-input";
+import { TextInput, TextInputView } from "@workerstack/ui/text-input";
 
 import { useLog } from "../log.tsx";
 import { Example, Section } from "../section.tsx";
@@ -28,12 +28,32 @@ function States(): JSX.Element {
   );
 }
 
+function Views(): JSX.Element {
+  return (
+    <Example align="start" label="View">
+      <div class="w-72">
+        <Field>
+          <FieldLabel>Name</FieldLabel>
+          <TextInputView value="Ada Lovelace" />
+        </Field>
+      </div>
+      <div class="w-72">
+        <Field>
+          <FieldLabel>Empty</FieldLabel>
+          <TextInputView value={null} />
+        </Field>
+      </div>
+    </Example>
+  );
+}
+
 /** A line of plain text, cleaned when you leave the box. */
 export function TextInputs(): JSX.Element {
   return (
     <Section id="text-input" title="Text input" description="A line of plain text, cleaned when you leave the box.">
       <Plain />
       <States />
+      <Views />
     </Section>
   );
 }

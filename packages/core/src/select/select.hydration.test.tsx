@@ -8,6 +8,7 @@ import {
   SelectItemsContentFixture,
   SelectItemsFixture,
   SelectOpenFixture,
+  SelectReadOnlyFixture,
 } from "./__fixtures__/select.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/select.hydration.fixture.tsx", import.meta.url), {
@@ -15,6 +16,7 @@ const hydrate = hydrator(new URL("./__fixtures__/select.hydration.fixture.tsx", 
   SelectItemsContentFixture,
   SelectItemsFixture,
   SelectOpenFixture,
+  SelectReadOnlyFixture,
 });
 
 const CLIENT_SIDE: Parameters<typeof mismatch>[1] = ["warnings", "replaced", "added"];
@@ -96,4 +98,12 @@ it("hydrating Select makes an open select one open popup whose items work", asyn
   expect(listboxes()).toHaveLength(1);
   await userEvent.click(page.getByRole("option", { name: "Viewer" }));
   await expect.element(page.getByRole("combobox", ROLE)).toHaveTextContent("Viewer");
+});
+
+it("hydrating a read-only Select claims the server's nodes and stays closed on click", async () => {
+  const hydrated = await hydrate("SelectReadOnlyFixture");
+  expect(mismatch(hydrated, CLIENT_SIDE)).toStrictEqual({});
+  await expect.element(page.getByRole("combobox", ROLE)).toHaveTextContent("Editor");
+  await userEvent.click(page.getByRole("combobox", ROLE));
+  expect(visible(listboxes())).toHaveLength(0);
 });

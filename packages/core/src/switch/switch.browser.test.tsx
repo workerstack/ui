@@ -2,7 +2,7 @@ import { cleanup, render } from "@solidjs/testing-library";
 import { afterEach, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { part, rect, settled, style, token } from "../test/browser.ts";
+import { NO_RING, part, rect, settled, style, token } from "../test/browser.ts";
 import { NotifySwitch, type NotifySwitchProps } from "./__fixtures__/notify-switch.fixture.tsx";
 
 afterEach(cleanup);
@@ -88,5 +88,32 @@ it("Switch dims while disabled and does not toggle on click", async () => {
   expect(style(track).opacity).toBe("0.5");
   expect(style(track).cursor).toBe("not-allowed");
   await userEvent.click(control(), { force: true });
+  expect(onCheckedChange).not.toHaveBeenCalled();
+});
+
+it("Switch sm is 0.875rem by 1.5rem with a 0.75rem thumb at each end", async () => {
+  render(() => <NotifySwitch size="sm" defaultChecked />);
+  await expect.element(control()).toBeVisible();
+  const track = control().element();
+  const thumb = part(track, "switch-thumb");
+  const rem = Number.parseFloat(style(document.documentElement).fontSize);
+  await settled(track);
+  expect(rect(track).height).toBeCloseTo(rem * 0.875, 0);
+  expect(rect(track).width).toBeCloseTo(rem * 1.5, 0);
+  expect(rect(thumb).width).toBeCloseTo(rem * 0.75, 0);
+  expect(rect(track).right - rect(thumb).right).toBeLessThanOrEqual(EDGE);
+  await userEvent.click(control());
+  await settled(track);
+  expect(rect(thumb).left - rect(track).left).toBeLessThanOrEqual(EDGE);
+});
+
+it("Switch read-only keeps its look with a default cursor and no resting shadow, and does not toggle", async () => {
+  const onCheckedChange = vi.fn<NonNullable<NotifySwitchProps["onCheckedChange"]>>();
+  render(() => <NotifySwitch readOnly defaultChecked onCheckedChange={onCheckedChange} />);
+  const track = control().element();
+  expect(style(track).cursor).toBe("default");
+  expect(style(track).boxShadow).toMatch(NO_RING);
+  expect(style(track).backgroundColor).toBe(token("--ui-primary"));
+  await userEvent.click(control());
   expect(onCheckedChange).not.toHaveBeenCalled();
 });

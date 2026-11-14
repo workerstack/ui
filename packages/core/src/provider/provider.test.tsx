@@ -1,11 +1,11 @@
-import { cleanup, render, screen } from "@solidjs/testing-library";
+import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
 import { createSignal, flush } from "solid-js";
 import { afterEach, expect, it } from "vitest";
 
 import { formatLocale, regionOfTimeZone } from "../locale/index.ts";
 import { mounted } from "../test/dom.ts";
 import { required } from "../test/required.ts";
-import { ComboboxMessagesProbe, ProviderProbe } from "./__fixtures__/provider.fixture.tsx";
+import { ComboboxMessagesProbe, ProviderProbe, ValidityMessagesProbe } from "./__fixtures__/provider.fixture.tsx";
 import { type UiMessages, UiProvider } from "./index.ts";
 
 afterEach(cleanup);
@@ -125,4 +125,41 @@ it("UiProvider refines a resolution without a preference to the browser time zon
   await mounted();
   flush();
   expect(screen.getByTestId("locale").textContent).toBe(formatLocale({ language: "en", region }));
+});
+
+it("UiProvider relabels a plain and a function validity string, and falls back to English", () => {
+  const [messages, setMessages] = createSignal<Partial<UiMessages>>({});
+  render(() => (
+    <UiProvider messages={messages()}>
+      <ValidityMessagesProbe />
+    </UiProvider>
+  ));
+  expect(screen.getByTestId("required-field").textContent).toBe("This is required.");
+  expect(screen.getByTestId("too-long").textContent).toBe("12 of 10 characters: shorten it.");
+  setMessages({ requiredField: "Obavezno.", textTooLong: (length, max) => `${length}/${max}: skrati.` });
+  flush();
+  expect(screen.getByTestId("required-field").textContent).toBe("Obavezno.");
+  expect(screen.getByTestId("too-long").textContent).toBe("12/10: skrati.");
+});
+
+it("UiProvider flips html data-focus-source on a key press and a pointer press, and clears it on dispose", async () => {
+  const view = render(() => (
+    <UiProvider>
+      <ProviderProbe />
+    </UiProvider>
+  ));
+
+  await mounted();
+  flush();
+  fireEvent.keyDown(document.body, { key: "Tab" });
+  expect(document.documentElement.dataset["focusSource"]).toBe("keyboard");
+  fireEvent.pointerDown(document.body);
+  expect(document.documentElement.dataset["focusSource"]).toBe("pointer");
+  fireEvent.keyDown(document.body, { key: "a" });
+  expect(document.documentElement.dataset["focusSource"]).toBe("keyboard");
+  view.unmount();
+  flush();
+  expect(document.documentElement.dataset["focusSource"]).toBeUndefined();
+  fireEvent.pointerDown(document.body);
+  expect(document.documentElement.dataset["focusSource"]).toBeUndefined();
 });

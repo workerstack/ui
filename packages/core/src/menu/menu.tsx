@@ -1,25 +1,20 @@
 import type { JSX } from "@solidjs/web";
 import {
   Menu as MenuPart,
-  MenuCheckboxItem as MenuCheckboxItemPart,
   MenuContent as MenuContentPart,
-  MenuGroup as MenuGroupPart,
-  MenuGroupLabel as MenuGroupLabelPart,
-  MenuItem as MenuItemPart,
-  MenuItemIndicator,
-  MenuRadioGroup as MenuRadioGroupPart,
-  MenuRadioItem as MenuRadioItemPart,
+  type MenuContentState,
   MenuSeparator as MenuSeparatorPart,
   MenuShortcut as MenuShortcutPart,
   MenuSub as MenuSubPart,
   MenuSubContent as MenuSubContentPart,
-  MenuSubTrigger as MenuSubTriggerPart,
   MenuTrigger as MenuTriggerPart,
 } from "@ui-sdk/solid/menu";
 import { omit, type ComponentProps } from "solid-js";
 
 import { cnState } from "../cn/index.ts";
-import { popupMotion, withBefore } from "../internal/index.ts";
+import { isStateFunction, popupMotion } from "../internal/index.ts";
+import { createFilterState, FILTER_CONTEXT } from "./menu-filter-state.ts";
+import { CONTENT } from "./menu.constants.ts";
 
 /** A dropdown menu of actions. Holds state; renders no element. `onAction` hears every chosen item. */
 export { MenuPart as Menu };
@@ -34,114 +29,31 @@ export function MenuTrigger(props: MenuTriggerProps): JSX.Element {
   return <MenuTriggerPart {...props} />;
 }
 
-const content = [
-  "z-50 max-h-(--available-height) min-w-32 overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1",
-  "text-popover-foreground shadow-popup outline-none",
-  popupMotion,
-];
-
 /** UI SDK's menu content props. */
 export type MenuContentProps = ComponentProps<typeof MenuContentPart>;
 
-/** The popup with the items. */
+// One filter state for each time the popup shows, so a reopened menu starts with no query.
+function FilterScope(props: { children?: JSX.Element }): JSX.Element {
+  const state = createFilterState();
+
+  return <FILTER_CONTEXT value={state}>{props.children}</FILTER_CONTEXT>;
+}
+
+// The children are read inside the scope, so the items they make find its state.
+function scoped(props: MenuContentProps): (state: MenuContentState) => JSX.Element {
+  return (state) => (
+    <FilterScope>{isStateFunction(props.children) ? props.children(state) : props.children}</FilterScope>
+  );
+}
+
+/** The popup with the items. It holds the filter that a MenuFilter, a MenuList and a MenuEmpty share. */
 export function MenuContent(props: MenuContentProps): JSX.Element {
-  const rest = omit(props, "class");
-
-  return <MenuContentPart {...rest} class={cnState(content, props.class)} />;
-}
-
-const ITEM = [
-  "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none",
-  "data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-accent",
-  "data-highlighted:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
-  "[&_svg:not([class*='size-'])]:size-4",
-];
-
-/** UI SDK's menu item props, plus a destructive variant. */
-export type MenuItemProps = ComponentProps<typeof MenuItemPart> & {
-  /** Red, for actions that delete or can't be undone. */
-  variant?: "default" | "destructive";
-};
-
-/** An action. `value` names it in `onAction`; `shortcut` (like "mod+k") shows and binds its keys. */
-export function MenuItem(props: MenuItemProps): JSX.Element {
-  const rest = omit(props, "class", "variant");
+  const rest = omit(props, "children", "class");
 
   return (
-    <MenuItemPart
-      {...rest}
-      data-variant={props.variant ?? "default"}
-      class={cnState(
-        [
-          ITEM,
-          "data-[variant=destructive]:text-destructive",
-          "data-[variant=destructive]:data-highlighted:bg-destructive/10",
-          "data-[variant=destructive]:data-highlighted:text-destructive",
-        ],
-        props.class,
-      )}
-    />
-  );
-}
-
-const INDICATOR = "pointer-events-none absolute left-2 flex size-3.5 items-center justify-center";
-
-/** UI SDK's checkbox item props: `checked`, `onCheckedChange`. */
-export type MenuCheckboxItemProps = ComponentProps<typeof MenuCheckboxItemPart>;
-
-/** A setting that toggles on and off. Shows a check while on; the menu stays open. */
-export function MenuCheckboxItem(props: MenuCheckboxItemProps): JSX.Element {
-  const rest = omit(props, "class", "children");
-
-  return (
-    <MenuCheckboxItemPart {...rest} class={cnState([ITEM, "pl-8"], props.class)}>
-      {withBefore(<MenuItemIndicator class={INDICATOR} />, props.children)}
-    </MenuCheckboxItemPart>
-  );
-}
-
-/** UI SDK's radio group props: `value`, `onValueChange`. */
-export type MenuRadioGroupProps = ComponentProps<typeof MenuRadioGroupPart>;
-
-/** Radio items, one of which is chosen. */
-export function MenuRadioGroup(props: MenuRadioGroupProps): JSX.Element {
-  return <MenuRadioGroupPart {...props} />;
-}
-
-/** UI SDK's radio item props. */
-export type MenuRadioItemProps = ComponentProps<typeof MenuRadioItemPart>;
-
-/** One choice in a MenuRadioGroup. Shows a check while chosen. */
-export function MenuRadioItem(props: MenuRadioItemProps): JSX.Element {
-  const rest = omit(props, "class", "children");
-
-  return (
-    <MenuRadioItemPart {...rest} class={cnState([ITEM, "pl-8"], props.class)}>
-      {withBefore(<MenuItemIndicator class={INDICATOR} />, props.children)}
-    </MenuRadioItemPart>
-  );
-}
-
-/** UI SDK's menu group props. */
-export type MenuGroupProps = ComponentProps<typeof MenuGroupPart>;
-
-/** Groups related items, named by a MenuGroupLabel. */
-export function MenuGroup(props: MenuGroupProps): JSX.Element {
-  return <MenuGroupPart {...props} />;
-}
-
-/** UI SDK's menu group label props. */
-export type MenuGroupLabelProps = ComponentProps<typeof MenuGroupLabelPart>;
-
-/** A muted heading for a MenuGroup. */
-export function MenuGroupLabel(props: MenuGroupLabelProps): JSX.Element {
-  const rest = omit(props, "class");
-
-  return (
-    <MenuGroupLabelPart
-      {...rest}
-      class={cnState("px-2 py-1.5 text-xs font-medium text-muted-foreground", props.class)}
-    />
+    <MenuContentPart {...rest} class={cnState([CONTENT, popupMotion], props.class)}>
+      {scoped(props)}
+    </MenuContentPart>
   );
 }
 
@@ -158,42 +70,25 @@ export function MenuSeparator(props: MenuSeparatorProps): JSX.Element {
 /** UI SDK's menu shortcut props. */
 export type MenuShortcutProps = ComponentProps<typeof MenuShortcutPart>;
 
-/** Keys shown at the end of an item. A MenuItem's `shortcut` adds one for you. */
-export function MenuShortcut(props: MenuShortcutProps): JSX.Element {
-  const rest = omit(props, "class");
-
-  return (
-    <MenuShortcutPart
-      {...rest}
-      class={cnState("ml-auto pl-4 text-xs tracking-widest text-muted-foreground", props.class)}
-    />
-  );
-}
+/**
+ * Keys shown at the end of an item. A MenuItem's `shortcut` adds one for you. The item styles it,
+ * muted until the item is highlighted, then in the foreground.
+ */
+export { MenuShortcutPart as MenuShortcut };
 
 /** A nested menu: a MenuSubTrigger and a MenuSubContent. */
 export { MenuSubPart as MenuSub };
 
-/** UI SDK's submenu trigger props. */
-export type MenuSubTriggerProps = ComponentProps<typeof MenuSubTriggerPart>;
-
-/** The item that opens a submenu. UI SDK draws a chevron after its content. */
-export function MenuSubTrigger(props: MenuSubTriggerProps): JSX.Element {
-  const rest = omit(props, "class");
-
-  return (
-    <MenuSubTriggerPart
-      {...rest}
-      class={cnState([ITEM, "data-open:bg-accent data-open:text-accent-foreground"], props.class)}
-    />
-  );
-}
-
 /** UI SDK's submenu content props. */
 export type MenuSubContentProps = ComponentProps<typeof MenuSubContentPart>;
 
-/** The submenu's popup, styled like MenuContent. */
+/** The submenu's popup, styled like MenuContent. It filters on its own query. */
 export function MenuSubContent(props: MenuSubContentProps): JSX.Element {
-  const rest = omit(props, "class");
+  const rest = omit(props, "children", "class");
 
-  return <MenuSubContentPart {...rest} class={cnState(content, props.class)} />;
+  return (
+    <MenuSubContentPart {...rest} class={cnState([CONTENT, popupMotion], props.class)}>
+      {scoped(props)}
+    </MenuSubContentPart>
+  );
 }

@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 
-import { Field, FieldLabel } from "../../field/index.ts";
-import { Checkbox } from "../index.ts";
+import { Field, FieldLabel, FieldsetLegend } from "../../field/index.ts";
+import { Checkbox, CheckboxGroupView, CheckboxView } from "../index.ts";
 
 /** An unchecked checkbox in a Field, with an output that shows its state. */
 export function CheckboxFixture() {
@@ -25,5 +25,18 @@ export function CheckedCheckboxFixture() {
       <FieldLabel>Accept terms</FieldLabel>
       <Checkbox defaultChecked />
     </Field>
+  );
+}
+
+/** The read-only views of a checkbox and of a checkbox group under a legend. */
+export function CheckboxViewFixture() {
+  return (
+    <div>
+      <Field>
+        <FieldLabel>Accepted</FieldLabel>
+        <CheckboxView value />
+      </Field>
+      <CheckboxGroupView items={["Email", "SMS"]} value={["SMS", "Email"]} legend={<FieldsetLegend>Notify by</FieldsetLegend>} />
+    </div>
   );
 }

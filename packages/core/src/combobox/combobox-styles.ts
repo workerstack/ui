@@ -6,6 +6,8 @@ export const CONTROL: string[] = [
   ...fieldBox,
   "gap-1 pr-1.5 pl-3 outline-none delay-0 has-[input[aria-invalid=true]]:ring-destructive/20",
   "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50",
+  // Read-only shows the value, not a box to type in: no border or fill, the same size.
+  "data-readonly:border-transparent data-readonly:bg-transparent data-readonly:shadow-none",
 ];
 
 // The input inside the box: bare, so the box draws the border and the focus ring.

@@ -58,6 +58,8 @@ export function ComboboxTrigger(props: ComboboxTriggerProps): JSX.Element {
 export type ComboboxInputProps = Omit<ComponentProps<typeof ComboboxInputPart>, "class"> & {
   /** Classes for the box. */
   class?: string;
+  /** Content before the text, such as an icon or a flag. It does not take pointer events. */
+  start?: JSX.Element;
   /**
    * Shows an × that empties the text and the value, while there is something to clear.
    * @default false
@@ -71,21 +73,45 @@ export type ComboboxInputProps = Omit<ComponentProps<typeof ComboboxInputPart>, 
   showTrigger?: boolean;
 };
 
+// The element before the text; nothing without one.
+function ComboboxStart(props: { children?: JSX.Element }): JSX.Element {
+  return (
+    <Show when={props.children}>
+      {(start) => (
+        <span data-slot="combobox-start" class="pointer-events-none flex shrink-0 items-center text-muted-foreground">
+          {start()}
+        </span>
+      )}
+    </Show>
+  );
+}
+
 /**
- * The text box. It draws like an Input, with an optional clear button and a chevron inside, and
- * inside a Field it takes the field's label and validation.
+ * The text box. It draws like an Input, with an optional `start` element, clear button and chevron
+ * inside, and inside a Field it takes the field's label and validation. In a read-only Combobox it
+ * shows the value alone, as a read-only Input does: no border, placeholder, clear button or chevron.
  */
 export function ComboboxInput(props: ComboboxInputProps): JSX.Element {
-  const rest = omit(props, "class", "showClear", "showTrigger");
+  const rest = omit(props, "class", "placeholder", "showClear", "showTrigger", "start");
   const combobox = useComboboxContext();
 
   return (
-    <div data-slot="combobox-group" ref={combobox.setGroup} class={cn(CONTROL, props.class)}>
-      <ComboboxInputPart {...rest} class={cn(BARE_INPUT)} />
-      <Show when={props.showClear === true}>
+    <div
+      data-slot="combobox-group"
+      data-readonly={combobox.readOnly() ? "" : undefined}
+      ref={combobox.setGroup}
+      class={cn(CONTROL, props.class)}
+    >
+      <ComboboxStart>{props.start}</ComboboxStart>
+      <ComboboxInputPart
+        {...rest}
+        placeholder={combobox.readOnly() ? undefined : props.placeholder}
+        class={cn(BARE_INPUT)}
+      />
+      <Show when={props.showClear === true && !combobox.readOnly()}>
         <ComboboxClear />
       </Show>
-      <Show when={props.showTrigger !== false}>
+      <Show when={props.showTrigger !== false && !combobox.readOnly()}>
         <ComboboxTrigger />
       </Show>
     </div>
