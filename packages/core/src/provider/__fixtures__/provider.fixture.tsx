@@ -13,3 +13,15 @@ export function ProviderProbe() {
     </output>
   );
 }
+
+/** Shows the strings a combobox reads: a plain one and one that takes the typed label. */
+export function ComboboxMessagesProbe() {
+  const messages = useUiMessages();
+
+  return (
+    <output>
+      <span data-testid="no-results">{messages.noResults}</span>
+      <span data-testid="create">{messages.comboboxCreate("Design")}</span>
+    </output>
+  );
+}

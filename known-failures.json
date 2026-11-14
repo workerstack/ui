@@ -1,4 +1,6 @@
 [
+  "packages/core/src/combobox/combobox-create.test.tsx > Combobox offers to create with no text when minLength is 0",
+  "packages/core/src/combobox/combobox.server.test.tsx > Combobox on the server renders without warnings",
   "packages/core/src/dialog/dialog.server.test.tsx > Dialog on the server describes an open dialog by its description in the HTML",
   "packages/core/src/field/field.server.test.tsx > Field on the server describes the control by a matched error in the HTML",
   "packages/core/src/field/field.server.test.tsx > Field on the server describes the control only by parts that are in the HTML",

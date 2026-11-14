@@ -3,6 +3,7 @@ import { Input as InputPart, InputClear as InputClearPart, InputGroup as InputGr
 import { omit, type ComponentProps } from "solid-js";
 
 import { cnState } from "../cn/index.ts";
+import { cleanOnBlur, fieldBox } from "../internal/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 
 const CONTROL = [
@@ -13,14 +14,30 @@ const CONTROL = [
   "aria-invalid:ring-destructive/20 md:text-sm",
 ];
 
-/** UI SDK's input props; `onValueChange` hears every edit. */
-export type InputProps = ComponentProps<typeof InputPart>;
+/** UI SDK's input props, plus `clean`; `onValueChange` hears every edit. */
+export type InputProps = Omit<ComponentProps<typeof InputPart>, "onBlur"> & {
+  /**
+   * The text as stored, applied when the person leaves the box (never while typing, so a trailing
+   * space can be typed and an input method's composition is left alone). When it changes the text,
+   * the input takes the cleaned text as an edit: `onValueChange` and `onChange` fire and a
+   * controlled value updates. A read-only input is left as it is.
+   */
+  clean?: (text: string) => string;
+  /** Runs when the input loses focus, after the text is cleaned. */
+  onBlur?: JSX.FocusEventHandler<HTMLInputElement, FocusEvent>;
+};
 
 /** A text input. Inside a Field it takes the field's label, description, name and validation. */
 export function Input(props: InputProps): JSX.Element {
-  const rest = omit(props, "class");
+  const rest = omit(props, "class", "clean", "onBlur");
 
-  return <InputPart {...rest} class={cnState(CONTROL, props.class)} />;
+  return (
+    <InputPart
+      {...rest}
+      onBlur={cleanOnBlur({ clean: (text) => props.clean?.(text) ?? text, onBlur: props.onBlur })}
+      class={cnState(CONTROL, props.class)}
+    />
+  );
 }
 
 /** UI SDK's input group props. */
@@ -35,12 +52,10 @@ export function InputGroup(props: InputGroupProps): JSX.Element {
       {...rest}
       class={cnState(
         [
-          "flex h-9 w-full min-w-0 items-center gap-2 rounded-md border border-input bg-transparent px-3 text-base",
-          "shadow-xs transition-[color,box-shadow] has-[input:focus-visible]:border-ring",
-          "has-[input:focus-visible]:ring-3 has-[input:focus-visible]:ring-ring/50",
-          "has-[input[aria-invalid=true]]:border-destructive md:text-sm [&>input]:h-full [&>input]:min-w-0",
-          "[&>input]:flex-1 [&>input]:border-0 [&>input]:bg-transparent [&>input]:p-0 [&>input]:shadow-none",
-          "[&>input]:ring-0 [&>span]:text-muted-foreground",
+          ...fieldBox,
+          "gap-2 px-3 [&>input]:h-full [&>input]:min-w-0 [&>input]:flex-1 [&>input]:border-0",
+          "[&>input]:bg-transparent [&>input]:p-0 [&>input]:shadow-none [&>input]:ring-0",
+          "[&>span]:text-muted-foreground",
         ],
         props.class,
       )}

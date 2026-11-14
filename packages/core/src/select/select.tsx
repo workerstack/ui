@@ -13,7 +13,7 @@ import {
 import { omit, type ComponentProps } from "solid-js";
 
 import { cnState } from "../cn/index.ts";
-import { popupMotion, withAfter } from "../internal/index.ts";
+import { optionRow, popupMotion, withAfter } from "../internal/index.ts";
 
 /** Picks one value (or several with `multiple`) from a list. Holds state; renders no element. */
 export { SelectPart as Select };
@@ -84,17 +84,7 @@ export function SelectItem(props: SelectItemProps): JSX.Element {
   const rest = omit(props, "class", "children");
 
   return (
-    <SelectItemPart
-      {...rest}
-      class={cnState(
-        [
-          "relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm",
-          "outline-none data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-accent",
-          "data-highlighted:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        ],
-        props.class,
-      )}
-    >
+    <SelectItemPart {...rest} class={cnState(optionRow, props.class)}>
       {withAfter(
         props.children,
         <SelectItemIndicator class="absolute right-2 flex size-4 items-center justify-center" />,

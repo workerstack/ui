@@ -76,6 +76,24 @@ function translated(source: { messages?: Partial<UiMessages> | undefined }): UiM
     get close() {
       return source.messages?.close ?? UI_MESSAGES_EN.close;
     },
+    get comboboxCreate() {
+      return source.messages?.comboboxCreate ?? UI_MESSAGES_EN.comboboxCreate;
+    },
+    get comboboxCreateEmpty() {
+      return source.messages?.comboboxCreateEmpty ?? UI_MESSAGES_EN.comboboxCreateEmpty;
+    },
+    get comboboxCreateExists() {
+      return source.messages?.comboboxCreateExists ?? UI_MESSAGES_EN.comboboxCreateExists;
+    },
+    get comboboxCreateNew() {
+      return source.messages?.comboboxCreateNew ?? UI_MESSAGES_EN.comboboxCreateNew;
+    },
+    get noResults() {
+      return source.messages?.noResults ?? UI_MESSAGES_EN.noResults;
+    },
+    get remove() {
+      return source.messages?.remove ?? UI_MESSAGES_EN.remove;
+    },
   };
 }
 

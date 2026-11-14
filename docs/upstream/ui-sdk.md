@@ -13,6 +13,7 @@ Version: `0.1.0-beta.2` unless noted. Source locations are in the published `dis
 | [UISDK-5](#uisdk-5) | FieldError with `match` isn't in the control's `aria-describedby` until mount | core: field | Medium: a11y before hydration | open | — |
 | [UISDK-6](#uisdk-6) | Open Dialog's server HTML has no `aria-describedby` | core: dialog | Medium: a11y before hydration | open | — |
 | [UISDK-7](#uisdk-7) | InputClear is missing from the server HTML of a filled InputGroup, and appears on hydration | core: input | Low: layout shift | open | — |
+| [UISDK-8](#uisdk-8) | Combobox create option treats `minLength: 0` as 1, so it can't be offered with no text | core: combobox | Low: no way to start "create new…" from an empty box | open | — |
 
 ---
 
@@ -33,7 +34,7 @@ Version: `0.1.0-beta.2` unless noted. Source locations are in the published `dis
   - the root inspects whether content was given (an explicit prop or slot);
   - the content part registers through a plain, non-reactive context object that the root reads after its children;
   - the root's default content checks a server-safe flag set synchronously before the `Show` reads it.
-- **Pinned by:** `packages/core/src/select/select.server.test.tsx` and `packages/core/src/menu/menu.server.test.tsx` ("renders without warnings").
+- **Pinned by:** `packages/core/src/select/select.server.test.tsx`, `packages/core/src/menu/menu.server.test.tsx` and `packages/core/src/combobox/combobox.server.test.tsx` ("renders without warnings").
 
 ## UISDK-2
 
@@ -100,6 +101,15 @@ Version: `0.1.0-beta.2` unless noted. Source locations are in the published `dis
 - **Pinned by:**
   - `packages/core/src/input/input.server.test.tsx` ("renders the clear button of a filled group");
   - `packages/core/src/input/input.hydration.test.tsx` ("adds nothing the server didn't render").
+
+## UISDK-8
+
+**The combobox create option reads `minLength={0}` as 1.**
+
+- **Repro:** `<ComboboxCreate minLength={0} onCreate={…} />` inside a Combobox with an empty box. No create row is offered. The prop is documented as the minimum text length, so 0 should offer the row with no text, for a flow that asks for the name itself ("Create new…").
+- **Where:** `@ui-sdk/core/dist/components/combobox/combobox-api.js:483`: `if (query.length < Math.max(1, props.minLength ?? 1))`. The `Math.max(1, …)` clamp makes 0 the same as 1. `@ui-sdk/solid/dist/combobox.js:211` passes the prop through unchanged.
+- **Fix idea:** drop the clamp and use `props.minLength ?? 1`, so 0 is honored and the default stays 1. Or document 1 as the lowest value and clamp the type.
+- **Pinned by:** `packages/core/src/combobox/combobox-create.test.tsx` ("offers to create with no text when minLength is 0").
 
 ---
 

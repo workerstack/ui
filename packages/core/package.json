@@ -74,6 +74,36 @@
       "solid": "./dist/menu/index.js",
       "default": "./dist/menu/index.js"
     },
+    "./text-input": {
+      "types": "./dist/text-input/index.d.ts",
+      "solid": "./dist/text-input/index.js",
+      "default": "./dist/text-input/index.js"
+    },
+    "./textarea": {
+      "types": "./dist/textarea/index.d.ts",
+      "solid": "./dist/textarea/index.js",
+      "default": "./dist/textarea/index.js"
+    },
+    "./checkbox": {
+      "types": "./dist/checkbox/index.d.ts",
+      "solid": "./dist/checkbox/index.js",
+      "default": "./dist/checkbox/index.js"
+    },
+    "./switch": {
+      "types": "./dist/switch/index.d.ts",
+      "solid": "./dist/switch/index.js",
+      "default": "./dist/switch/index.js"
+    },
+    "./radio-group": {
+      "types": "./dist/radio-group/index.d.ts",
+      "solid": "./dist/radio-group/index.js",
+      "default": "./dist/radio-group/index.js"
+    },
+    "./combobox": {
+      "types": "./dist/combobox/index.d.ts",
+      "solid": "./dist/combobox/index.js",
+      "default": "./dist/combobox/index.js"
+    },
     "./theme.css": "./dist/theme.css",
     "./package.json": "./package.json"
   },

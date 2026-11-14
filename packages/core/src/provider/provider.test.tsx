@@ -5,7 +5,7 @@ import { afterEach, expect, it } from "vitest";
 import { formatLocale, regionOfTimeZone } from "../locale/index.ts";
 import { mounted } from "../test/dom.ts";
 import { required } from "../test/required.ts";
-import { ProviderProbe } from "./__fixtures__/provider.fixture.tsx";
+import { ComboboxMessagesProbe, ProviderProbe } from "./__fixtures__/provider.fixture.tsx";
 import { type UiMessages, UiProvider } from "./index.ts";
 
 afterEach(cleanup);
@@ -18,6 +18,21 @@ it("UiProvider merges message overrides over English defaults", () => {
   ));
   expect(screen.getByTestId("close").textContent).toBe("Zatvori");
   expect(screen.getByTestId("clear").textContent).toBe("Clear");
+});
+
+it("UiProvider falls back to English for combobox strings and translates them", () => {
+  const [messages, setMessages] = createSignal<Partial<UiMessages>>({});
+  render(() => (
+    <UiProvider messages={messages()}>
+      <ComboboxMessagesProbe />
+    </UiProvider>
+  ));
+  expect(screen.getByTestId("no-results").textContent).toBe("No results");
+  expect(screen.getByTestId("create").textContent).toBe("Create “Design”");
+  setMessages({ comboboxCreate: (label) => `Stvori „${label}”`, noResults: "Nema rezultata" });
+  flush();
+  expect(screen.getByTestId("no-results").textContent).toBe("Nema rezultata");
+  expect(screen.getByTestId("create").textContent).toBe("Stvori „Design”");
 });
 
 it("UiProvider follows message changes (a language switch) without remounting", () => {

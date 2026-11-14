@@ -6,15 +6,27 @@ import { createSignal, For } from "solid-js";
 import { EventLog, LogProvider } from "./log.tsx";
 import { THEME_KEY } from "./playground.constants.ts";
 import { Buttons } from "./sections/buttons.tsx";
+import { Checkboxes } from "./sections/checkboxes.tsx";
+import { Comboboxes } from "./sections/comboboxes.tsx";
 import { Dialogs } from "./sections/dialogs.tsx";
 import { Fields } from "./sections/fields.tsx";
 import { Menus } from "./sections/menus.tsx";
+import { RadioGroups } from "./sections/radio-groups.tsx";
 import { Selects } from "./sections/selects.tsx";
+import { Switches } from "./sections/switches.tsx";
+import { TextInputs } from "./sections/text-inputs.tsx";
+import { Textareas } from "./sections/textareas.tsx";
 
 const NAV = [
   { id: "button", label: "Button" },
   { id: "field", label: "Field and Input" },
+  { id: "text-input", label: "Text input" },
+  { id: "textarea", label: "Textarea" },
+  { id: "checkbox", label: "Checkbox" },
+  { id: "switch", label: "Switch" },
+  { id: "radio-group", label: "Radio group" },
   { id: "select", label: "Select" },
+  { id: "combobox", label: "Combobox" },
   { id: "dialog", label: "Dialog" },
   { id: "menu", label: "Menu" },
 ] as const;
@@ -78,7 +90,13 @@ export function App(): JSX.Element {
           <main class="space-y-12">
             <Buttons />
             <Fields />
+            <TextInputs />
+            <Textareas />
+            <Checkboxes />
+            <Switches />
+            <RadioGroups />
             <Selects />
+            <Comboboxes />
             <Dialogs />
             <Menus />
           </main>
