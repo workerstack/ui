@@ -1,3 +1,5 @@
+import { userEvent } from "vitest/browser";
+
 import { required } from "./required.ts";
 
 function frame(): Promise<void> {
@@ -58,4 +60,15 @@ export const NO_RING = /^(none|((rgba\(0, 0, 0, 0\)|oklab\(0 0 0 \/ 0\)) 0px 0px
 /** The part with `data-slot={name}` inside `el`; throws if there is none. */
 export function part(el: Element, name: string): Element {
   return required(el.querySelector(`[data-slot="${name}"]`), `a ${name}`);
+}
+
+/**
+ * Clicks an empty spot at the viewport's bottom-right corner, so the test page has focus and sees
+ * the keys that follow, as it does for a person who is already in the page when they press Tab.
+ * Without it a first Tab lands from outside the page, and parts that open only for keyboard focus
+ * (a tooltip) stay shut.
+ */
+export async function focusPage(): Promise<void> {
+  const position = { x: window.innerWidth - 2, y: window.innerHeight - 2 };
+  await userEvent.click(document.documentElement, { position });
 }

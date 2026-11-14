@@ -1,4 +1,5 @@
 [
+  "packages/core/src/alert-dialog/alert-dialog.server.test.tsx > AlertDialog on the server describes an open alert dialog by its description in the HTML",
   "packages/core/src/combobox/combobox-create.test.tsx > Combobox offers to create with no text when minLength is 0",
   "packages/core/src/combobox/combobox.server.test.tsx > Combobox on the server renders without warnings",
   "packages/core/src/dialog/dialog.server.test.tsx > Dialog on the server describes an open dialog by its description in the HTML",
@@ -7,6 +8,7 @@
   "packages/core/src/input/input.hydration.test.tsx > hydrating Input adds nothing the server didn't render",
   "packages/core/src/input/input.server.test.tsx > InputGroup on the server renders the clear button of a filled group",
   "packages/core/src/menu/menu.server.test.tsx > Menu on the server renders without warnings",
+  "packages/core/src/popover/popover.server.test.tsx > Popover on the server names an open popover by its title in the HTML",
   "packages/core/src/select/select.hydration.test.tsx > hydrating Select claims the server's nodes and adds none (items as children)",
   "packages/core/src/select/select.hydration.test.tsx > hydrating Select claims the server's nodes of an open select",
   "packages/core/src/select/select.hydration.test.tsx > hydrating Select gets one listbox from the server for an open select",

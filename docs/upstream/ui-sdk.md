@@ -89,7 +89,9 @@ Version: `0.1.0-beta.2` unless noted. Source locations are in the published `dis
 - **Repro:** `<Dialog defaultOpen><DialogContent><DialogTitle/><DialogDescription/></DialogContent></Dialog>`. The content gets `aria-labelledby` but no `aria-describedby`. The client adds it after mount (tested in `dialog.hydration.test.tsx`).
 - **Where:** `@ui-sdk/core/dist/components/dialog/dialog-primitive.js:29` (`described: false`). It becomes true only when the description part connects. The attribute is set at `dialog-parts.js:108`.
 - **Fix idea:** treat the description the way the title is treated, or have DialogDescription mark `described` while rendering (server-safe, see UISDK-1).
-- **Pinned by:** `packages/core/src/dialog/dialog.server.test.tsx` ("describes an open dialog by its description in the HTML").
+- **Pinned by:**
+  - `packages/core/src/dialog/dialog.server.test.tsx` ("describes an open dialog by its description in the HTML");
+  - `packages/core/src/alert-dialog/alert-dialog.server.test.tsx` ("describes an open alert dialog by its description in the HTML").
 
 ## UISDK-7
 
@@ -110,6 +112,15 @@ Version: `0.1.0-beta.2` unless noted. Source locations are in the published `dis
 - **Where:** `@ui-sdk/core/dist/components/combobox/combobox-api.js:483`: `if (query.length < Math.max(1, props.minLength ?? 1))`. The `Math.max(1, …)` clamp makes 0 the same as 1. `@ui-sdk/solid/dist/combobox.js:211` passes the prop through unchanged.
 - **Fix idea:** drop the clamp and use `props.minLength ?? 1`, so 0 is honored and the default stays 1. Or document 1 as the lowest value and clamp the type.
 - **Pinned by:** `packages/core/src/combobox/combobox-create.test.tsx` ("offers to create with no text when minLength is 0").
+
+## UISDK-9
+
+**An open Popover's server HTML names it by its trigger, not its title.**
+
+- **Repro:** `<Popover defaultOpen><PopoverTrigger/><PopoverContent><PopoverTitle/></PopoverContent></Popover>`. The server HTML gives the content `aria-labelledby` pointing at the trigger's id. After mount it points at the title, so screen readers hear a different name before and after hydration.
+- **Where:** `@ui-sdk/core/dist/foundation/popups/popup-slots.js:149-153`. `popupTitle` sets the `titled` flag only in `bind` (`flagWhileBound(store, "titled", { now: true })`), which runs after mount. Same root cause as UISDK-6.
+- **Fix idea:** mark `titled` and `described` while rendering, when the title and description parts render (server-safe, see UISDK-1).
+- **Pinned by:** `packages/core/src/popover/popover.server.test.tsx` ("names an open popover by its title in the HTML").
 
 ---
 

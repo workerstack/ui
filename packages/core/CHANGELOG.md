@@ -12,3 +12,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - UiProvider (@workerstack/ui/provider) gives components translated built-in strings and a format locale; Dialog's corner close and InputClear read their names from it
 - @workerstack/ui/locale resolves a request's format locale from the saved preference, the region and Accept-Language
 - Six controls: text input, textarea, checkbox, switch, radio group and combobox, at the subpaths @workerstack/ui/text-input, /textarea, /checkbox, /switch, /radio-group and /combobox.
+- Eight overlay and display parts: popover, tooltip, alert dialog, drawer, tabs, badge, card and toast, at the subpaths @workerstack/ui/popover, /tooltip, /alert-dialog, /drawer, /tabs, /badge, /card and /toast.
