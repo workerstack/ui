@@ -16,7 +16,7 @@
     "url": "https://github.com/workerstack/ui/issues"
   },
   "license": "MIT",
-  "author": "Lovro \u017dagar",
+  "author": "Lovro Žagar",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/workerstack/ui.git",
@@ -149,6 +149,11 @@
       "solid": "./dist/view/index.js",
       "default": "./dist/view/index.js"
     },
+    "./form": {
+      "types": "./dist/form/index.d.ts",
+      "solid": "./dist/form/index.js",
+      "default": "./dist/form/index.js"
+    },
     "./theme.css": "./dist/theme.css",
     "./package.json": "./package.json"
   },
@@ -171,6 +176,7 @@
     "@solidjs/vite-plugin": "catalog:",
     "@solidjs/web": "catalog:",
     "@tailwindcss/vite": "catalog:",
+    "@tanstack/solid-form": "catalog:",
     "@types/node": "catalog:",
     "@ui-sdk/core": "catalog:",
     "@ui-sdk/solid": "catalog:",
@@ -185,11 +191,17 @@
   },
   "peerDependencies": {
     "@solidjs/web": ">=2.0.0-rc.20 <3",
+    "@tanstack/solid-form": ">=1.33.0",
     "@ui-sdk/core": "^0.1.0-beta.2",
     "@ui-sdk/solid": "^0.1.0-beta.2",
     "cn": "^0.5.2",
     "solid-js": ">=2.0.0-rc.20 <3",
     "tailwindcss": "^4.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@tanstack/solid-form": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=22.18.0"

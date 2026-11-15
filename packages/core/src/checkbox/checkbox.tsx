@@ -79,7 +79,7 @@ export function CheckboxGroup<Value extends string = string>(props: CheckboxGrou
       {...rest}
       ref={(element) => {
         group = element;
-        callRef(props.ref, element);
+        callRef(() => props.ref, element);
       }}
       onValueChange={(next, details) => {
         picked.set(next);

@@ -15,6 +15,7 @@ import { Comboboxes } from "./sections/comboboxes.tsx";
 import { Dialogs } from "./sections/dialogs.tsx";
 import { Drawers } from "./sections/drawers.tsx";
 import { Fields } from "./sections/fields.tsx";
+import { Forms } from "./sections/forms.tsx";
 import { Menus } from "./sections/menus.tsx";
 import { Popovers } from "./sections/popovers.tsx";
 import { RadioGroups } from "./sections/radio-groups.tsx";
@@ -48,6 +49,7 @@ const NAV = [
   { id: "badge", label: "Badge" },
   { id: "card", label: "Card" },
   { id: "view", label: "View" },
+  { id: "form", label: "Form" },
 ] as const;
 
 function ThemeToggle(): JSX.Element {
@@ -123,6 +125,7 @@ function Sections(): JSX.Element {
       <Badges />
       <Cards />
       <Views />
+      <Forms />
     </main>
   );
 }

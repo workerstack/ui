@@ -1,5 +1,7 @@
+import { FORM_MESSAGES_EN, type FormMessages } from "./form-messages.ts";
+
 /** The built-in strings of `@workerstack/ui`, one per place a component shows text of its own. */
-export type UiMessages = {
+export type UiMessages = FormMessages & {
   /** The accessible name of an input's clear button. */
   clear: string;
   /** The accessible name of a dialog's corner close button. */
@@ -42,6 +44,7 @@ export type UiMessages = {
 
 /** English, the fallback for every key an app does not translate. */
 export const UI_MESSAGES_EN: UiMessages = {
+  ...FORM_MESSAGES_EN,
   clear: "Clear",
   close: "Close",
   comboboxCreate: (label) => `Create “${label}”`,

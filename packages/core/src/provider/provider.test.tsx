@@ -6,7 +6,7 @@ import { formatLocale, regionOfTimeZone } from "../locale/index.ts";
 import { mounted } from "../test/dom.ts";
 import { required } from "../test/required.ts";
 import { ComboboxMessagesProbe, ProviderProbe, ValidityMessagesProbe } from "./__fixtures__/provider.fixture.tsx";
-import { type UiMessages, UiProvider } from "./index.ts";
+import { type UiMessages, UiProvider, useUiMessages } from "./index.ts";
 
 afterEach(cleanup);
 
@@ -162,4 +162,22 @@ it("UiProvider flips html data-focus-source on a key press and a pointer press, 
   expect(document.documentElement.dataset["focusSource"]).toBeUndefined();
   fireEvent.pointerDown(document.body);
   expect(document.documentElement.dataset["focusSource"]).toBeUndefined();
+});
+
+it("UiProvider gives the form strings, translated or English, and is never mistaken for a promise", async () => {
+  let messages: UiMessages | undefined;
+  render(() => (
+    <UiProvider messages={{ formSave: "Spremi" }}>
+      {(() => {
+        messages = useUiMessages();
+
+        return null;
+      })()}
+    </UiProvider>
+  ));
+  const strings = required(messages, "the provider's strings");
+  expect(strings.formSave).toBe("Spremi");
+  const leave = strings.unsavedLeaveDescription(["Profile", "Billing"]);
+  expect(leave).toBe("Your changes to Profile and Billing will be lost.");
+  expect(await Promise.resolve(strings)).toBe(strings);
 });

@@ -43,7 +43,7 @@ export function MenuFilter(props: MenuFilterProps): JSX.Element {
       onInput={(event) => filter.setQuery(event.currentTarget.value)}
       ref={(element) => {
         input = element;
-        callRef(props.ref, element);
+        callRef(() => props.ref, element);
       }}
       class={cn(
         "sticky -top-1 z-10 -mx-1 -mt-1 mb-1 h-9 w-[calc(100%+0.5rem)] border-0 border-b bg-popover px-3 text-base",

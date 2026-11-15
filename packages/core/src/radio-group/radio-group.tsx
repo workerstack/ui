@@ -60,7 +60,7 @@ export function RadioGroup<Value extends string = string>(props: RadioGroupProps
       {...rest}
       ref={(element) => {
         group = element;
-        callRef(props.ref, element);
+        callRef(() => props.ref, element);
       }}
       onValueChange={(value, details) => {
         chosen.set(value);

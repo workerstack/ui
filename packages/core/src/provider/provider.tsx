@@ -3,7 +3,7 @@ import { createContext, createSignal, onSettled, useContext } from "solid-js";
 
 import { formatLocale, type LocaleResolution, readCookie, REGION_COOKIE, regionOfTimeZone } from "../locale/index.ts";
 import { UI_MESSAGES_EN, type UiMessages } from "./messages.ts";
-import { TranslatedMessages } from "./translated-messages.ts";
+import { translatedMessages } from "./translated-messages.ts";
 
 const DEFAULT_LOCALE = "en-US";
 const REGION_COOKIE_MAX_AGE = 31_536_000;
@@ -105,7 +105,7 @@ function trackFocusSource(): void {
  * Reading direction and the CSP nonce come from the page, not from here.
  */
 export function UiProvider(props: UiProviderProps): JSX.Element {
-  const messages = new TranslatedMessages(() => props.messages);
+  const messages = translatedMessages(() => props.messages);
   const locale = createFormatLocale(props);
 
   trackFocusSource();

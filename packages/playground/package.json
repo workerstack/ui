@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@solidjs/web": "catalog:",
+    "@tanstack/solid-form": "catalog:",
     "@ui-sdk/core": "catalog:",
     "@ui-sdk/solid": "catalog:",
     "@workerstack/ui": "workspace:*",

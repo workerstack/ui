@@ -127,7 +127,7 @@ export function createRequiredToggle<Value, Details>(
     },
     ref: (element) => {
       control = element;
-      callRef(props.ref, element);
+      callRef(() => props.ref, element);
     },
   };
 }

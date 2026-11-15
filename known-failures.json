@@ -7,6 +7,8 @@
   "packages/core/src/field/field.server.test.tsx > Field on the server describes the control by a matched error in the HTML",
   "packages/core/src/field/field.server.test.tsx > Field on the server describes the control only by parts that are in the HTML",
   "packages/core/src/field/fieldset.server.test.tsx > Fieldset on the server describes the group by its description in the HTML",
+  "packages/core/src/form/tanstack-upstream.test.tsx > createField reads its options without a Solid warning when a field's name is reactive (TF-5)",
+  "packages/core/src/form/tanstack-upstream.test.tsx > useStore follows a store change made inside an effect without a Solid warning (TF-4)",
   "packages/core/src/input/input.hydration.test.tsx > hydrating Input adds nothing the server didn't render",
   "packages/core/src/input/input.server.test.tsx > InputGroup on the server renders the clear button of a filled group",
   "packages/core/src/menu/menu.server.test.tsx > Menu on the server renders without warnings",

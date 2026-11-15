@@ -40,7 +40,7 @@ export function createTextRules<T extends HTMLInputElement | HTMLTextAreaElement
         return props.maxLength ?? Number.POSITIVE_INFINITY;
       },
       ref: (element) => {
-        if (isBox(element)) callRef(props.ref, element);
+        if (isBox(element)) callRef(() => props.ref, element);
       },
       get required() {
         return props.required ?? false;

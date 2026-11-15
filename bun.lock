@@ -18,6 +18,7 @@
         "@solidjs/vite-plugin": "catalog:",
         "@solidjs/web": "catalog:",
         "@tailwindcss/vite": "catalog:",
+        "@tanstack/solid-form": "catalog:",
         "@types/node": "catalog:",
         "@ui-sdk/core": "catalog:",
         "@ui-sdk/solid": "catalog:",
@@ -32,17 +33,22 @@
       },
       "peerDependencies": {
         "@solidjs/web": ">=2.0.0-rc.20 <3",
+        "@tanstack/solid-form": ">=1.33.0",
         "@ui-sdk/core": "^0.1.0-beta.2",
         "@ui-sdk/solid": "^0.1.0-beta.2",
         "cn": "^0.5.2",
         "solid-js": ">=2.0.0-rc.20 <3",
         "tailwindcss": "^4.3.0",
       },
+      "optionalPeers": [
+        "@tanstack/solid-form",
+      ],
     },
     "packages/playground": {
       "name": "@workerstack/playground",
       "dependencies": {
         "@solidjs/web": "catalog:",
+        "@tanstack/solid-form": "catalog:",
         "@ui-sdk/core": "catalog:",
         "@ui-sdk/solid": "catalog:",
         "@workerstack/ui": "workspace:*",
@@ -64,6 +70,7 @@
     "@solidjs/vite-plugin": "3.0.0-next.55",
     "@solidjs/web": "2.0.0-rc.20",
     "@tailwindcss/vite": "4.3.3",
+    "@tanstack/solid-form": "https://pkg.pr.new/@tanstack/solid-form@1db6f68",
     "@types/node": "26.6.5",
     "@ui-sdk/core": "0.1.0-beta.2",
     "@ui-sdk/solid": "0.1.0-beta.2",
@@ -228,6 +235,18 @@
     "@tailwindcss/oxide-win32-x64-msvc": ["@tailwindcss/oxide-win32-x64-msvc@4.3.3", "", { "os": "win32", "cpu": "x64" }, "sha512-yJ0pwIVc/nYeGoV02WtsN8KYyLQv7kyI2wDnkezyJlGGjkd4QLwDGAwl47YpPJeuI0M0ObaXGSPjvWDPeTPggw=="],
 
     "@tailwindcss/vite": ["@tailwindcss/vite@4.3.3", "", { "dependencies": { "@tailwindcss/node": "4.3.3", "@tailwindcss/oxide": "4.3.3", "tailwindcss": "4.3.3" }, "peerDependencies": { "vite": "^5.2.0 || ^6 || ^7 || ^8" } }, "sha512-yYU8cogLeSh/ms2jh8Fj7jaba/EWa7Ja6GoUqYZaraEuCI5YS6ms6ObZgjjedm+jm6XZjdNRWBpPP6Z86oOxcw=="],
+
+    "@tanstack/devtools-event-client": ["@tanstack/devtools-event-client@0.4.4", "", { "bin": { "intent": "./bin/intent.js" } }, "sha512-6T5Yop/793YI+H+5J8Hsyj4kCih9sl4t3ElLgKioW5hk3ocn+ZdSJ94tT7vL7uabxSugWYBZlOTMPzEw2puvQw=="],
+
+    "@tanstack/form-core": ["@tanstack/form-core@https://pkg.pr.new/TanStack/form/@tanstack/form-core@1db6f68", { "dependencies": { "@tanstack/devtools-event-client": "^0.4.1", "@tanstack/pacer-lite": "^0.1.1", "@tanstack/store": "^0.11.0" } }, "sha512-AV4Pw9Dk4orFsuPBcDssfWMJFs+yMYBae7zZ4oTqrCf4ftNGQKxvrQRZeqKHG6A4TkiLeSvf2kzIjcVkrW7E6w=="],
+
+    "@tanstack/pacer-lite": ["@tanstack/pacer-lite@0.1.1", "", {}, "sha512-y/xtNPNt/YeyoVxE/JCx+T7yjEzpezmbb+toK8DDD1P4m7Kzs5YR956+7OKexG3f8aXgC3rLZl7b1V+yNUSy5w=="],
+
+    "@tanstack/solid-form": ["@tanstack/solid-form@https://pkg.pr.new/@tanstack/solid-form@1db6f68", { "dependencies": { "@tanstack/form-core": "https://pkg.pr.new/TanStack/form/@tanstack/form-core@1db6f68", "@tanstack/solid-store": "^0.9.1" }, "peerDependencies": { "solid-js": ">=2.0.0-beta.15 <2.0.0-experimental.0" } }, "sha512-4aTNtdUZsF8Iw5a/kX/2gI9l32cA4BVuTXmbfvZ+VOkVmxTayhyQ1AVllFHHgtq3hd8kUtawB3aLX1fdMFdRgQ=="],
+
+    "@tanstack/solid-store": ["@tanstack/solid-store@0.9.3", "", { "dependencies": { "@tanstack/store": "0.9.3" }, "peerDependencies": { "solid-js": "^1.6.0" } }, "sha512-XThXDzwJT8zeatmxFK1UISikfzz1z76mMlpg1IBDPrJp6df6U3cpJInZRbYs3xlVsnhMziuZigaSkzMyZESK9Q=="],
+
+    "@tanstack/store": ["@tanstack/store@0.11.2", "", {}, "sha512-sJ4mjol8uQsHV0gOJzzjwXfh2Fwm+Sz0+8deqiTm4jGbMdjzNSW+xZCFm0kUa870uhd8yi+DpKnZb5Kc4apa0Q=="],
 
     "@testing-library/dom": ["@testing-library/dom@10.4.2", "", { "dependencies": { "@babel/code-frame": "^7.10.4", "@babel/runtime": "^7.12.5", "@types/aria-query": "^5.0.1", "aria-query": "5.3.0", "dom-accessibility-api": "^0.5.9", "lz-string": "^1.5.0", "picocolors": "1.1.1", "pretty-format": "^27.0.2" } }, "sha512-yzr2S9HyAIdhz2/6qHgbs665Q7PKVcDF05vsOlHPxG1mo36gKVesdYVeDLnXgfjJ03CrKRk08knc6+E/9m8v2Q=="],
 
@@ -518,6 +537,8 @@
     "@tailwindcss/oxide-wasm32-wasi/@tybys/wasm-util": ["@tybys/wasm-util@0.10.4", "", { "dependencies": { "tslib": "^2.4.0" }, "bundled": true }, "sha512-W3c4gRigFS0T/Ma4qIYF3GDAc5AQdHb1yL5znJT1Zv1YaD9Kitx656wBjvr19qbiosmZT8lWDM5BEMynUqX65A=="],
 
     "@tailwindcss/oxide-wasm32-wasi/tslib": ["tslib@2.9.1", "", { "bundled": true }, "sha512-a4Ux9VKuIMHsOS7ENbEq6hK2ZGYIT27Rtl0E4eD9KqwxhKiQeMZE/9xb3IdYwWaSOyIBQLExhQgXDTYoiCxnWA=="],
+
+    "@tanstack/solid-store/@tanstack/store": ["@tanstack/store@0.9.3", "", {}, "sha512-8reSzl/qGWGGVKhBoxXPMWzATSbZLZFWhwBAFO9NAyp0TxzfBP0mIrGb8CP8KrQTmvzXlR/vFPPUrHTLBGyFyw=="],
 
     "@rolldown/binding-wasm32-wasi/@emnapi/core/@emnapi/wasi-threads": ["@emnapi/wasi-threads@2.2.0", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-JP7OYH38Q7+pyTAe14raZHLQIK7BDKbdwji+Xi3pcd/6QkJYQH3SX4wu6EplGrGJWRepoNzedfm0G3B9Z4e9Rw=="],
 
