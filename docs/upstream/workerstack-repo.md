@@ -7,6 +7,7 @@ Bugs and gaps in [`@workerstack/repo`](https://github.com/workerstack/repo) foun
 | [REPO-1](#repo-1) | `lint --fix` turns a module augmentation's `interface` into a `type`, which breaks the augmentation | standards: oxlint config | Medium: the fix breaks the typecheck | open | — |
 | [REPO-3](#repo-3) | `lint --fix` rewrites `toHaveBeenCalled()` to `toHaveBeenCalledWith()`, which asserts a call with no arguments | standards: oxlint config (rule from oxlint's vitest plugin) | High: the fix silently changes what a test asserts | open | — |
 | [REPO-4](#repo-4) | A root that holds only config files cannot type check them: every rule path ends in a refusal or an empty program | standards: tsconfig checks | Medium: root configs go unchecked | open | — |
+| [REPO-5](#repo-5) | A public manifest's `author` may be written as `\u` escapes (`Lovro \u017dagar`); check passes it and nothing rewrites it as text | public package checks | Low: the published package.json shows the escape | open | — |
 | [REPO-2](#repo-2) | The published docs name `repo.config.ts`; `init` and `sync` use `workerstack.config.ts` | docs | Low | open | — |
 
 ---
@@ -59,3 +60,13 @@ Bugs and gaps in [`@workerstack/repo`](https://github.com/workerstack/repo) foun
 - **Fix idea:** do not require a strict sibling when the plain config holds only `*.config.ts`, or let the strict sibling be skipped when it would have no inputs.
 - **Here:** no root tsconfig, so the two root configs are not type checked. The editor checks them with its default settings.
 - **Pinned by:** no test yet (same as REPO-1).
+
+## REPO-5
+
+**`bun repo check` passes an `author` written with `\u` escapes, and no command writes it as text.** Version: `link:../repo` at 2026-11-15.
+
+- **Repro:** set `"author": "Lovro \u017dagar"` in a public package.json whose `owner.name` in `repo.config.ts` is `Lovro Žagar`. `bun repo check` passes, because `check-public.ts` (`authorLines`) compares the parsed value with the owner's name. The escape stays in the published manifest. Here a tool that writes JSON as ASCII only (Python's `json.dump`) turned the name into the escape, and it went back and forth across three commits.
+- **Where:** the `author` and owner checks in `cli/check-public.ts`. The owner's name lives in `repo.config.ts`, but only a check reads it; `bun repo sync` writes nothing into a public manifest.
+- **Fix idea:** let `bun repo sync` own the fields it already derives from `owner` (`author`, and the others `check-public.ts` judges), writing them as text; `bun repo sync --check` then reports a manifest whose text differs, escaped or not.
+- **Here:** the author is written as text by hand, and `packages/core/scripts/sync-exports.ts` writes package.json as `JSON.stringify` gives it (no escapes). No check of our own: the repo tool owns this field.
+- **Pinned by:** no test yet (same as REPO-1). A pinning test would run `bun repo sync --check` on a fixture repo with the escaped author and expect drift.

@@ -11,11 +11,7 @@ import { SRC } from "./test/bundle.ts";
 
 type Manifest = { exports: unknown; sideEffects: unknown };
 
-const MANIFEST_TEXT = readFileSync(join(SRC, "../package.json"), "utf8");
-const MANIFEST = JSON.parse(MANIFEST_TEXT) /* our package.json */ as Manifest;
-
-/** A `\\u` escape: a tool that writes JSON as ASCII only turns “Ž” into one. */
-const UNICODE_ESCAPE = /\\u[\da-f]{4}/giu;
+const MANIFEST = JSON.parse(readFileSync(join(SRC, "../package.json"), "utf8")) /* our package.json */ as Manifest;
 
 const NAMESPACES = ["components/", "features/", "utils/"];
 
@@ -57,9 +53,5 @@ describe("the export map", () => {
 
   it("has no module with side effects", () => {
     expect(MANIFEST.sideEffects).toBe(false);
-  });
-
-  it("keeps package.json's text as written, with no \\u escapes", () => {
-    expect(MANIFEST_TEXT.match(UNICODE_ESCAPE)).toBeNull();
   });
 });
