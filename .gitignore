@@ -4,10 +4,11 @@ coverage
 *.tsbuildinfo
 .vitest
 
-# repo:ignore d5310730
+# repo:ignore 55efa029
 .tmp/
 .worktrees/
 coverage/
+.vitest/
 **/.repo/plans/
 **/.repo/plans-fast/
 **/.repo/roadmaps/

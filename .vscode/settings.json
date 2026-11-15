@@ -89,6 +89,8 @@
     ".vscode/tasks.json": true,
     "bunfig.toml": true,
     "knip.jsonc": true,
-    "packages/core/README.md": true
+    "packages/core/README.md": true,
+    "packages/core/bunfig.toml": true,
+    "packages/playground/bunfig.toml": true
   }
 }
