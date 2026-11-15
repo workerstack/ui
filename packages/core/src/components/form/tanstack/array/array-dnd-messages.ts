@@ -1,6 +1,6 @@
 import { defaultMessages } from "../../../../features/dnd/messages/dnd-messages.ts";
 import type { DndMessages } from "../../../../features/dnd/sortable/core/index.ts";
-import type { UiMessages } from "../../../provider/index.ts";
+import type { ArrayMessages } from "./array.messages.ts";
 
 /**
  * What the array's drags speak, from the provider's strings, read when spoken so a language switch
@@ -8,7 +8,7 @@ import type { UiMessages } from "../../../provider/index.ts";
  * path) with no refused destinations, so it only lifts, drops and cancels: the keyboard, cross-list
  * and tree strings never speak and keep the engine's own.
  */
-export function arrayDndMessages(messages: UiMessages): DndMessages {
+export function arrayDndMessages(messages: ArrayMessages): DndMessages {
   return {
     ...defaultMessages,
     canceled: (item, position) => messages.arrayCanceled(item, position),

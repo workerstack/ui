@@ -3,6 +3,7 @@ import { FieldError as FieldErrorPart } from "@ui-sdk/solid/field";
 import { createSignal, omit, type ComponentProps } from "solid-js";
 
 import { isStateFunction } from "../../internal/index.ts";
+import { VALIDITY_MESSAGES_EN } from "../../internal/validity.messages.ts";
 import { cnState } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 
@@ -30,7 +31,7 @@ function missingByBrowser(error: Element | undefined): boolean {
  */
 export function FieldError(props: FieldErrorProps): JSX.Element {
   const rest = omit(props, "class", "children");
-  const messages = useUiMessages();
+  const messages = useUiMessages(VALIDITY_MESSAGES_EN);
   const [element, setElement] = createSignal<HTMLElement>();
 
   return (

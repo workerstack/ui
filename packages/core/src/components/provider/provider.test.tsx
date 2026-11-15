@@ -5,6 +5,11 @@ import { afterEach, expect, it } from "vitest";
 import { mounted } from "../../test/dom.ts";
 import { required } from "../../test/required.ts";
 import { formatLocale, regionOfTimeZone } from "../../utils/locale/index.ts";
+import { FORM_DIALOG_MESSAGES_EN, type FormDialogMessages } from "../form/tanstack/dialog/dialog.messages.ts";
+import {
+  LEAVE_CONFIRM_MESSAGES_EN,
+  type LeaveConfirmMessages,
+} from "../form/tanstack/unsaved/leave-confirm.messages.ts";
 import { ComboboxMessagesProbe, ProviderProbe, ValidityMessagesProbe } from "./__fixtures__/provider.fixture.tsx";
 import { type UiMessages, UiProvider, useUiMessages } from "./index.ts";
 
@@ -165,19 +170,23 @@ it("UiProvider flips html data-focus-source on a key press and a pointer press, 
 });
 
 it("UiProvider gives the form strings, translated or English, and is never mistaken for a promise", async () => {
-  let messages: UiMessages | undefined;
+  let dialog: FormDialogMessages | undefined;
+  let leave: LeaveConfirmMessages | undefined;
   render(() => (
     <UiProvider messages={{ formSave: "Spremi" }}>
       {(() => {
-        messages = useUiMessages();
+        dialog = useUiMessages(FORM_DIALOG_MESSAGES_EN);
+        leave = useUiMessages(LEAVE_CONFIRM_MESSAGES_EN);
 
         return null;
       })()}
     </UiProvider>
   ));
-  const strings = required(messages, "the provider's strings");
+  const strings = required(dialog, "the dialog's strings");
   expect(strings.formSave).toBe("Spremi");
-  const leave = strings.unsavedLeaveDescription(["Profile", "Billing"]);
-  expect(leave).toBe("Your changes to Profile and Billing will be lost.");
+  expect(strings.formCancel).toBe("Cancel");
+  expect(required(leave, "the leave confirm's strings").unsavedLeaveDescription(["Profile", "Billing"])).toBe(
+    "Your changes to Profile and Billing will be lost.",
+  );
   expect(await Promise.resolve(strings)).toBe(strings);
 });

@@ -3,6 +3,7 @@ import { Switch as SwitchPart, SwitchThumb as SwitchThumbPart } from "@ui-sdk/so
 import { omit, type ComponentProps } from "solid-js";
 
 import { createRequiredToggle } from "../../internal/index.ts";
+import { VALIDITY_MESSAGES_EN } from "../../internal/validity.messages.ts";
 import { cnState } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 
@@ -58,7 +59,7 @@ const TRACK = [
  */
 export function Switch(props: SwitchProps): JSX.Element {
   const rest = omit(props, "class", "size", "onCheckedChange", "ref");
-  const messages = useUiMessages();
+  const messages = useUiMessages(VALIDITY_MESSAGES_EN);
   const toggle = createRequiredToggle(props, { message: () => messages.requiredTick, part: "switch-input" });
 
   return (

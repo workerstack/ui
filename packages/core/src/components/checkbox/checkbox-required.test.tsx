@@ -2,9 +2,9 @@ import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
 import { flush } from "solid-js";
 import { afterEach, expect, it } from "vitest";
 
+import { VALIDITY_MESSAGES_EN as M } from "../../internal/validity.messages.ts";
 import { mounted } from "../../test/dom.ts";
 import { required } from "../../test/required.ts";
-import { UI_MESSAGES_EN as M } from "../provider/index.ts";
 import { RequiredCheckbox, RequiredGroup } from "./__fixtures__/required.fixture.tsx";
 
 afterEach(cleanup);

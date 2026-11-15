@@ -4,6 +4,7 @@ import { Show } from "solid-js";
 import { cn } from "../../../../utils/cn/index.ts";
 import { Button } from "../../../button/index.ts";
 import { useUiLocale, useUiMessages } from "../../../provider/index.ts";
+import { FORM_DRAFT_NOTICE_MESSAGES_EN } from "./form-draft-notice.messages.ts";
 import { useFormUnsaved } from "./form-unsaved.tsx";
 
 /** What `FormDraftNotice` takes. */
@@ -30,7 +31,7 @@ function savedTime(saved: number, locale: string): string {
  * editing the same draft. Put it at the top of the Form, inside FormUnsaved with a `draftKey`.
  */
 export function FormDraftNotice(props: FormDraftNoticeProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(FORM_DRAFT_NOTICE_MESSAGES_EN);
   const locale = useUiLocale();
   const state = useFormUnsaved("FormDraftNotice");
 

@@ -10,6 +10,7 @@ import {
 } from "@ui-sdk/solid/dialog";
 import { omit, Show, type ComponentProps } from "solid-js";
 
+import { CLOSE_MESSAGES_EN } from "../../internal/close.messages.ts";
 import { modalBackdrop, modalDescription, modalTitle, modalWindow, withAfter } from "../../internal/index.ts";
 import { cn, cnState } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
@@ -49,7 +50,7 @@ const CORNER_CLOSE =
   "focus-visible:ring-3 focus-visible:ring-ring/50";
 
 function CornerClose(props: { label: string | undefined }): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(CLOSE_MESSAGES_EN);
 
   return <DialogClosePart aria-label={props.label ?? messages.close} data-icon="x" class={CORNER_CLOSE} />;
 }

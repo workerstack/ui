@@ -3,9 +3,10 @@ import { omit, Show, untrack } from "solid-js";
 
 import { cn } from "../../../../utils/cn/index.ts";
 import { Button, type ButtonProps } from "../../../button/index.ts";
-import { useUiMessages, type UiMessages } from "../../../provider/index.ts";
+import { useUiMessages } from "../../../provider/index.ts";
 import { useFormArray } from "./array-context.ts";
 import { ChevronIcon, RemoveIcon } from "./array-icons.tsx";
+import { ARRAY_MESSAGES_EN, type ArrayMessages } from "./array.messages.ts";
 
 // The array's buttons, its click and keyboard path: Add appends, Remove and the move buttons act on
 // one item, and focus follows each change. None renders in a read-only Form. A Button keeps its
@@ -60,7 +61,7 @@ export function FormArrayAdd<TItem>(props: FormArrayAddProps<TItem>): JSX.Elemen
 /** Removes the item at `index` and focuses the item now there; disabled at `min`. */
 export function FormArrayRemove(props: FormArrayItemButtonProps): JSX.Element {
   const array = useFormArray("Remove");
-  const messages = useUiMessages();
+  const messages = useUiMessages(ARRAY_MESSAGES_EN);
   const rest = omit(props, "children", "disabled", "index");
 
   function remove(): void {
@@ -93,7 +94,7 @@ type Direction = {
   part: "MoveUp" | "MoveDown";
   slot: string;
   twin: string;
-  label: (messages: UiMessages, position: number) => string;
+  label: (messages: ArrayMessages, position: number) => string;
 };
 
 const UP: Direction = {
@@ -123,7 +124,7 @@ function targetOf(props: MoveButtonProps): number {
 /** Moves the item at `index` one step; disabled at the array's end that way. */
 function MoveButton(props: MoveButtonProps): JSX.Element {
   const array = useFormArray(untrack(() => props.direction.part));
-  const messages = useUiMessages();
+  const messages = useUiMessages(ARRAY_MESSAGES_EN);
   const rest = omit(props, "children", "direction", "disabled", "index");
 
   function step(): void {

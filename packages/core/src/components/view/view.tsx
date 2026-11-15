@@ -4,6 +4,7 @@ import { Show } from "solid-js";
 
 import { cn } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
+import { VIEW_MESSAGES_EN } from "./view.messages.ts";
 
 const OUTPUT = [
   "inline-flex min-w-0 items-center gap-1.5 text-sm text-foreground outline-none",
@@ -38,7 +39,7 @@ function isBlank(text: string | null | undefined): boolean {
 }
 
 function Output(props: OutputProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(VIEW_MESSAGES_EN);
   // Content is read once (an element prop read twice is created twice): whether there is any
   // comes from the prop's presence, not its value.
   const hasContent = "children" in props.view;

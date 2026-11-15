@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
 } from "../../../alert-dialog/index.ts";
 import { useUiMessages } from "../../../provider/index.ts";
+import { FORM_DIALOG_MESSAGES_EN } from "./dialog.messages.ts";
 
 /** What `FormDiscard` takes. */
 export type FormDiscardProps = {
@@ -24,7 +25,7 @@ export type FormDiscardProps = {
 
 /** Asks whether to throw a form's changes away; keeping them goes back to the form. */
 export function FormDiscard(props: FormDiscardProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(FORM_DIALOG_MESSAGES_EN);
 
   return (
     <AlertDialog open={props.open} onOpenChange={props.onOpenChange}>

@@ -16,7 +16,9 @@ import { Badge } from "../../../badge/index.ts";
 import { Button } from "../../../button/index.ts";
 import { useUiMessages } from "../../../provider/index.ts";
 import { SubmitButton } from "../form/form-parts.tsx";
+import { FORM_SAVE_BAR_MESSAGES_EN } from "./form-save-bar.messages.ts";
 import { useFormUnsaved } from "./form-unsaved.tsx";
+import { UNSAVED_MESSAGES_EN } from "./unsaved.messages.ts";
 
 /** What `FormSaveBar` takes. */
 export type FormSaveBarProps = {
@@ -33,7 +35,8 @@ const BAR = [
 
 /** The confirm before Discard throws every unsaved change away. */
 function DiscardConfirm(props: { open: boolean; onOpenChange: (open: boolean) => void; discard: () => void }) {
-  const messages = useUiMessages();
+  const messages = useUiMessages(FORM_SAVE_BAR_MESSAGES_EN);
+  const unsaved = useUiMessages(UNSAVED_MESSAGES_EN);
 
   return (
     <AlertDialog open={props.open} onOpenChange={props.onOpenChange}>
@@ -43,7 +46,7 @@ function DiscardConfirm(props: { open: boolean; onOpenChange: (open: boolean) =>
           <AlertDialogDescription>{messages.saveBarDiscardDescription}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{messages.unsavedStay}</AlertDialogCancel>
+          <AlertDialogCancel>{unsaved.unsavedStay}</AlertDialogCancel>
           <AlertDialogAction variant="destructive" action={props.discard}>
             {messages.saveBarDiscard}
           </AlertDialogAction>
@@ -59,7 +62,8 @@ function DiscardConfirm(props: { open: boolean; onOpenChange: (open: boolean) =>
  * and Save (submits). Put it first inside FormUnsaved.
  */
 export function FormSaveBar(props: FormSaveBarProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(FORM_SAVE_BAR_MESSAGES_EN);
+  const unsaved = useUiMessages(UNSAVED_MESSAGES_EN);
   const state = useFormUnsaved("FormSaveBar");
   // Written by the Discard button and the confirm's close.
   const [isConfirming, setConfirming] = createSignal(false, { ownedWrite: true });
@@ -67,8 +71,8 @@ export function FormSaveBar(props: FormSaveBarProps): JSX.Element {
   return (
     <>
       <Show when={state.changed()}>
-        <section aria-label={messages.unsavedChanges} data-slot="form-save-bar" class={cn(BAR, props.class)}>
-          <Badge variant="secondary">{messages.unsavedChanges}</Badge>
+        <section aria-label={unsaved.unsavedChanges} data-slot="form-save-bar" class={cn(BAR, props.class)}>
+          <Badge variant="secondary">{unsaved.unsavedChanges}</Badge>
           <div class="flex items-center gap-2">
             <Button variant="outline" size="sm" type="button" onClick={() => setConfirming(true)}>
               {messages.saveBarDiscard}

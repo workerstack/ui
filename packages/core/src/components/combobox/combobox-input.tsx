@@ -6,6 +6,7 @@ import {
 } from "@ui-sdk/solid/combobox";
 import { omit, Show, type ComponentProps } from "solid-js";
 
+import { CLEAR_MESSAGES_EN } from "../../internal/clear.messages.ts";
 import { cn, cnState } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 import { useComboboxContext } from "./combobox-context.ts";
@@ -19,7 +20,7 @@ export type ComboboxClearProps = ComponentProps<typeof ComboboxClearPart>;
  * accessible name defaults to the provider's `clear` string.
  */
 export function ComboboxClear(props: ComboboxClearProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(CLEAR_MESSAGES_EN);
   const rest = omit(props, "class", "aria-label");
 
   return (

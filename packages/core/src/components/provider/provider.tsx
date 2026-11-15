@@ -8,13 +8,14 @@ import {
   REGION_COOKIE,
   regionOfTimeZone,
 } from "../../utils/locale/index.ts";
-import { UI_MESSAGES_EN, type UiMessages } from "./messages.ts";
-import { translatedMessages } from "./translated-messages.ts";
+import type { UiMessages } from "./ui-messages.ts";
 
 const DEFAULT_LOCALE = "en-US";
 const REGION_COOKIE_MAX_AGE = 31_536_000;
 
-const MESSAGES_CONTEXT = /* @__PURE__ */ createContext<UiMessages>(UI_MESSAGES_EN);
+const NO_MESSAGES: Partial<UiMessages> = {};
+
+const MESSAGES_CONTEXT = /* @__PURE__ */ createContext<() => Partial<UiMessages>>(() => NO_MESSAGES);
 const LOCALE_CONTEXT = /* @__PURE__ */ createContext<() => string>(() => DEFAULT_LOCALE);
 
 /** What `UiProvider` takes. */
@@ -111,7 +112,10 @@ function trackFocusSource(): void {
  * Reading direction and the CSP nonce come from the page, not from here.
  */
 export function UiProvider(props: UiProviderProps): JSX.Element {
-  const messages = translatedMessages(() => props.messages);
+  function messages(): Partial<UiMessages> {
+    return props.messages ?? NO_MESSAGES;
+  }
+
   const locale = createFormatLocale(props);
 
   trackFocusSource();
@@ -123,9 +127,27 @@ export function UiProvider(props: UiProviderProps): JSX.Element {
   );
 }
 
-/** The built-in strings for the current app: translated when `UiProvider` got `messages`, else English. */
-export function useUiMessages(): UiMessages {
-  return useContext(MESSAGES_CONTEXT);
+// Whether `key` names one of the strings in `english`.
+function isMessageKey<Slice extends Partial<UiMessages>>(
+  english: Slice,
+  key: string | symbol,
+): key is keyof Slice & keyof UiMessages {
+  return typeof key === "string" && Object.hasOwn(english, key);
+}
+
+/**
+ * The strings of one part for the current app: `english` (the part's own), with the app's
+ * translations over it. Each read looks the translations up again, so a read inside a component
+ * tracks them and a language switch re-renders in place; a key the app does not translate reads as
+ * English.
+ */
+export function useUiMessages<Slice extends Partial<UiMessages>>(english: Slice): Slice {
+  const translations = useContext(MESSAGES_CONTEXT);
+
+  return new Proxy(english, {
+    // A key that is not a string (a symbol, `then`) reads as null, so the strings are never thenable.
+    get: (target, key) => (isMessageKey(target, key) ? (translations()[key] ?? target[key]) : null),
+  });
 }
 
 /** The app's format locale (`UiProvider locale`, refined by the time zone), else "en-US". */

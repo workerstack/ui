@@ -8,6 +8,7 @@ import {
 import { omit, untrack, type ComponentProps } from "solid-js";
 
 import { callRef, createRequiredChoice } from "../../internal/index.ts";
+import { VALIDITY_MESSAGES_EN } from "../../internal/validity.messages.ts";
 import { cn, cnState, type ClassValue } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 
@@ -42,7 +43,7 @@ function radioInputs(group: HTMLElement | undefined): HTMLInputElement[] {
  */
 export function RadioGroup<Value extends string = string>(props: RadioGroupProps<Value>): JSX.Element {
   const rest = omit(props, "class", "onValueChange", "ref");
-  const messages = useUiMessages();
+  const messages = useUiMessages(VALIDITY_MESSAGES_EN);
   let group: HTMLElement | undefined;
 
   const chosen = createRequiredChoice<Value | null>({

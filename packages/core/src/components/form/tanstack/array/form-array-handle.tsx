@@ -5,6 +5,7 @@ import { cn } from "../../../../utils/cn/index.ts";
 import { useUiMessages } from "../../../provider/index.ts";
 import { useFormArray, useFormArrayItems } from "./array-context.ts";
 import { GripIcon } from "./array-icons.tsx";
+import { ARRAY_MESSAGES_EN } from "./array.messages.ts";
 
 /** What `formArray.Handle` takes. */
 export type FormArrayHandleProps = {
@@ -21,7 +22,7 @@ const GRIP =
 /** Binds the grip and, once it sits in the page, the item element it sits in. */
 function GripPart(props: FormArrayHandleProps): JSX.Element {
   const sortable = useFormArrayItems();
-  const messages = useUiMessages();
+  const messages = useUiMessages(ARRAY_MESSAGES_EN);
   const index = untrack(() => props.index);
   const item = sortable.item({ id: String(index), label: () => messages.arrayItem(index + 1) });
 

@@ -7,6 +7,7 @@ import {
 import { omit, untrack, type ComponentProps } from "solid-js";
 
 import { callRef, createRequiredChoice, createRequiredToggle, siblingInput } from "../../internal/index.ts";
+import { VALIDITY_MESSAGES_EN } from "../../internal/validity.messages.ts";
 import { cnState } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 
@@ -36,7 +37,7 @@ export type CheckboxProps = ComponentProps<typeof CheckboxPart>;
  */
 export function Checkbox(props: CheckboxProps): JSX.Element {
   const rest = omit(props, "class", "children", "onCheckedChange", "ref");
-  const messages = useUiMessages();
+  const messages = useUiMessages(VALIDITY_MESSAGES_EN);
   const toggle = createRequiredToggle(props, { message: () => messages.requiredTick, part: "checkbox-input" });
 
   return (
@@ -61,7 +62,7 @@ export type CheckboxGroupProps<Value extends string = string> = ComponentProps<t
  */
 export function CheckboxGroup<Value extends string = string>(props: CheckboxGroupProps<Value>): JSX.Element {
   const rest = omit(props, "class", "onValueChange", "ref");
-  const messages = useUiMessages();
+  const messages = useUiMessages(VALIDITY_MESSAGES_EN);
   let group: HTMLElement | undefined;
 
   const picked = createRequiredChoice<readonly Value[]>({

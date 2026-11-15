@@ -1,5 +1,5 @@
-import type { UiMessages } from "../components/provider/index.ts";
 import { callRef, type RefLike } from "./ref.ts";
+import type { ValidityMessages } from "./validity.messages.ts";
 import { createRequiredText, type RequiredText } from "./validity.ts";
 
 /** What `createTextRules` reads from a text box's props. */
@@ -31,7 +31,7 @@ export function isTextareaElement(element: unknown): element is HTMLTextAreaElem
 export function createTextRules<T extends HTMLInputElement | HTMLTextAreaElement>(
   props: TextRulesProps<T>,
   isBox: (element: unknown) => element is T,
-  messages: UiMessages,
+  messages: ValidityMessages,
 ): RequiredText {
   return createRequiredText(
     {

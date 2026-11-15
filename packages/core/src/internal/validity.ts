@@ -1,8 +1,8 @@
 import { createEffect, onSettled, untrack } from "solid-js";
 
-import type { UiMessages } from "../components/provider/index.ts";
 import { isBlankText, textLength } from "../utils/text-hygiene/index.ts";
 import { LENGTH_RULE, PASSWORD_TYPE, REQUIRED_RULE } from "./validity.constants.ts";
+import type { ValidityMessages } from "./validity.messages.ts";
 
 // A control's validity, rule by rule. Several rules can speak for one element (the box's own
 // `required`, a control's format check, a composite's half range): each sets its own message here
@@ -95,11 +95,11 @@ function maxOf(props: RequiredTextProps): number | undefined {
  * A text box's own rules (Input, Textarea): `required` treats whitespace or invisible text as
  * missing, and `maxLength` counts what a person sees (grapheme clusters, not UTF-16 units) and
  * reports the overflow rather than blocking typing. The messages are the UI's, passed in so the
- * caller decides where they come from (usually `useUiMessages()`); the object may hold getters, so
+ * caller decides where they come from (usually `useUiMessages(VALIDITY_MESSAGES_EN)`); the object may hold getters, so
  * a language switch is read at the next check. Spread `ref` and call `sync` after each input; it
  * also follows `value`, `required` and `maxLength`, and checks once the box mounts.
  */
-export function createRequiredText(props: RequiredTextProps, messages: UiMessages): RequiredText {
+export function createRequiredText(props: RequiredTextProps, messages: ValidityMessages): RequiredText {
   let element: HTMLInputElement | HTMLTextAreaElement | undefined;
 
   function sync(): void {

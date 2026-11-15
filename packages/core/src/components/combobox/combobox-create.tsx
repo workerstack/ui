@@ -3,8 +3,9 @@ import { ComboboxCreate as ComboboxCreatePart } from "@ui-sdk/solid/combobox";
 import { omit, Show, type ComponentProps } from "solid-js";
 
 import { cn, cnState } from "../../utils/cn/index.ts";
-import { useUiMessages, type UiMessages } from "../provider/index.ts";
+import { useUiMessages } from "../provider/index.ts";
 import { useComboboxContext, type ComboboxContextValue } from "./combobox-context.ts";
+import { COMBOBOX_CREATE_MESSAGES_EN, type ComboboxCreateMessages } from "./combobox-create.messages.ts";
 import { CREATE_ROW, PLUS_ICON } from "./combobox-styles.ts";
 
 /** UI SDK's combobox create props: `minLength`. `onCreate` takes the typed text. */
@@ -37,7 +38,7 @@ function selectCreated<T>(
 }
 
 // Why the create row is not offered yet, or nothing when it is or when the combobox is read-only.
-function createHint(combobox: ComboboxContextValue<never>, messages: UiMessages): string | undefined {
+function createHint(combobox: ComboboxContextValue<never>, messages: ComboboxCreateMessages): string | undefined {
   if (combobox.readOnly()) return undefined;
 
   const query = combobox.typed().trim();
@@ -80,7 +81,7 @@ function CreateHintRow(props: { text: string }): JSX.Element {
  */
 export function ComboboxCreate<T = string>(props: ComboboxCreateProps<T>): JSX.Element {
   const rest = omit(props, "class", "onCreate");
-  const messages = useUiMessages();
+  const messages = useUiMessages(COMBOBOX_CREATE_MESSAGES_EN);
   const combobox = useComboboxContext<T>();
 
   function hint(): string | undefined {

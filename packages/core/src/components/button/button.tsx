@@ -6,6 +6,7 @@ import { withAfter } from "../../internal/index.ts";
 import { cn, cnState } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 import { buttonClass, type ButtonInlineSize, type ButtonSize, type ButtonVariant } from "./button-class.ts";
+import { BUTTON_MESSAGES_EN } from "./button.messages.ts";
 
 const SPINNER = "pointer-events-none absolute inset-0 flex items-center justify-center";
 const RING = "size-4 animate-spin rounded-full border-2 border-current border-t-transparent motion-reduce:animate-none";
@@ -27,7 +28,7 @@ export type ButtonProps = ComponentProps<typeof ButtonPart> & {
 
 // The spinner covers the content, which stays in the layout so the width does not change.
 function Spinner(): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(BUTTON_MESSAGES_EN);
 
   return (
     <output data-slot="button-spinner" aria-label={messages.loading} class={SPINNER}>

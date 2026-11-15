@@ -13,8 +13,10 @@ import {
   PopoverTrigger,
 } from "../../../popover/index.ts";
 import { useUiLocale, useUiMessages } from "../../../provider/index.ts";
+import { FORM_UNSAVED_STATUS_MESSAGES_EN } from "./form-unsaved-status.messages.ts";
 import { useFormUnsaved, type FormUnsavedState } from "./form-unsaved.tsx";
 import { relativeTime, useNow } from "./relative-time.ts";
+import { UNSAVED_MESSAGES_EN } from "./unsaved.messages.ts";
 
 /** What `FormUnsavedStatus` takes. */
 export type FormUnsavedStatusProps = {
@@ -24,7 +26,7 @@ export type FormUnsavedStatusProps = {
 
 /** A kept draft's time, opening what that means, with Discard changes. */
 function DraftSaved(props: { state: FormUnsavedState; time: number }): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(FORM_UNSAVED_STATUS_MESSAGES_EN);
   const locale = useUiLocale();
   const now = useNow();
   // Written by the popover and its Discard button.
@@ -59,7 +61,7 @@ function DraftSaved(props: { state: FormUnsavedState; time: number }): JSX.Eleme
  * means and a Discard. Shows nothing while the form is unchanged. Sits inside FormUnsaved.
  */
 export function FormUnsavedStatus(props: FormUnsavedStatusProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(UNSAVED_MESSAGES_EN);
   const state = useFormUnsaved("FormUnsavedStatus");
 
   function savedAt(): number | undefined {

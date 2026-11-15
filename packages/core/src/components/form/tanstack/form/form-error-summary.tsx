@@ -3,6 +3,7 @@ import { useStore, type AnyFormApi } from "@tanstack/solid-form";
 import { createMemo, createUniqueId, For, Show, untrack } from "solid-js";
 
 import { useUiMessages } from "../../../provider/index.ts";
+import { FORM_ERROR_SUMMARY_MESSAGES_EN } from "./form-error-summary.messages.ts";
 import { errorMessages, type QueryRoot } from "./visibility.ts";
 
 // The problems a submit found, above the form (GOV.UK's error summary): a heading, then each
@@ -119,7 +120,7 @@ function SummaryItem(props: { item: ErrorSummaryItem; goTo: (field: HTMLElement)
 
 /** The list of a submit's problems, each a link to its field; gone once none is left. */
 export function FormErrorSummary(props: FormErrorSummaryProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(FORM_ERROR_SUMMARY_MESSAGES_EN);
   const meta = useStore(untrack(() => props.form).store, (state) => state.fieldMeta);
   const items = createMemo(() => errorSummaryItems(meta(), props.root()));
   const titleId = createUniqueId();

@@ -11,6 +11,7 @@ import {
 } from "@ui-sdk/solid/toast";
 import { omit, Show, type ComponentProps } from "solid-js";
 
+import { CLOSE_MESSAGES_EN } from "../../internal/close.messages.ts";
 import { cn, cnState } from "../../utils/cn/index.ts";
 import { buttonClass } from "../button/index.ts";
 import { useUiMessages } from "../provider/index.ts";
@@ -111,7 +112,7 @@ export type ToastCloseProps = ComponentProps<typeof ToastClosePart> & {
 
 /** Closes the toast. Draws an × unless given children, named from the provider's `close` string. */
 export function ToastClose(props: ToastCloseProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(CLOSE_MESSAGES_EN);
   const rest = omit(props, "class", "label");
 
   return (

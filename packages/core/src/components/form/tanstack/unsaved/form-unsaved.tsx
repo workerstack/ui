@@ -6,6 +6,7 @@ import { useFormEngine, useFormSubmitted, type FormEngine } from "../form/form-e
 import { createFormChanged } from "./create-form-changed.ts";
 import { createFormDraft, type FormDraft } from "./create-form-draft.ts";
 import { draftFingerprint, omitPaths } from "./draft-fingerprint.ts";
+import { FORM_UNSAVED_MESSAGES_EN } from "./form-unsaved.messages.ts";
 import { discardChanges } from "./rebase-form.ts";
 import { useDraftScope, useRegisterUnsaved, type UnsavedPolicy } from "./unsaved-changes-provider.tsx";
 
@@ -80,7 +81,7 @@ function createDraft(engine: FormEngine, props: FormUnsavedProps, changed: () =>
 }
 
 function createUnsavedState(engine: FormEngine, props: FormUnsavedProps): FormUnsavedState {
-  const messages = useUiMessages();
+  const messages = useUiMessages(FORM_UNSAVED_MESSAGES_EN);
   const changed = createFormChanged(engine);
   const draft = createDraft(engine, props, changed);
 

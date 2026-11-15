@@ -2,6 +2,7 @@ import type { JSX } from "@solidjs/web";
 import { Input as InputPart, InputClear as InputClearPart } from "@ui-sdk/solid/input";
 import { omit, type ComponentProps } from "solid-js";
 
+import { CLEAR_MESSAGES_EN } from "../../internal/clear.messages.ts";
 import { cleanOnBlur } from "../../internal/index.ts";
 import { cnState } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
@@ -64,7 +65,7 @@ export type InputClearProps = ComponentProps<typeof InputClearPart>;
  * to override it.
  */
 export function InputClear(props: InputClearProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(CLEAR_MESSAGES_EN);
   const rest = omit(props, "class", "aria-label");
 
   return (

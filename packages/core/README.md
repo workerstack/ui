@@ -67,6 +67,20 @@ import { Input } from "@workerstack/ui/components/input"
 
 Triggers (`DialogTrigger`, `MenuTrigger`, `DialogClose`) are unstyled. Give them `class={buttonClass({ variant: "outline" })}`.
 
+### Translate the built-in strings
+
+`UiProvider` takes `messages`, a `Partial<UiMessages>`: every key you leave out stays English, and a change re-renders in place.
+
+```tsx
+import { UiProvider } from "@workerstack/ui/components/provider"
+
+<UiProvider messages={{ loading: "Učitavanje", close: "Zatvori", comboboxCreate: (label) => `Stvori „${label}”` }}>
+  <App />
+</UiProvider>
+```
+
+Each part keeps its English beside it, in a `<part>.messages.ts` file, so your bundle holds the English of the parts you import and no other. `UiMessages` lists every key the package translates.
+
 ### Development
 
 From the repository root or from `packages/core`:

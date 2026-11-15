@@ -14,6 +14,7 @@ import {
 import { omit, onSettled, type ComponentProps } from "solid-js";
 
 import { optionRow, popupMotion, withAfter, withBefore } from "../../internal/index.ts";
+import { NO_RESULTS_MESSAGES_EN } from "../../internal/no-results.messages.ts";
 import { cnState } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 import { isText, useComboboxContext } from "./combobox-context.ts";
@@ -105,7 +106,7 @@ export type ComboboxEmptyProps = ComponentProps<typeof ComboboxEmptyPart>;
 /** Shown while no item matches. Says the provider's `noResults` string unless given children. */
 export function ComboboxEmpty(props: ComboboxEmptyProps): JSX.Element {
   const rest = omit(props, "class", "children");
-  const messages = useUiMessages();
+  const messages = useUiMessages(NO_RESULTS_MESSAGES_EN);
 
   return (
     <ComboboxEmptyPart {...rest} class={cnState("py-6 text-center text-sm text-muted-foreground", props.class)}>

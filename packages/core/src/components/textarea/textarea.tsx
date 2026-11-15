@@ -3,6 +3,7 @@ import { Textarea as TextareaPart } from "@ui-sdk/solid/textarea";
 import { createEffect, createSignal, omit, Show, untrack, type ComponentProps } from "solid-js";
 
 import { cleanOnBlur, createTextRules, isTextareaElement } from "../../internal/index.ts";
+import { VALIDITY_MESSAGES_EN } from "../../internal/validity.messages.ts";
 import { cn, cnState } from "../../utils/cn/index.ts";
 import { cleanText, textLength } from "../../utils/text-hygiene/index.ts";
 import { useUiMessages } from "../provider/index.ts";
@@ -82,7 +83,7 @@ function Counter(props: CounterProps): JSX.Element {
 
 // The ref to give the box: its rules, and a listener on the element, so the consumer's `onInput` stays theirs.
 function createRef(props: TextareaProps, count: { set: (text: string) => void }) {
-  const rules = createTextRules(props, isTextareaElement, useUiMessages());
+  const rules = createTextRules(props, isTextareaElement, useUiMessages(VALIDITY_MESSAGES_EN));
 
   return (element: HTMLTextAreaElement | null): void => {
     rules.ref(element);

@@ -3,9 +3,9 @@ import { flush } from "solid-js";
 import { afterEach, expect, it } from "vitest";
 
 import { mounted } from "../../test/dom.ts";
-import { UI_MESSAGES_EN as M } from "../provider/index.ts";
 import { FieldSaysRequired, MarkedForm, TwoFields } from "./__fixtures__/marks.fixture.tsx";
 import { HookField } from "./__fixtures__/required-mark.fixture.tsx";
+import { FIELD_MARKS_MESSAGES_EN as M } from "./field-marks.messages.ts";
 import type { FieldMarks } from "./index.ts";
 
 afterEach(cleanup);

@@ -1,8 +1,8 @@
 import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
 import { afterEach, expect, it, vi } from "vitest";
 
+import { VALIDITY_MESSAGES_EN as M } from "../../internal/validity.messages.ts";
 import { inputElement, mounted, type } from "../../test/dom.ts";
-import { UI_MESSAGES_EN as M } from "../provider/index.ts";
 import { LimitedInput, ReadOnlyInput, RequiredBlankForm, UncleanedInput } from "./__fixtures__/input-rules.fixture.tsx";
 
 afterEach(cleanup);

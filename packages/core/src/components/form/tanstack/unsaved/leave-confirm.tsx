@@ -12,6 +12,8 @@ import {
   AlertDialogTitle,
 } from "../../../alert-dialog/index.ts";
 import { useUiMessages } from "../../../provider/index.ts";
+import { LEAVE_CONFIRM_MESSAGES_EN } from "./leave-confirm.messages.ts";
+import { UNSAVED_MESSAGES_EN } from "./unsaved.messages.ts";
 
 /** The leave confirm's state: which forms it names, and the answers it waits for. */
 export type LeaveAsk = {
@@ -56,7 +58,8 @@ export function createLeaveAsk(): LeaveAsk {
 
 /** The dialog that asks before unsaved changes are lost: Stay keeps the page, Leave goes on. */
 export function LeaveConfirm(props: { ask: LeaveAsk }): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(LEAVE_CONFIRM_MESSAGES_EN);
+  const unsaved = useUiMessages(UNSAVED_MESSAGES_EN);
 
   return (
     <AlertDialog
@@ -72,7 +75,7 @@ export function LeaveConfirm(props: { ask: LeaveAsk }): JSX.Element {
           <AlertDialogDescription>{messages.unsavedLeaveDescription(props.ask.names())}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{messages.unsavedStay}</AlertDialogCancel>
+          <AlertDialogCancel>{unsaved.unsavedStay}</AlertDialogCancel>
           <AlertDialogAction variant="destructive" action={props.ask.leave}>
             {messages.unsavedLeave}
           </AlertDialogAction>

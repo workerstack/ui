@@ -1,4 +1,5 @@
 import { createTextRules, isInputElement, type RefLike } from "../../internal/index.ts";
+import { VALIDITY_MESSAGES_EN } from "../../internal/validity.messages.ts";
 import { useUiMessages } from "../provider/index.ts";
 import { inputOnLoneChange, type LoneChange } from "./input-autofill.ts";
 
@@ -33,7 +34,7 @@ function listen(element: HTMLInputElement, hooks: { relay: LoneChange; sync: () 
  * the consumer's `onInput` and `onChange` stay theirs.
  */
 export function createInputRules(props: InputRulesProps): (element: HTMLInputElement | null) => void {
-  const messages = useUiMessages();
+  const messages = useUiMessages(VALIDITY_MESSAGES_EN);
   const relay = inputOnLoneChange();
 
   const rules = createTextRules(props, isInputElement, messages);

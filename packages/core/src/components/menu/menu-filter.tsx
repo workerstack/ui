@@ -1,10 +1,12 @@
 import type { JSX } from "@solidjs/web";
 import { omit, Show } from "solid-js";
 
+import { NO_RESULTS_MESSAGES_EN } from "../../internal/no-results.messages.ts";
 import { callRef } from "../../internal/ref.ts";
 import { cn } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
 import { LIST_CONTEXT, useFilterState } from "./menu-filter-state.ts";
+import { MENU_FILTER_MESSAGES_EN } from "./menu-filter.messages.ts";
 import { wireFilterInput } from "./wire-filter-input.ts";
 
 /** The input's props, minus the ones the filter owns. */
@@ -23,7 +25,7 @@ export type MenuFilterProps = Omit<
  * Its accessible name and placeholder default to the provider's `menuFilter` string.
  */
 export function MenuFilter(props: MenuFilterProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(MENU_FILTER_MESSAGES_EN);
   const filter = useFilterState();
   const rest = omit(props, "class", "ref");
   let input: HTMLInputElement | undefined;
@@ -79,7 +81,7 @@ export type MenuEmptyProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "class"> &
 
 /** Shows while no item matches the filter: its children, or the provider's `noResults` string. */
 export function MenuEmpty(props: MenuEmptyProps): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(NO_RESULTS_MESSAGES_EN);
   const filter = useFilterState();
   const rest = omit(props, "children", "class");
 

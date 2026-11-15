@@ -7,6 +7,7 @@ import { useUiMessages } from "../../../provider/index.ts";
 import { FORM_ARRAY_ITEMS_CONTEXT, useFormArray, type FormArrayState } from "./array-context.ts";
 import { arrayDndMessages } from "./array-dnd-messages.ts";
 import { itemAt } from "./array-focus.ts";
+import { ARRAY_MESSAGES_EN } from "./array.messages.ts";
 
 /** What `formArray.Items` takes. */
 export type FormArrayItemsProps = {
@@ -37,7 +38,7 @@ function applyMove(array: FormArrayState, list: () => HTMLElement | undefined, m
 
 /** One item's group, named by its position. */
 function ItemGroup(props: { index: number; items: FormArrayItemsProps }): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(ARRAY_MESSAGES_EN);
 
   return (
     <fieldset
@@ -61,7 +62,7 @@ export function FormArrayItems(props: FormArrayItemsProps): JSX.Element {
   let list: HTMLElement | undefined;
 
   const sortable = createSortable({
-    messages: arrayDndMessages(useUiMessages()),
+    messages: arrayDndMessages(useUiMessages(ARRAY_MESSAGES_EN)),
     onMove: (move) => applyMove(array, () => list, move),
     positional: true,
   });

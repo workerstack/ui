@@ -34,7 +34,9 @@ const NOT_IN_BUTTON = [
   "internal/modal.js",
   "internal/option-items.js",
   "utils/text-hygiene/text-hygiene.js",
-  "components/provider/translated-messages.js",
+  "components/provider/ui-messages.js",
+  "internal/validity.messages.js",
+  "components/combobox/combobox-create.messages.js",
 ];
 
 let dist = "";

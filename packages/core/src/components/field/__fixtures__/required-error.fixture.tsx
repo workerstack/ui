@@ -1,12 +1,13 @@
 import type { JSX } from "@solidjs/web";
 
 import { createRequiredText } from "../../../internal/index.ts";
+import { VALIDITY_MESSAGES_EN } from "../../../internal/validity.messages.ts";
 import { useUiMessages } from "../../provider/index.ts";
 import { Field, FieldError, FieldLabel } from "../index.ts";
 
 /** A required native text box in a Field: its rules speak the UI's words. */
 export function RequiredBox(props: { defaultValue?: string }): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(VALIDITY_MESSAGES_EN);
   const rules = createRequiredText({ required: true }, messages);
 
   return (

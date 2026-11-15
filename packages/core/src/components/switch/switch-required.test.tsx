@@ -1,8 +1,8 @@
 import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
 import { afterEach, expect, it, vi } from "vitest";
 
+import { VALIDITY_MESSAGES_EN as M } from "../../internal/validity.messages.ts";
 import { required } from "../../test/required.ts";
-import { UI_MESSAGES_EN as M } from "../provider/index.ts";
 import { RequiredSwitch } from "./__fixtures__/required.fixture.tsx";
 
 afterEach(cleanup);

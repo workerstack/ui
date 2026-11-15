@@ -4,6 +4,7 @@ import { Show } from "solid-js";
 import { FieldError, type FieldErrorProps } from "../../../field/index.ts";
 import { useUiMessages } from "../../../provider/index.ts";
 import type { BoundField } from "./bound-field-types.ts";
+import { FIELD_MODULE_ERROR_MESSAGES_EN } from "./field-module-error.messages.ts";
 
 const CHECKING = "flex items-center gap-1.5 text-sm leading-normal text-muted-foreground";
 const RING = "size-3 animate-spin rounded-full border-2 border-current border-t-transparent motion-reduce:animate-none";
@@ -24,7 +25,7 @@ type ModuleErrorSource = {
  * described by them; "Checking…" in their place while an async check runs.
  */
 export function ModuleError(source: ModuleErrorSource): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(FIELD_MODULE_ERROR_MESSAGES_EN);
 
   return (
     <>

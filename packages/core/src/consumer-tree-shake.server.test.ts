@@ -6,6 +6,17 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { exportMap, publicFolders } from "../scripts/export-map.ts";
 import { STYLES } from "../scripts/theme.constants.ts";
+import { ARRAY_MESSAGES_EN } from "./components/form/tanstack/array/array.messages.ts";
+import { FORM_DIALOG_MESSAGES_EN } from "./components/form/tanstack/dialog/dialog.messages.ts";
+import { FIELD_MODULE_ERROR_MESSAGES_EN } from "./components/form/tanstack/form/field-module-error.messages.ts";
+import { FORM_ERROR_SUMMARY_MESSAGES_EN } from "./components/form/tanstack/form/form-error-summary.messages.ts";
+import { FORM_DRAFT_NOTICE_MESSAGES_EN } from "./components/form/tanstack/unsaved/form-draft-notice.messages.ts";
+import { FORM_SAVE_BAR_MESSAGES_EN } from "./components/form/tanstack/unsaved/form-save-bar.messages.ts";
+import { FORM_UNSAVED_STATUS_MESSAGES_EN } from "./components/form/tanstack/unsaved/form-unsaved-status.messages.ts";
+import { FORM_UNSAVED_MESSAGES_EN } from "./components/form/tanstack/unsaved/form-unsaved.messages.ts";
+import { LEAVE_CONFIRM_MESSAGES_EN } from "./components/form/tanstack/unsaved/leave-confirm.messages.ts";
+import { UNSAVED_MESSAGES_EN } from "./components/form/tanstack/unsaved/unsaved.messages.ts";
+import type { UiMessages } from "./components/provider/ui-messages.ts";
 import { buildPackage } from "./test/build-package.ts";
 import { reach, SRC } from "./test/bundle.ts";
 import { consume as bundleAsApp, specifier } from "./test/consume.ts";
@@ -64,6 +75,33 @@ const NAMED: NamedCase[] = [
   ["utils/cn", "cnState", "utils/cn/cn.ts"],
 ];
 
+/** Shorter strings ("Cancel", "Save") are words other parts say too, so they prove nothing. */
+const MIN_LENGTH = 6;
+
+/** The plain strings of an English object that are long enough to be telling. */
+function longTexts(english: Partial<UiMessages>): string[] {
+  return Object.values(english).filter((text): text is string => typeof text === "string" && text.length > MIN_LENGTH);
+}
+
+/** The English strings only the form layer shows: each plain string, and a phrase from each function's text. */
+const FORM_STRINGS: string[] = [
+  ARRAY_MESSAGES_EN,
+  FIELD_MODULE_ERROR_MESSAGES_EN,
+  FORM_DIALOG_MESSAGES_EN,
+  FORM_DRAFT_NOTICE_MESSAGES_EN,
+  FORM_ERROR_SUMMARY_MESSAGES_EN,
+  FORM_SAVE_BAR_MESSAGES_EN,
+  FORM_UNSAVED_MESSAGES_EN,
+  FORM_UNSAVED_STATUS_MESSAGES_EN,
+  LEAVE_CONFIRM_MESSAGES_EN,
+  UNSAVED_MESSAGES_EN,
+]
+  .flatMap(longTexts)
+  .concat(["Move item", "Restored your unsaved changes", "will be lost.", "Saved on this device"]);
+
+/** The English of other parts, which a Button has no use for. */
+const NOT_BUTTONS: string[] = ["Choose an option.", "Type to create an option", "(optional)", "No results", "Clear"];
+
 const PLAIN = publicFolders(SRC).filter((folder) => !folder.startsWith(FORM));
 
 describe("an app's build through the export keys", () => {
@@ -94,5 +132,24 @@ describe("an app's build through the export keys", () => {
     const { code } = await consume(`export * from ${JSON.stringify(specifier(`./${folder}`))};\n`);
 
     expect(TANSTACK.test(code)).toBe(false);
+  });
+});
+
+describe("an app's English strings", () => {
+  it("keeps Button's own string and no other part's, for a Button alone", async () => {
+    const { code } = await consume(
+      `import { Button } from ${JSON.stringify(specifier("./components/button"))};\nconsole.info(Button);\n`,
+    );
+
+    expect({
+      loading: code.includes("Loading"),
+      others: [...NOT_BUTTONS, ...FORM_STRINGS].filter((text) => code.includes(text)),
+    }).toStrictEqual({ loading: true, others: [] });
+  });
+
+  it.each(PLAIN)("%s, bundled whole, holds no English string of the form layer", async (folder) => {
+    const { code } = await consume(`export * from ${JSON.stringify(specifier(`./${folder}`))};\n`);
+
+    expect(FORM_STRINGS.filter((text) => code.includes(text))).toStrictEqual([]);
   });
 });

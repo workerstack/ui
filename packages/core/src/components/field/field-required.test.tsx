@@ -3,8 +3,8 @@ import { flush } from "solid-js";
 import { afterEach, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 
+import { VALIDITY_MESSAGES_EN as M } from "../../internal/validity.messages.ts";
 import { inputElement, mounted, type } from "../../test/dom.ts";
-import { UI_MESSAGES_EN as M } from "../provider/index.ts";
 import { RequiredBox, RequiredForm } from "./__fixtures__/required-error.fixture.tsx";
 
 afterEach(cleanup);

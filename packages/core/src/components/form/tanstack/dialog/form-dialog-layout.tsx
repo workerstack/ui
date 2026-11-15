@@ -5,6 +5,7 @@ import { Button } from "../../../button/index.ts";
 import { useUiMessages } from "../../../provider/index.ts";
 import type { FormFor } from "../form/form-field.ts";
 import { SubmitButton } from "../form/form-parts.tsx";
+import { FORM_DIALOG_MESSAGES_EN } from "./dialog.messages.ts";
 import { useCloseGuard, type CloseGuard } from "./form-close-guard.ts";
 import type { FormDialogProps } from "./form-dialog-props.ts";
 
@@ -32,7 +33,7 @@ export type FormDialogLayoutProps<TFormData> = Pick<
 
 /** What sits inside the Form: header, fields and footer. Must be rendered inside a Form. */
 export function FormDialogLayout<TFormData>(props: FormDialogLayoutProps<TFormData>): JSX.Element {
-  const messages = useUiMessages();
+  const messages = useUiMessages(FORM_DIALOG_MESSAGES_EN);
 
   useCloseGuard(props.guard);
 

@@ -2,9 +2,9 @@ import { cleanup, render, screen } from "@solidjs/testing-library";
 import { flush } from "solid-js";
 import { afterEach, expect, it } from "vitest";
 
+import { VALIDITY_MESSAGES_EN as M } from "../../internal/validity.messages.ts";
 import { mounted, type } from "../../test/dom.ts";
 import { required } from "../../test/required.ts";
-import { UI_MESSAGES_EN as M } from "../provider/index.ts";
 import { LimitedNotes, NotesTextarea, RequiredNotes } from "./__fixtures__/textarea.fixture.tsx";
 
 afterEach(cleanup);

@@ -2,6 +2,7 @@ import type { JSX } from "@solidjs/web";
 import { createContext, createSignal, onSettled, useContext, type Context } from "solid-js";
 
 import { useUiMessages } from "../provider/index.ts";
+import { FIELD_MARKS_MESSAGES_EN } from "./field-marks.messages.ts";
 
 /**
  * Which fields a form marks on their labels: required ones with an asterisk, optional ones with
@@ -146,7 +147,7 @@ export type MarkState = {
 export function useMarkAttributes(own?: () => boolean | undefined): (state?: MarkState) => MarkAttributes {
   const marks = useContext(FIELD_MARKS_CONTEXT);
   const field = useContext(FIELD_REQUIRED_CONTEXT);
-  const messages = useUiMessages();
+  const messages = useUiMessages(FIELD_MARKS_MESSAGES_EN);
 
   return (state) => {
     const given = own?.();

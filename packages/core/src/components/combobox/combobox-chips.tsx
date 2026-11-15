@@ -10,6 +10,7 @@ import { omit, type ComponentProps } from "solid-js";
 import { withAfter, withBefore } from "../../internal/index.ts";
 import { cn, cnState } from "../../utils/cn/index.ts";
 import { useUiMessages } from "../provider/index.ts";
+import { COMBOBOX_CHIPS_MESSAGES_EN } from "./combobox-chips.messages.ts";
 import { ComboboxColorDot } from "./combobox-dot.tsx";
 import { BARE_INPUT, CHIPS_BOX, ICON_BUTTON } from "./combobox-styles.ts";
 
@@ -33,7 +34,7 @@ export type ComboboxChipProps<T = string> = Parameters<typeof ComboboxChipPart<T
  */
 export function ComboboxChip<T = string>(props: ComboboxChipProps<T>): JSX.Element {
   const rest = omit(props, "class", "children");
-  const messages = useUiMessages();
+  const messages = useUiMessages(COMBOBOX_CHIPS_MESSAGES_EN);
 
   return (
     <ComboboxChipPart<T>
