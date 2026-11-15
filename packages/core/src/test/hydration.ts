@@ -49,14 +49,15 @@ function hydrationWarnings(run: () => void): string[] {
 
   try {
     run();
+
+    // Read before the restore: vitest's mockRestore clears the calls.
+    return [...warn.mock.calls, ...error.mock.calls]
+      .map((args) => args.map(String).join(" "))
+      .filter((message) => HYDRATION_MESSAGE.test(message));
   } finally {
     warn.mockRestore();
     error.mockRestore();
   }
-
-  return [...warn.mock.calls, ...error.mock.calls]
-    .map((args) => args.map(String).join(" "))
-    .filter((message) => HYDRATION_MESSAGE.test(message));
 }
 
 /**

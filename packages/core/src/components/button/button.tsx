@@ -55,8 +55,9 @@ function ButtonBody(props: { busy: boolean; children: JSX.Element }): JSX.Elemen
  */
 export function Button(props: ButtonProps): JSX.Element {
   const rest = omit(props, "class", "variant", "size", "inlineSize", "loading", "disclosure", "disabled", "children");
-  const chevron = <span data-icon="chevron" aria-hidden="true" class={CHEVRON} />;
-  const content = withAfter<ButtonState>(props.children, props.disclosure === true ? chevron : null);
+  // Built only when shown: a hidden chevron takes a hydration key the server's HTML doesn't carry.
+  const chevron = props.disclosure === true ? <span data-icon="chevron" aria-hidden="true" class={CHEVRON} /> : null;
+  const content = withAfter<ButtonState>(props.children, chevron);
 
   return (
     <ButtonPart
