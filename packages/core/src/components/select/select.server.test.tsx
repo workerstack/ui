@@ -1,7 +1,7 @@
+import { renderServer, tag, tags, text } from "@workerstack/testing/web/solid";
 import { For } from "solid-js";
 import { expect, it } from "vitest";
 
-import { renderServer, slot, slots, text } from "../../test/server.ts";
 import { Field, FieldLabel } from "../field/index.ts";
 import { roles } from "./__fixtures__/role-select.fixture.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./index.ts";
@@ -37,14 +37,14 @@ it("Select on the server renders a closed, labelled combobox with the placeholde
     </Field>
   ));
 
-  const trigger = slot(html, "select-trigger");
+  const trigger = tag(html, { "data-slot": "select-trigger" });
   expect(trigger.attrs.role).toBe("combobox");
   expect(trigger.attrs["aria-expanded"]).toBe("false");
-  expect(trigger.attrs["aria-labelledby"]).toBe(slot(html, "field-label").attrs.id);
-  expect(slot(html, "select-value").attrs).toHaveProperty("data-placeholder");
+  expect(trigger.attrs["aria-labelledby"]).toBe(tag(html, { "data-slot": "field-label" }).attrs.id);
+  expect(tag(html, { "data-slot": "select-value" }).attrs).toHaveProperty("data-placeholder");
   expect(text(html)).toContain("Pick a role");
-  expect(slots(html, "select-content")).toStrictEqual([]);
-  expect(slots(html, "select-item")).toStrictEqual([]);
+  expect(tags(html, { "data-slot": "select-content" })).toStrictEqual([]);
+  expect(tags(html, { "data-slot": "select-item" })).toStrictEqual([]);
 });
 
 it("Select on the server renders the selected item's label from `items`, and its value in the form input", () => {
@@ -58,8 +58,8 @@ it("Select on the server renders the selected item's label from `items`, and its
   ));
 
   expect(text(html)).toContain("Editor");
-  expect(slot(html, "select-value").attrs).not.toHaveProperty("data-placeholder");
-  expect(slot(html, "select-form-input").attrs.value).toBe("editor");
+  expect(tag(html, { "data-slot": "select-value" }).attrs).not.toHaveProperty("data-placeholder");
+  expect(tag(html, { "data-slot": "select-form-input" }).attrs.value).toBe("editor");
 });
 
 // Items given as children only exist once they mount, so the server shows the raw value until
@@ -89,7 +89,7 @@ it("Select on the server renders a read-only trigger that says so and shows the 
     </Select>
   ));
 
-  const trigger = slot(html, "select-trigger");
+  const trigger = tag(html, { "data-slot": "select-trigger" });
   expect(trigger.attrs["aria-readonly"]).toBe("true");
   expect(trigger.attrs["data-size"]).toBe("sm");
   expect(text(html)).toContain("Editor");

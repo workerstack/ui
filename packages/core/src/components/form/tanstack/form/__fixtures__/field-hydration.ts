@@ -2,7 +2,7 @@ import type { JSX } from "@solidjs/web";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch, type MismatchKind } from "../../../../../test/hydration.ts";
+import { hydrator } from "@workerstack/testing/web/solid";
 
 // The hydration tests every control field keeps, each over a fixture module of the profile form
 // around its field: filled and editable, filled and read-only, and blank for a submit.
@@ -27,8 +27,6 @@ export type HydrationCase = {
   fixtures: FieldHydrationFixtures;
   /** The error a submit of the blank field shows. */
   error: string;
-  /** What the editable field is checked for: a field whose content part warns on the server checks the rest (UISDK-1). */
-  kinds?: MismatchKind[];
 };
 
 /** Registers the field's editable, read-only and binding hydration tests. */
@@ -36,11 +34,13 @@ export function testFieldHydration(c: HydrationCase): void {
   const hydrate = hydrator(c.fixture, c.fixtures);
 
   it(`hydrating ${c.title} claims the server's nodes and adds none`, async () => {
-    expect(mismatch(await hydrate("Editable"), c.kinds)).toStrictEqual({});
+    const { mismatches } = await hydrate("Editable");
+    expect(mismatches).toStrictEqual({});
   });
 
   it(`hydrating ${c.title}'s View in a read-only form adds nothing the server didn't render`, async () => {
-    expect(mismatch(await hydrate("ReadOnly"))).toStrictEqual({});
+    const { mismatches } = await hydrate("ReadOnly");
+    expect(mismatches).toStrictEqual({});
   });
 
   it(`hydrating ${c.title} binds its field: a submit shows its error`, async () => {

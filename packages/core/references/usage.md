@@ -97,10 +97,10 @@ Every component has four test files next to it:
 | `button.server.test.tsx` | `server` | Node, Solid compiled for SSR | `renderToString` output: markup, ARIA, ids, classes, Solid warnings |
 | `button.hydration.test.tsx` | `hydration` | HTML rendered in Node, hydrated in Chromium | The client claims every server node, with no hydration warnings, no replaced or added elements, and server ids kept; the hydrated component then works |
 
-Components that tests render (fixtures) always live in the component's `__fixtures__/` folder, never inline in a test file: `src/components/dialog/__fixtures__/share-dialog.fixture.tsx` is shared by the dialog's tests, and `__fixtures__/dialog.hydration.fixture.tsx` is what both sides of the hydration test render. On the server it goes through the `serverRender` browser command (`vitest.hydration.commands.ts`); in the browser it is compiled hydratable. Fixtures aren't published.
+Components that tests render (fixtures) always live in the component's `__fixtures__/` folder, never inline in a test file: `src/components/dialog/__fixtures__/share-dialog.fixture.tsx` is shared by the dialog's tests, and `__fixtures__/dialog.hydration.fixture.tsx` is what both sides of the hydration test render. On the server it goes through the `serverRender` browser command that `solidHydration()` from `@workerstack/testing/web/solid/vitest` adds; in the browser it is compiled hydratable. Fixtures aren't published.
 
 Run one with `bun run test:dom`, `test:browser`, `test:server` or `test:hydration`. Each project is its own `vitest.*.config.ts` with its own `solid()` plugin.
 
-Helpers are in `src/test/`: `dom.ts` (`mounted`, `type`), `browser.ts` (`settled`, `token`, `style`, `rect`), `server.ts` (`renderServer`, `slot`, `slots`, `tags`, `text`), `hydration.ts` (`serverThenHydrate`).
+Helpers are in `src/test/`: `dom.ts` (`mounted`, `type`), `browser.ts` (`settled`, `token`, `style`, `rect`). The server, hydration, warning and pointer helpers come from `@workerstack/testing`: `/web/solid` (`renderServer`, `tag`, `tags`, `text`, `hydrator`, `recordWarnings`) and `/web/dom` (`pointer`).
 
 A test marked `it.fails` pins a known UI SDK bug. Each one is written up, with its root cause and a fix idea, in [`docs/upstream/ui-sdk.md`](../../docs/upstream/ui-sdk.md), ready for a PR. When an upgrade fixes one, its test starts failing: drop the `.fails` and mark the finding fixed.

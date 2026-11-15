@@ -1,9 +1,8 @@
 import { render } from "@solidjs/testing-library";
 import { createField, createForm } from "@tanstack/solid-form";
+import { recordWarnings } from "@workerstack/testing/web/solid";
 import { createSignal, flush, For } from "solid-js";
 import { expect, it } from "vitest";
-
-import { collectWarnings } from "../../../../test/warnings.ts";
 
 // Pins for TanStack's own bugs (docs/upstream/tanstack-form.md). Each `it.fails` passes once fixed.
 
@@ -26,7 +25,7 @@ function RawRows() {
 }
 
 it.fails("createField reads its options without a Solid warning when a field's name is reactive (TF-5)", () => {
-  const { warnings } = collectWarnings(() => {
+  const { warnings } = recordWarnings(() => {
     render(() => <RawRows />);
     flush();
   });
@@ -44,7 +43,7 @@ function ReactiveDefaults(props: { tags: () => string[] }) {
 it.fails("useStore follows a store change made inside an effect without a Solid warning (TF-4)", () => {
   const [tags, setTags] = createSignal(["a"], { ownedWrite: true });
 
-  const { warnings } = collectWarnings(() => {
+  const { warnings } = recordWarnings(() => {
     render(() => <ReactiveDefaults tags={tags} />);
     flush();
     setTags(["b"]);

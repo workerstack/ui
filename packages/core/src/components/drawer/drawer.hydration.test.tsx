@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { DrawerFixture, DrawerOpenFixture } from "./__fixtures__/drawer.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/drawer.hydration.fixture.tsx", import.meta.url), {
@@ -14,7 +14,8 @@ function visibleDrawer(): Element | undefined {
 }
 
 it("hydrating Drawer claims the server's nodes without warnings (closed)", async () => {
-  expect(mismatch(await hydrate("DrawerFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("DrawerFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Drawer opens from the server's trigger", async () => {
@@ -25,7 +26,8 @@ it("hydrating Drawer opens from the server's trigger", async () => {
 });
 
 it("hydrating Drawer claims the server's nodes without warnings (open)", async () => {
-  expect(mismatch(await hydrate("DrawerOpenFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("DrawerOpenFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Drawer shows an open drawer that closes on Escape", async () => {

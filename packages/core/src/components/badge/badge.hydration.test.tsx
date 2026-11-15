@@ -1,14 +1,15 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import { BadgeFixture } from "./__fixtures__/badge.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/badge.hydration.fixture.tsx", import.meta.url), { BadgeFixture });
 
 it("hydrating Badge claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("BadgeFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("BadgeFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Badge updates its text on the server's span", async () => {

@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../../../test/hydration.ts";
 import { ClosedProfile, OpenProfile } from "./__fixtures__/form-dialog.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/form-dialog.hydration.fixture.tsx", import.meta.url), {
@@ -10,11 +10,13 @@ const hydrate = hydrator(new URL("./__fixtures__/form-dialog.hydration.fixture.t
 });
 
 it("hydrating FormDialog adds nothing the server didn't render (closed)", async () => {
-  expect(mismatch(await hydrate("ClosedProfile"))).toStrictEqual({});
+  const { mismatches } = await hydrate("ClosedProfile");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating FormDialog adds nothing the server didn't render (open)", async () => {
-  expect(mismatch(await hydrate("OpenProfile"))).toStrictEqual({});
+  const { mismatches } = await hydrate("OpenProfile");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating FormDialog opens from the server's trigger, and Cancel closes it", async () => {

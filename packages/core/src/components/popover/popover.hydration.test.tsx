@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { PopoverFixture, PopoverOpenFixture } from "./__fixtures__/popover.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/popover.hydration.fixture.tsx", import.meta.url), {
@@ -14,7 +14,8 @@ function shown(): boolean {
 }
 
 it("hydrating Popover claims the server's nodes without warnings (closed)", async () => {
-  expect(mismatch(await hydrate("PopoverFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("PopoverFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Popover opens from the server's trigger", async () => {
@@ -25,7 +26,8 @@ it("hydrating Popover opens from the server's trigger", async () => {
 });
 
 it("hydrating Popover claims the server's nodes without warnings (open)", async () => {
-  expect(mismatch(await hydrate("PopoverOpenFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("PopoverOpenFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Popover makes an open popover shown and closable", async () => {

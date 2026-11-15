@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { mismatch, hydrator } from "../../test/hydration.ts";
 import { TextareaFixture } from "./__fixtures__/textarea.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/textarea.hydration.fixture.tsx", import.meta.url), {
@@ -19,9 +19,8 @@ function box(): HTMLTextAreaElement {
 }
 
 it("hydrating Textarea claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("TextareaFixture"), ["added", "serverWarnings", "warnings", "replaced"])).toStrictEqual(
-    {},
-  );
+  const { mismatches } = await hydrate("TextareaFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Textarea keeps the server's value and reports typing", async () => {

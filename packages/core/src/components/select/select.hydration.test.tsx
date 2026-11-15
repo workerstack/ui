@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import {
   SelectFixture,
@@ -19,8 +19,6 @@ const hydrate = hydrator(new URL("./__fixtures__/select.hydration.fixture.tsx", 
   SelectReadOnlyFixture,
 });
 
-const CLIENT_SIDE: Parameters<typeof mismatch>[1] = ["warnings", "replaced", "added"];
-const NOTHING_LOST: Parameters<typeof mismatch>[1] = ["warnings", "replaced"];
 const LISTBOX = /role="listbox"/g;
 const ROLE = { name: "Role" };
 
@@ -40,19 +38,24 @@ function popoverOpen(els: Element[]): Element[] {
 // but not on the server, so hydration adds the closed, hidden popup. Nothing shows or shifts, but
 // the two renders disagree. Drop `.fails` when fixed.
 it.fails("hydrating Select claims the server's nodes and adds none (items as children)", async () => {
-  expect(mismatch(await hydrate("SelectFixture"), CLIENT_SIDE)).toStrictEqual({});
+  const { mismatches } = await hydrate("SelectFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
-it("hydrating Select claims the server's nodes without warnings (items as children)", async () => {
-  expect(mismatch(await hydrate("SelectFixture"), NOTHING_LOST)).toStrictEqual({});
+// UISDK-3 adds the closed popup; nothing else differs.
+it("hydrating Select claims the server's nodes and adds only the closed popup (items as children)", async () => {
+  const { mismatches } = await hydrate("SelectFixture");
+  expect(mismatches).toStrictEqual({ added: ["div[data-slot=select-content]"] });
 });
 
 it("hydrating Select claims the server's nodes without warnings (`items`)", async () => {
-  expect(mismatch(await hydrate("SelectItemsFixture"), CLIENT_SIDE)).toStrictEqual({});
+  const { mismatches } = await hydrate("SelectItemsFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Select claims the server's nodes without warnings (`items` and a SelectContent)", async () => {
-  expect(mismatch(await hydrate("SelectItemsContentFixture"), CLIENT_SIDE)).toStrictEqual({});
+  const { mismatches } = await hydrate("SelectItemsContentFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Select opens and picks from the server's trigger", async () => {
@@ -88,12 +91,13 @@ it.fails("hydrating Select gets one listbox from the server for an open select",
 });
 
 it.fails("hydrating Select claims the server's nodes of an open select", async () => {
-  expect(mismatch(await hydrate("SelectOpenFixture"), NOTHING_LOST)).toStrictEqual({});
+  const { mismatches } = await hydrate("SelectOpenFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Select makes an open select one open popup whose items work", async () => {
   const hydrated = await hydrate("SelectOpenFixture");
-  expect(hydrated.warnings).toStrictEqual([]);
+  expect(hydrated.mismatches.warnings).toStrictEqual(undefined);
   await vi.waitFor(() => expect(popoverOpen(listboxes())).toHaveLength(1));
   expect(listboxes()).toHaveLength(1);
   await userEvent.click(page.getByRole("option", { name: "Viewer" }));
@@ -102,7 +106,7 @@ it("hydrating Select makes an open select one open popup whose items work", asyn
 
 it("hydrating a read-only Select claims the server's nodes and stays closed on click", async () => {
   const hydrated = await hydrate("SelectReadOnlyFixture");
-  expect(mismatch(hydrated, CLIENT_SIDE)).toStrictEqual({});
+  expect(hydrated.mismatches).toStrictEqual({});
   await expect.element(page.getByRole("combobox", ROLE)).toHaveTextContent("Editor");
   await userEvent.click(page.getByRole("combobox", ROLE));
   expect(visible(listboxes())).toHaveLength(0);

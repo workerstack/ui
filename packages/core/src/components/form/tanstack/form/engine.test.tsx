@@ -1,10 +1,10 @@
 import { cleanup, render } from "@solidjs/testing-library";
 import { createForm, useStore } from "@tanstack/solid-form";
+import { recordWarnings } from "@workerstack/testing/web/solid";
 import { createSignal, flush, For, Show } from "solid-js";
 import { afterEach, expect, it } from "vitest";
 
 import { mounted } from "../../../../test/dom.ts";
-import { collectWarnings } from "../../../../test/warnings.ts";
 import { captured, deferred, settle, type Captured } from "./__fixtures__/form-testing.ts";
 import { formText } from "./__fixtures__/form-text.fixture.tsx";
 import { AccountForm } from "./__fixtures__/form.fixture.tsx";
@@ -25,7 +25,7 @@ it("Form unmounts with its subscribed fields and logs no Solid owner warning", a
   await mounted();
   await settle();
 
-  const { warnings } = collectWarnings(() => {
+  const { warnings } = recordWarnings(() => {
     unmount();
     flush();
   });
@@ -51,7 +51,7 @@ it("Form removes a subscribed field while it stays mounted and logs no Solid own
   });
   await mounted();
 
-  const { warnings } = collectWarnings(() => {
+  const { warnings } = recordWarnings(() => {
     setShown(false);
     flush();
   });
@@ -81,7 +81,7 @@ it("formText.Root unmounts an array row's field when its row is removed, without
   form.get().pushFieldValue("tags", "research");
   flush();
 
-  const { warnings } = collectWarnings(() => {
+  const { warnings } = recordWarnings(() => {
     void form.get().removeFieldValue("tags", 0);
     flush();
   });
@@ -118,7 +118,7 @@ it("formText.Root mounts a late field and a pushed array row's field without war
   const [isShown, setShown] = createSignal(false, { ownedWrite: true });
   const form = captured<ReturnType<typeof tagsForm>>();
 
-  const { warnings } = collectWarnings(() => {
+  const { warnings } = recordWarnings(() => {
     render(() => <LateTagsForm isShown={isShown} form={form} />);
     flush();
     setShown(true);

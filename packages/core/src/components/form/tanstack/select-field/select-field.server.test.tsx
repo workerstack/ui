@@ -1,4 +1,5 @@
-import { text } from "../../../../test/server.ts";
+import { text } from "@workerstack/testing/web/solid";
+
 import { testFieldServer } from "../form/__fixtures__/field-server.tsx";
 import { RoleField } from "./__fixtures__/profile-fields.fixture.tsx";
 

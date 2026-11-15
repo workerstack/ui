@@ -1,6 +1,6 @@
+import { renderServer, tag, text } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { renderServer, slot, text } from "../../test/server.ts";
 import { FieldsetLegend } from "../field/index.ts";
 import { CheckboxGroupView, CheckboxView } from "./index.ts";
 
@@ -27,12 +27,12 @@ it("CheckboxGroupView on the server joins the checked labels under its legend", 
   ));
 
   expect(text(html)).toBe("Notify bySMS, Email");
-  expect(slot(html, "view").name).toBe("output");
+  expect(tag(html, { "data-slot": "view" }).name).toBe("output");
   expect(warnings).toStrictEqual([]);
 });
 
 it("CheckboxGroupView on the server shows the empty marker for nothing checked", () => {
   const { html } = renderServer(() => <CheckboxGroupView value={[]} />);
-  expect(slot(html, "view").attrs).toHaveProperty("data-empty");
+  expect(tag(html, { "data-slot": "view" }).attrs).toHaveProperty("data-empty");
   expect(text(html)).toBe("—");
 });

@@ -1,7 +1,7 @@
+import { pointer } from "@workerstack/testing/web/dom";
 import { afterEach, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 
-import { centerOf, createPointer } from "../../../test/pointer.ts";
 import { mountBoard } from "../__fixtures__/board-page.fixture.tsx";
 import { DIRECTIONS, NEXT_KEY, unmount } from "../__fixtures__/mount.fixture.ts";
 import { byTestId, live, order } from "../__fixtures__/page.fixture.ts";
@@ -37,13 +37,13 @@ it.each(DIRECTIONS)("Board scrolls sideways near its inline end (%s)", async (di
   await mountBoard(dir, { narrow: true });
   const scroller = byTestId("board");
   const box = scroller.getBoundingClientRect();
-  const from = centerOf(byTestId("card-a0-1"));
-  const pointer = createPointer();
-  await pointer.lift(from);
+  const from = pointer.centerOf(byTestId("card-a0-1"));
+  const mouse = pointer.create();
+  await mouse.lift(from);
   // Overflow runs toward the inline end: right in LTR, left (negative scrollLeft) in RTL.
-  await pointer.move({ x: dir === "rtl" ? box.x + 6 : box.right - 6, y: from.y }, 12);
+  await mouse.move({ x: dir === "rtl" ? box.x + 6 : box.right - 6, y: from.y }, 12);
 
   await expect.poll(() => Math.abs(scroller.scrollLeft)).toBeGreaterThan(0);
   await userEvent.keyboard("{Escape}");
-  pointer.up();
+  mouse.up();
 });

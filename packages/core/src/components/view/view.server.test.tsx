@@ -1,6 +1,6 @@
+import { renderServer, tag, text } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { renderServer, slot, text } from "../../test/server.ts";
 import { Field, FieldLabel } from "../field/index.ts";
 import { PRIORITY } from "./__fixtures__/priority.fixture.ts";
 import { BooleanView, ChoiceView, View } from "./index.ts";
@@ -13,8 +13,8 @@ it("View on the server renders an output the field's label names, with its text 
     </Field>
   ));
 
-  const label = slot(html, "field-label");
-  const output = slot(html, "view");
+  const label = tag(html, { "data-slot": "field-label" });
+  const output = tag(html, { "data-slot": "view" });
   expect(output.name).toBe("output");
   expect(output.attrs["aria-labelledby"]).toBe(label.attrs.id);
   expect(label.attrs.for).toBe(output.attrs.id);
@@ -24,7 +24,7 @@ it("View on the server renders an output the field's label names, with its text 
 
 it("View on the server shows the empty marker, marked empty", () => {
   const { html, warnings } = renderServer(() => <View />);
-  expect(slot(html, "view").attrs).toHaveProperty("data-empty");
+  expect(tag(html, { "data-slot": "view" }).attrs).toHaveProperty("data-empty");
   expect(text(html)).toBe("—");
   expect(warnings).toStrictEqual([]);
 });

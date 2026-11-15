@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import { TabsFixture, TabsLineFixture } from "./__fixtures__/tabs.hydration.fixture.tsx";
 
@@ -11,11 +11,13 @@ const hydrate = hydrator(new URL("./__fixtures__/tabs.hydration.fixture.tsx", im
 });
 
 it("hydrating Tabs claims the server's nodes without a mismatch", async () => {
-  expect(mismatch(await hydrate("TabsFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("TabsFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Tabs claims the server's nodes without a mismatch (line variant)", async () => {
-  expect(mismatch(await hydrate("TabsLineFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("TabsLineFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Tabs switches tabs from the server's elements", async () => {

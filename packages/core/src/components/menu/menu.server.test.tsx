@@ -1,6 +1,6 @@
+import { renderServer, tag, tags, text } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { renderServer, slot, slots, text } from "../../test/server.ts";
 import {
   Menu,
   MenuCheckboxItem,
@@ -39,10 +39,10 @@ it("Menu on the server renders only a collapsed trigger while closed", () => {
     </Menu>
   ));
 
-  const trigger = slot(html, "menu-trigger");
+  const trigger = tag(html, { "data-slot": "menu-trigger" });
   expect(trigger.attrs["aria-haspopup"]).toBe("menu");
   expect(trigger.attrs["aria-expanded"]).toBe("false");
-  expect(slots(html, "menu-content")).toStrictEqual([]);
+  expect(tags(html, { "data-slot": "menu-content" })).toStrictEqual([]);
 });
 
 it("Menu on the server renders an open menu with its items, styled", () => {
@@ -61,14 +61,14 @@ it("Menu on the server renders an open menu with its items, styled", () => {
     </Menu>
   ));
 
-  const content = slot(html, "menu-content");
+  const content = tag(html, { "data-slot": "menu-content" });
   expect(content.attrs.role).toBe("menu");
   expect(content.attrs.class).toContain("bg-popover");
-  expect(slot(html, "menu-trigger").attrs["aria-controls"]).toBe(content.attrs.id);
-  const items = slots(html, "menu-item");
+  expect(tag(html, { "data-slot": "menu-trigger" }).attrs["aria-controls"]).toBe(content.attrs.id);
+  const items = tags(html, { "data-slot": "menu-item" });
   expect(items.map((item) => item.attrs.role)).toStrictEqual(["menuitem", "menuitem"]);
   expect(items.map((item) => item.attrs["data-variant"])).toStrictEqual(["default", "destructive"]);
-  expect(slot(html, "menu-separator").attrs.class).toContain("bg-border");
+  expect(tag(html, { "data-slot": "menu-separator" }).attrs.class).toContain("bg-border");
   expect(text(html)).toContain("F2");
 });
 
@@ -88,7 +88,10 @@ it("Menu on the server renders checked state and indicators for checkbox and rad
     </Menu>
   ));
 
-  expect(slot(html, "menu-checkbox-item").attrs["aria-checked"]).toBe("true");
-  expect(slots(html, "menu-radio-item").map((item) => item.attrs["aria-checked"])).toStrictEqual(["true", "false"]);
-  expect(slots(html, "menu-item-indicator").length).toBeGreaterThanOrEqual(2);
+  expect(tag(html, { "data-slot": "menu-checkbox-item" }).attrs["aria-checked"]).toBe("true");
+  expect(tags(html, { "data-slot": "menu-radio-item" }).map((item) => item.attrs["aria-checked"])).toStrictEqual([
+    "true",
+    "false",
+  ]);
+  expect(tags(html, { "data-slot": "menu-item-indicator" }).length).toBeGreaterThanOrEqual(2);
 });

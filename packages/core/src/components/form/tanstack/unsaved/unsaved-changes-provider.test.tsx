@@ -1,9 +1,9 @@
 import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
+import { recordWarnings } from "@workerstack/testing/web/solid";
 import { createSignal, flush, Show } from "solid-js";
 import { afterEach, expect, it, vi } from "vitest";
 
 import { inputElement, mounted } from "../../../../test/dom.ts";
-import { collectWarnings } from "../../../../test/warnings.ts";
 import { settle, typeInto } from "../form/__fixtures__/form-testing.ts";
 import { ProfileForm, UnsavedPage } from "./__fixtures__/profile-form.fixture.tsx";
 import { UnsavedChangesProvider } from "./index.ts";
@@ -111,7 +111,7 @@ it("UnsavedChangesProvider forgets a form that unmounts, and FormUnsaved works w
   typeInto(nameBox(0), "Ada");
   expect(unload()).toBe(true);
 
-  const { warnings } = collectWarnings(() => {
+  const { warnings } = recordWarnings(() => {
     setShown(false);
     flush();
   });

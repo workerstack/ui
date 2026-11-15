@@ -16,6 +16,10 @@ export default defineConfig({
         file: "packages/playground/src/styles.css",
         reason: "index.html loads it with a <link>; knip reads no HTML",
       },
+      {
+        dependency: "parse5",
+        reason: "the linked @workerstack/testing needs it; its 0.35.0 on npm does not",
+      },
     ],
   },
   lint: {

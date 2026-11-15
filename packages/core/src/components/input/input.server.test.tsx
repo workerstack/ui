@@ -1,13 +1,13 @@
+import { renderServer, tag, tags } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
 import { required } from "../../test/required.ts";
-import { renderServer, slot, slots } from "../../test/server.ts";
 import { Input, InputClear, InputGroup } from "./index.ts";
 
 it("Input on the server renders the value and its styles", () => {
   const { html, warnings } = renderServer(() => <Input aria-label="Name" defaultValue="Ada" placeholder="Your name" />);
 
-  const input = slot(html, "input");
+  const input = tag(html, { "data-slot": "input" });
   expect(input.name).toBe("input");
   expect(input.attrs.value).toBe("Ada");
   expect(input.attrs.placeholder).toBe("Your name");
@@ -18,12 +18,12 @@ it("Input on the server renders the value and its styles", () => {
 
 it("Input on the server leaves data-filled off an empty input", () => {
   const { html } = renderServer(() => <Input aria-label="Name" />);
-  expect(slot(html, "input").attrs).not.toHaveProperty("data-filled");
+  expect(tag(html, { "data-slot": "input" }).attrs).not.toHaveProperty("data-filled");
 });
 
 it("Input on the server merges the consumer's class over its own", () => {
   const { html } = renderServer(() => <Input aria-label="Name" class="h-12" />);
-  const classes = required(slot(html, "input").attrs.class, "a class").split(" ");
+  const classes = required(tag(html, { "data-slot": "input" }).attrs.class, "a class").split(" ");
   expect(classes).toContain("h-12");
   expect(classes).not.toContain("h-9");
 });
@@ -36,8 +36,8 @@ it("InputGroup on the server renders a group around its input", () => {
     </InputGroup>
   ));
 
-  expect(slot(html, "input-group").attrs.class).toContain("has-[input:focus-visible]:ring-3");
-  expect(slot(html, "input").attrs.value).toBe("solid");
+  expect(tag(html, { "data-slot": "input-group" }).attrs.class).toContain("has-[input:focus-visible]:ring-3");
+  expect(tag(html, { "data-slot": "input" }).attrs.value).toBe("solid");
   expect(warnings).toStrictEqual([]);
 });
 
@@ -51,5 +51,5 @@ it.fails("InputGroup on the server renders the clear button of a filled group", 
     </InputGroup>
   ));
 
-  expect(slots(html, "input-clear")).toHaveLength(1);
+  expect(tags(html, { "data-slot": "input-clear" })).toHaveLength(1);
 });

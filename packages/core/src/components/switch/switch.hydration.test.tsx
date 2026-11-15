@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import { SwitchFixture, SwitchViewFixture } from "./__fixtures__/switch.hydration.fixture.tsx";
 
@@ -11,7 +11,8 @@ const hydrate = hydrator(new URL("./__fixtures__/switch.hydration.fixture.tsx", 
 });
 
 it("hydrating Switch claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("SwitchFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("SwitchFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Switch toggles from the server's node", async () => {
@@ -25,6 +26,7 @@ it("hydrating Switch toggles from the server's node", async () => {
 });
 
 it("hydrating SwitchView claims the server's nodes and keeps its text", async () => {
-  expect(mismatch(await hydrate("SwitchViewFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("SwitchViewFixture");
+  expect(mismatches).toStrictEqual({});
   await expect.element(page.getByRole("status", { name: "Notifications" })).toHaveTextContent("Yes");
 });

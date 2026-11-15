@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../../../test/hydration.ts";
 import { EditableInvites, ReadOnlyInvites } from "./__fixtures__/form-array.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/form-array.hydration.fixture.tsx", import.meta.url), {
@@ -10,11 +10,13 @@ const hydrate = hydrator(new URL("./__fixtures__/form-array.hydration.fixture.ts
 });
 
 it("hydrating formArray adds nothing the server didn't render (editable)", async () => {
-  expect(mismatch(await hydrate("EditableInvites"))).toStrictEqual({});
+  const { mismatches } = await hydrate("EditableInvites");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating formArray adds nothing the server didn't render (read-only)", async () => {
-  expect(mismatch(await hydrate("ReadOnlyInvites"))).toStrictEqual({});
+  const { mismatches } = await hydrate("ReadOnlyInvites");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating formArray keeps the server's items working: Add appends and focuses the new item", async () => {

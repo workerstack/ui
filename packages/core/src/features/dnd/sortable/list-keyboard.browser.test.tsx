@@ -1,7 +1,7 @@
+import { pointer } from "@workerstack/testing/web/dom";
 import { afterEach, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 
-import { beside, drag, frames } from "../../../test/pointer.ts";
 import { ListPage } from "../__fixtures__/list-pages.fixture.tsx";
 import { DIRECTIONS, mount, unmount } from "../__fixtures__/mount.fixture.ts";
 import { byTestId, live, order, outcome } from "../__fixtures__/page.fixture.ts";
@@ -67,7 +67,7 @@ it.each(DIRECTIONS)("a link lifts its item with Space and keeps focus; Enter fol
 
 it.each(DIRECTIONS)("a pointer drag on a link moves its item without following it (%s)", async (dir) => {
   await mount(() => <ListPage />, dir);
-  await drag(byTestId("link-links-a"), beside(byTestId("item-links-c"), "after"));
+  await pointer.drag(byTestId("link-links-a"), { to: pointer.beside(byTestId("item-links-c"), "after") });
 
   await expect.poll(() => order("links")).toBe("b,c,a");
   expect(location.hash).toBe("");
@@ -80,10 +80,10 @@ it.each(DIRECTIONS)("a core list drags by pointer alone and leaves Space to the 
   expect(handle.getAttribute("aria-describedby") ?? "").not.toMatch(/dnd-instructions/);
   handle.focus();
   await userEvent.keyboard(" ");
-  await frames();
+  await pointer.frames();
   expect(byTestId("item-core-a").hasAttribute("data-dnd-keyboard")).toBe(false);
   expect(order("core")).toBe("a,b,c");
-  await drag(handle, beside(byTestId("item-core-c"), "after"));
+  await pointer.drag(handle, { to: pointer.beside(byTestId("item-core-c"), "after") });
   await expect.poll(() => order("core")).toBe("b,c,a");
 });
 
@@ -107,6 +107,6 @@ it.each(DIRECTIONS)("a keyboard drop never takes back focus the user moved (%s)"
   await userEvent.keyboard(" ");
 
   await expect.poll(() => wasMoved).toBe(true);
-  await frames(2);
+  await pointer.frames(2);
   expect(document.activeElement).toBe(byTestId("link-links-c"));
 });

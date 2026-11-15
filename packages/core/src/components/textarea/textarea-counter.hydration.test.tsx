@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { CounterFixture, ViewsFixture } from "./__fixtures__/textarea.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/textarea.hydration.fixture.tsx", import.meta.url), {
@@ -10,7 +10,8 @@ const hydrate = hydrator(new URL("./__fixtures__/textarea.hydration.fixture.tsx"
 });
 
 it("hydrating a Textarea with a counter claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("CounterFixture"), ["serverWarnings", "warnings", "replaced"])).toStrictEqual({});
+  const { mismatches } = await hydrate("CounterFixture");
+  expect(mismatches).toStrictEqual({});
   await expect.element(page.getByText("17/10")).toBeVisible();
 });
 
@@ -22,5 +23,6 @@ it("hydrating a Textarea keeps the counter live", async () => {
 });
 
 it("hydrating TextareaView claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("ViewsFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("ViewsFixture");
+  expect(mismatches).toStrictEqual({});
 });

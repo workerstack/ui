@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { collectWarningsAsync } from "../../../../../test/warnings.ts";
+import { recordWarnings } from "@workerstack/testing/web/solid";
 import { settle, submit } from "./form-testing.ts";
 import type { ProfileField } from "./profile.fixture.ts";
 import { renderProfile } from "./profile-testing.tsx";
@@ -21,7 +21,7 @@ export type WarningsCase = {
 /** Registers the field's editable and read-only warning checks. */
 export function testFieldWarnings(c: WarningsCase): void {
   it(`${c.title} mounts, submits and is fixed with no Solid warning`, async () => {
-    const { warnings } = await collectWarningsAsync(async () => {
+    const { warnings } = await recordWarnings(async () => {
       const { container } = await renderProfile(c.field);
       await submit(container);
       c.fix?.();
@@ -33,7 +33,7 @@ export function testFieldWarnings(c: WarningsCase): void {
   });
 
   it(`${c.title} in a read-only form shows its View with no Solid warning`, async () => {
-    const { warnings } = await collectWarningsAsync(() => renderProfile(c.field, { readOnly: true }));
+    const { warnings } = await recordWarnings(() => renderProfile(c.field, { readOnly: true }));
 
     expect(warnings).toStrictEqual([]);
   });

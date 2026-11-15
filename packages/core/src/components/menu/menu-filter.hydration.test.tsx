@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { ProjectMenuFixture, ProjectMenuOpenFixture } from "./__fixtures__/menu-filter.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/menu-filter.hydration.fixture.tsx", import.meta.url), {
@@ -9,19 +9,14 @@ const hydrate = hydrator(new URL("./__fixtures__/menu-filter.hydration.fixture.t
   ProjectMenuOpenFixture,
 });
 
-// The server's own warnings are left out: UI SDK's MenuContent writes a signal on the server
-// (SERVER_WRITE), which menu.server.test.tsx pins.
-const IGNORED: Parameters<typeof mismatch>[1] = ["warnings", "replaced", "added"];
-
 it("hydrating a filtered Menu claims the server's nodes without warnings (closed)", async () => {
-  expect(mismatch(await hydrate("ProjectMenuFixture"), IGNORED)).toStrictEqual({});
+  const { mismatches } = await hydrate("ProjectMenuFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
-// An open filtered Menu's hydration misses its filter input's key, which the server HTML doesn't
-// carry: the client renders a branch under MenuContent the server didn't. The cause is not found
-// yet. Drop `.fails` when fixed.
-it.fails("hydrating a filtered Menu claims the server's nodes without warnings (open)", async () => {
-  expect(mismatch(await hydrate("ProjectMenuOpenFixture"), IGNORED)).toStrictEqual({});
+it("hydrating a filtered Menu claims the server's nodes without warnings (open)", async () => {
+  const { mismatches } = await hydrate("ProjectMenuOpenFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating an open filtered Menu narrows its items as the query is typed", async () => {

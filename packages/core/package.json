@@ -318,6 +318,7 @@
     "@ui-sdk/core": "catalog:",
     "@ui-sdk/solid": "catalog:",
     "@vitest/browser-playwright": "catalog:",
+    "@workerstack/testing": "catalog:",
     "cn": "catalog:",
     "playwright": "catalog:",
     "solid-js": "catalog:",

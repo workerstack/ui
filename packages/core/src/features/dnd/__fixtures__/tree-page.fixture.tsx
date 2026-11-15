@@ -4,7 +4,7 @@ import "./tree.fixture.css";
 import { createSignal, For, Show } from "solid-js";
 
 import { createSortableTree, type TreeMove } from "../tree/index.ts";
-import { centerOf, createPointer, type Pointer } from "../../../test/pointer.ts";
+import { pointer, type Pointer } from "@workerstack/testing/web/dom";
 
 /* A file tree: nested folders, a collapsed one (docs) and one that refuses drops (archive). From the monorepo harness. */
 const INDENT = 20;
@@ -40,12 +40,12 @@ export function treeRow(id: string): HTMLElement {
 
 /** Lifts row `id` from its center with a move down past the threshold, then moves to `x` and `y` in 10 steps. */
 export async function holdRow(id: string, to: { x?: number; y: number }): Promise<Pointer> {
-  const from = centerOf(treeRow(id));
-  const pointer = createPointer();
-  pointer.down(from);
-  await pointer.move({ x: from.x, y: from.y + 6 }, 2);
-  await pointer.move({ x: to.x ?? from.x, y: to.y }, 10);
-  return pointer;
+  const from = pointer.centerOf(treeRow(id));
+  const mouse = pointer.create();
+  mouse.down(from);
+  await mouse.move({ x: from.x, y: from.y + 6 }, 2);
+  await mouse.move({ x: to.x ?? from.x, y: to.y }, 10);
+  return mouse;
 }
 
 /** The file tree page; its order prints as `folder(child,…)` in `[data-order="tree"]`. */

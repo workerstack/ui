@@ -1,6 +1,6 @@
+import { renderServer, text } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { renderServer, text } from "../../test/server.ts";
 import { UiProvider } from "../provider/index.ts";
 import { SwitchView } from "./index.ts";
 

@@ -1,6 +1,6 @@
+import { renderServer, tag, tags, text } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { renderServer, slot, slots, text } from "../../test/server.ts";
 import { SaveTooltip } from "./__fixtures__/save-tooltip.fixture.tsx";
 
 // First in the file: Solid warns once per kind of write per process.
@@ -10,8 +10,8 @@ it("Tooltip on the server renders without warnings", () => {
 
 it("Tooltip on the server renders the trigger and a hidden tooltip", () => {
   const { html } = renderServer(() => <SaveTooltip />);
-  expect(slot(html, "tooltip-trigger").name).toBe("button");
+  expect(tag(html, { "data-slot": "tooltip-trigger" }).name).toBe("button");
   expect(text(html)).toContain("Save");
-  expect(slot(html, "tooltip-content").attrs).toHaveProperty("hidden");
-  expect(slots(html, "tooltip-arrow")).toHaveLength(1);
+  expect(tag(html, { "data-slot": "tooltip-content" }).attrs).toHaveProperty("hidden");
+  expect(tags(html, { "data-slot": "tooltip-arrow" })).toHaveLength(1);
 });

@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import { RadioGroupFixture, RadioGroupViewFixture } from "./__fixtures__/radio-group.hydration.fixture.tsx";
 
@@ -15,7 +15,8 @@ function radio(name: string): ReturnType<typeof page.getByRole> {
 }
 
 it("hydrating RadioGroup claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("RadioGroupFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("RadioGroupFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating RadioGroup keeps the server's selected radio", async () => {
@@ -44,6 +45,7 @@ it("hydrating RadioGroup moves the selection with the arrow keys after hydration
 });
 
 it("hydrating RadioGroupView claims the server's nodes and keeps its text", async () => {
-  expect(mismatch(await hydrate("RadioGroupViewFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("RadioGroupViewFixture");
+  expect(mismatches).toStrictEqual({});
   await expect.element(page.getByRole("group", { name: "Plan" })).toHaveTextContent("PlanBusiness");
 });

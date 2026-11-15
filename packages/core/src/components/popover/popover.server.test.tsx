@@ -1,24 +1,24 @@
+import { renderServer, tag, tags } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { renderServer, slot, slots } from "../../test/server.ts";
 import { DimensionsPopover } from "./__fixtures__/dimensions-popover.fixture.tsx";
 
 it("Popover on the server renders only the trigger while closed", () => {
   const { html, warnings } = renderServer(() => <DimensionsPopover />);
-  const trigger = slot(html, "popover-trigger");
+  const trigger = tag(html, { "data-slot": "popover-trigger" });
   expect(trigger.attrs["aria-haspopup"]).toBe("dialog");
   expect(trigger.attrs["aria-expanded"]).toBe("false");
-  expect(slots(html, "popover-content")).toStrictEqual([]);
+  expect(tags(html, { "data-slot": "popover-content" })).toStrictEqual([]);
   expect(warnings).toStrictEqual([]);
 });
 
 it("Popover on the server renders an open popover with its content, linked to its trigger", () => {
   const { html, warnings } = renderServer(() => <DimensionsPopover defaultOpen />);
-  const content = slot(html, "popover-content");
+  const content = tag(html, { "data-slot": "popover-content" });
   expect(content.attrs.role).toBe("dialog");
   expect(content.attrs.class).toContain("w-72");
-  expect(slot(html, "popover-trigger").attrs["aria-controls"]).toBe(content.attrs.id);
-  expect(slot(html, "popover-trigger").attrs["aria-expanded"]).toBe("true");
+  expect(tag(html, { "data-slot": "popover-trigger" }).attrs["aria-controls"]).toBe(content.attrs.id);
+  expect(tag(html, { "data-slot": "popover-trigger" }).attrs["aria-expanded"]).toBe("true");
   expect(warnings).toStrictEqual([]);
 });
 
@@ -26,5 +26,7 @@ it("Popover on the server renders an open popover with its content, linked to it
 // at the title only after mount. Drop `.fails` when the server HTML names it by its title.
 it.fails("Popover on the server names an open popover by its title in the HTML", () => {
   const { html } = renderServer(() => <DimensionsPopover defaultOpen />);
-  expect(slot(html, "popover-content").attrs["aria-labelledby"]).toBe(slot(html, "popover-title").attrs.id);
+  expect(tag(html, { "data-slot": "popover-content" }).attrs["aria-labelledby"]).toBe(
+    tag(html, { "data-slot": "popover-title" }).attrs.id,
+  );
 });

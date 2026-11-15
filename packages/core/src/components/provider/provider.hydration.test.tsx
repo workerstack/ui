@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { ProviderFixture } from "./__fixtures__/provider.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/provider.hydration.fixture.tsx", import.meta.url), {
@@ -9,7 +9,8 @@ const hydrate = hydrator(new URL("./__fixtures__/provider.hydration.fixture.tsx"
 });
 
 it("UiProvider hydration claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("ProviderFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("ProviderFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("UiProvider hydration keeps the translated message and the locale", async () => {

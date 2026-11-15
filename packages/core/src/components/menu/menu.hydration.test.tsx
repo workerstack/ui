@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { MenuFixture, MenuOpenFixture } from "./__fixtures__/menu.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/menu.hydration.fixture.tsx", import.meta.url), {
@@ -9,14 +9,13 @@ const hydrate = hydrator(new URL("./__fixtures__/menu.hydration.fixture.tsx", im
   MenuOpenFixture,
 });
 
-const CLIENT_SIDE: Parameters<typeof mismatch>[1] = ["warnings", "replaced", "added"];
-
 function openMenus(): Element[] {
   return [...document.querySelectorAll('[role="menu"]')].filter((el) => el.matches(":popover-open"));
 }
 
 it("hydrating Menu claims the server's nodes without warnings (closed)", async () => {
-  expect(mismatch(await hydrate("MenuFixture"), CLIENT_SIDE)).toStrictEqual({});
+  const { mismatches } = await hydrate("MenuFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Menu opens from the server's trigger and runs the chosen action", async () => {
@@ -27,10 +26,9 @@ it("hydrating Menu opens from the server's trigger and runs the chosen action", 
   await expect.element(page.getByRole("status")).toHaveTextContent("rename");
 });
 
-// An open Menu's hydration misses three keys the server HTML doesn't carry: the client renders a
-// branch under MenuContent the server didn't. The cause is not found yet. Drop `.fails` when fixed.
-it.fails("hydrating Menu claims the server's nodes without warnings (open)", async () => {
-  expect(mismatch(await hydrate("MenuOpenFixture"), CLIENT_SIDE)).toStrictEqual({});
+it("hydrating Menu claims the server's nodes without warnings (open)", async () => {
+  const { mismatches } = await hydrate("MenuOpenFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Menu makes an open menu an open popup whose items work", async () => {

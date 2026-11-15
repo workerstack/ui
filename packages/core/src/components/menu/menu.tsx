@@ -39,11 +39,17 @@ function FilterScope(props: { children?: JSX.Element }): JSX.Element {
   return <FILTER_CONTEXT value={state}>{props.children}</FILTER_CONTEXT>;
 }
 
+// Read once: each read of `children` builds the items again, and the extra copy takes hydration
+// keys the server's HTML doesn't carry.
+function contentOf(props: MenuContentProps, state: MenuContentState): JSX.Element {
+  const children = props.children;
+
+  return isStateFunction(children) ? children(state) : children;
+}
+
 // The children are read inside the scope, so the items they make find its state.
 function scoped(props: MenuContentProps): (state: MenuContentState) => JSX.Element {
-  return (state) => (
-    <FilterScope>{isStateFunction(props.children) ? props.children(state) : props.children}</FilterScope>
-  );
+  return (state) => <FilterScope>{contentOf(props, state)}</FilterScope>;
 }
 
 /** The popup with the items. It holds the filter that a MenuFilter, a MenuList and a MenuEmpty share. */

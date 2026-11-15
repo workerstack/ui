@@ -1,13 +1,14 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { ToastFixture } from "./__fixtures__/toast.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/toast.hydration.fixture.tsx", import.meta.url), { ToastFixture });
 
 it("hydrating Toast claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("ToastFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("ToastFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Toast shows a toast from the server's button, named and closable", async () => {

@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import {
   ComboboxChildrenFixture,
@@ -17,21 +17,21 @@ const hydrate = hydrator(new URL("./__fixtures__/combobox.hydration.fixture.tsx"
   ComboboxViewFixture,
 });
 
-// The server's own warnings are left out: UI SDK 0.1.0-beta.2's ComboboxContent writes a signal on
-// the server (SERVER_WRITE), which combobox.server.test.tsx pins.
-const CLIENT_SIDE: Parameters<typeof mismatch>[1] = ["warnings", "replaced", "added"];
 const FRUIT = { name: "Fruit" };
 
 it("hydrating Combobox claims the server's nodes without warnings (`items`)", async () => {
-  expect(mismatch(await hydrate("ComboboxFixture"), CLIENT_SIDE)).toStrictEqual({});
+  const { mismatches } = await hydrate("ComboboxFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Combobox claims the server's nodes without warnings (items as children)", async () => {
-  expect(mismatch(await hydrate("ComboboxChildrenFixture"), CLIENT_SIDE)).toStrictEqual({});
+  const { mismatches } = await hydrate("ComboboxChildrenFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Combobox claims the server's nodes without warnings (multiple, with chips)", async () => {
-  expect(mismatch(await hydrate("ComboboxChipsFixture"), CLIENT_SIDE)).toStrictEqual({});
+  const { mismatches } = await hydrate("ComboboxChipsFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Combobox shows the chosen label from `items` on the server and after hydration", async () => {
@@ -77,6 +77,7 @@ it("hydrating Combobox multiple adds a chip and removes one", async () => {
 });
 
 it("hydrating ComboboxView claims the server's nodes and keeps its labels", async () => {
-  expect(mismatch(await hydrate("ComboboxViewFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("ComboboxViewFixture");
+  expect(mismatches).toStrictEqual({});
   await expect.element(page.getByRole("status", { name: "Fruit" })).toHaveTextContent("Apple, Banana");
 });

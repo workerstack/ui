@@ -1,11 +1,11 @@
 import { cleanup, screen } from "@solidjs/testing-library";
+import { pointer } from "@workerstack/testing/web/dom";
+import { recordWarnings } from "@workerstack/testing/web/solid";
 import { afterEach, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 
 import { drawnIcon, drawsIcon, glyph } from "../../../../test/browser.ts";
-import { centerOf, drag } from "../../../../test/pointer.ts";
 import { required } from "../../../../test/required.ts";
-import { collectWarningsAsync } from "../../../../test/warnings.ts";
 import { button, emails, iconOf, invitesOf, renderInvites } from "./__fixtures__/invites-testing.tsx";
 
 // Real input on the invites form: a row dragged by its grip, the move buttons from the keyboard,
@@ -20,11 +20,13 @@ function handleOf(container: Element, index: number): HTMLElement {
 }
 
 it("FormArray.Handle drags a row below the next one, values and focus following, with no Solid warning", async () => {
-  const { result, warnings } = await collectWarningsAsync(async () => {
+  const { result, warnings } = await recordWarnings(async () => {
     const { container, form } = await renderInvites();
     const second = required(container.querySelector('[data-slot=form-array-item][data-index="1"]'), "the second item");
     await userEvent.click(screen.getByRole("textbox", { name: "Email 1" }));
-    await drag(handleOf(container, 0), { x: centerOf(second).x, y: second.getBoundingClientRect().bottom - 1 });
+    await pointer.drag(handleOf(container, 0), {
+      to: { x: pointer.centerOf(second).x, y: second.getBoundingClientRect().bottom - 1 },
+    });
     await expect.poll(() => container.querySelectorAll("[data-dnd-dragging]").length).toBe(0);
 
     return { emails: emails(container), values: invitesOf(form) };

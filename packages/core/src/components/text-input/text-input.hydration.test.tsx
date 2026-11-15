@@ -1,8 +1,8 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
 import { inputElement } from "../../test/dom.ts";
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import { DefaultsForm, TextInputFixture } from "./__fixtures__/text-input.hydration.fixture.tsx";
 
@@ -14,7 +14,8 @@ const hydrate = hydrator(new URL("./__fixtures__/text-input.hydration.fixture.ts
 const NAME = { name: "Name" };
 
 it("hydrating TextInput claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("TextInputFixture"), ["serverWarnings", "warnings", "replaced"])).toStrictEqual({});
+  const { mismatches } = await hydrate("TextInputFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating TextInput reports typing and cleans on Tab", async () => {
@@ -29,9 +30,9 @@ it("hydrating TextInput reports typing and cleans on Tab", async () => {
 });
 
 it("hydrating TextInput keeps its default value, editable and read-only", async () => {
-  const { container, warnings } = await hydrate("DefaultsForm");
+  const { container, mismatches } = await hydrate("DefaultsForm");
   const form = container.querySelector("form");
-  expect(warnings).toStrictEqual([]);
+  expect(mismatches).toStrictEqual({});
   expect(Object.fromEntries(new FormData(required(form, "a form")).entries())).toStrictEqual({
     company: "Analytical Engines Ltd",
     team: "Research",

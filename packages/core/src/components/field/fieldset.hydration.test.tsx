@@ -1,6 +1,6 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import { MarkedFieldsetFixture } from "./__fixtures__/fieldset.hydration.fixture.tsx";
 
@@ -13,7 +13,8 @@ function marks(container: HTMLElement): (string | null)[] {
 }
 
 it("hydrating a Fieldset with marks claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("MarkedFieldsetFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("MarkedFieldsetFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating a Fieldset keeps its legend's mark and the legend's name for the group", async () => {

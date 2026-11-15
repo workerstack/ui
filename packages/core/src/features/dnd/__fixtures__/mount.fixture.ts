@@ -3,7 +3,7 @@ import type { JSX } from "@solidjs/web";
 import { expect, vi } from "vitest";
 import { page } from "vitest/browser";
 
-import { frame } from "../../../test/pointer.ts";
+import { pointer } from "@workerstack/testing/web/dom";
 
 /** A reading direction the harness renders in. */
 export type Direction = "ltr" | "rtl";
@@ -21,7 +21,7 @@ const DESKTOP = { height: 768, width: 1024 };
 export async function mount(ui: () => JSX.Element, dir: Direction = "ltr"): Promise<void> {
   document.documentElement.dir = dir;
   render(ui);
-  await frame();
+  await pointer.frame();
 }
 
 /** Sizes the viewport for a test; `unmount` puts the desktop one back. */

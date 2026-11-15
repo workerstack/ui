@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import { DialogFixture, DialogOpenFixture } from "./__fixtures__/dialog.hydration.fixture.tsx";
 
@@ -15,7 +15,8 @@ function visibleDialog(): Element | undefined {
 }
 
 it("hydrating Dialog claims the server's nodes without warnings (closed)", async () => {
-  expect(mismatch(await hydrate("DialogFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("DialogFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Dialog opens from the server's trigger", async () => {
@@ -26,7 +27,8 @@ it("hydrating Dialog opens from the server's trigger", async () => {
 });
 
 it("hydrating Dialog claims the server's nodes without warnings (open)", async () => {
-  expect(mismatch(await hydrate("DialogOpenFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("DialogOpenFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Dialog makes an open dialog a modal that is shown, described and closable", async () => {

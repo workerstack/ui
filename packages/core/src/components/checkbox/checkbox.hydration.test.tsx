@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import {
   CheckboxFixture,
@@ -18,11 +18,13 @@ const hydrate = hydrator(new URL("./__fixtures__/checkbox.hydration.fixture.tsx"
 const TERMS = { name: "Accept terms" };
 
 it("hydrating Checkbox claims the server's nodes without a mismatch", async () => {
-  expect(mismatch(await hydrate("CheckboxFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("CheckboxFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating a checked Checkbox claims the server's nodes without a mismatch", async () => {
-  expect(mismatch(await hydrate("CheckedCheckboxFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("CheckedCheckboxFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Checkbox keeps the server's checked state", async () => {
@@ -43,7 +45,8 @@ it("hydrating Checkbox toggles from the server's button", async () => {
 });
 
 it("hydrating CheckboxView and CheckboxGroupView claims the server's nodes and keeps their text", async () => {
-  expect(mismatch(await hydrate("CheckboxViewFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("CheckboxViewFixture");
+  expect(mismatches).toStrictEqual({});
   await expect.element(page.getByRole("status", { name: "Accepted" })).toHaveTextContent("Yes");
   await expect.element(page.getByRole("group", { name: "Notify by" })).toHaveTextContent("Notify bySMS, Email");
 });

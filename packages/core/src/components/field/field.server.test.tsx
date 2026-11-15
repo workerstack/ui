@@ -1,6 +1,6 @@
+import { renderServer, tag, tags } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { renderServer, slot, slots, tags } from "../../test/server.ts";
 import { Input } from "../input/index.ts";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./index.ts";
 
@@ -13,9 +13,9 @@ it("Field on the server connects the label and description to the control in the
     </Field>
   ));
 
-  const label = slot(html, "field-label");
-  const input = slot(html, "input");
-  const description = slot(html, "field-description");
+  const label = tag(html, { "data-slot": "field-label" });
+  const input = tag(html, { "data-slot": "input" });
+  const description = tag(html, { "data-slot": "field-description" });
   expect(label.name).toBe("label");
   expect(label.attrs.for).toBe(input.attrs.id);
   expect(input.attrs["aria-labelledby"]).toBe(label.attrs.id);
@@ -33,13 +33,13 @@ it("Field on the server renders an invalid field invalid, with its error", () =>
     </Field>
   ));
 
-  const input = slot(html, "input");
-  const error = slot(html, "field-error");
+  const input = tag(html, { "data-slot": "input" });
+  const error = tag(html, { "data-slot": "field-error" });
   expect(input.attrs["aria-invalid"]).toBe("true");
   expect(input.attrs["aria-describedby"]?.split(" ")).toContain(error.attrs.id);
 
   for (const part of ["field", "field-label", "field-error"])
-    expect(slot(html, part).attrs).toHaveProperty("data-invalid");
+    expect(tag(html, { "data-slot": part }).attrs).toHaveProperty("data-invalid");
   expect(html).toContain(">Taken</");
 });
 
@@ -52,8 +52,8 @@ it("Field on the server leaves a valid field's error out of the HTML", () => {
     </Field>
   ));
 
-  expect(slots(html, "field-error")).toStrictEqual([]);
-  expect(slot(html, "input").attrs).not.toHaveProperty("aria-invalid");
+  expect(tags(html, { "data-slot": "field-error" })).toStrictEqual([]);
+  expect(tag(html, { "data-slot": "input" }).attrs).not.toHaveProperty("aria-invalid");
 });
 
 // UI SDK 0.1.0-beta.2 gives a FieldError with `match` an id of its own but adds it to the control's
@@ -67,7 +67,9 @@ it.fails("Field on the server describes the control by a matched error in the HT
     </Field>
   ));
 
-  expect(slot(html, "input").attrs["aria-describedby"]?.split(" ")).toContain(slot(html, "field-error").attrs.id);
+  expect(tag(html, { "data-slot": "input" }).attrs["aria-describedby"]?.split(" ")).toContain(
+    tag(html, { "data-slot": "field-error" }).attrs.id,
+  );
 });
 
 // UI SDK 0.1.0-beta.2 points the control at the description's id even when the field has no
@@ -80,7 +82,8 @@ it.fails("Field on the server describes the control only by parts that are in th
     </Field>
   ));
 
-  const ids = new Set(tags(html).map((tag) => tag.attrs.id));
+  const ids = new Set(tags(html).map((found) => found.attrs.id));
 
-  for (const id of slot(html, "input").attrs["aria-describedby"]?.split(" ") ?? []) expect(ids).toContain(id);
+  for (const id of tag(html, { "data-slot": "input" }).attrs["aria-describedby"]?.split(" ") ?? [])
+    expect(ids).toContain(id);
 });

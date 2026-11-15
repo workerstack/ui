@@ -1,7 +1,7 @@
+import { pointer, type Pointer } from "@workerstack/testing/web/dom";
 import { afterEach, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 
-import { centerOf, createPointer, type Pointer } from "../../../test/pointer.ts";
 import { mountBoard } from "../__fixtures__/board-page.fixture.tsx";
 import { unmount } from "../__fixtures__/mount.fixture.ts";
 import { byTestId, outcome } from "../__fixtures__/page.fixture.ts";
@@ -19,7 +19,7 @@ const FRAME_MS = 16;
 const TIMED = ["a0-1", "a1-1", "a2-1", "a3-1", "a0-2"];
 
 /** A lift under way: its pointer, and how long the lift took in ms. */
-type Lift = { pointer: Pointer; ms: number };
+type Lift = { mouse: Pointer; ms: number };
 
 /** Layout reads the engine makes: box reads and computed styles. */
 function layoutReads(): () => number {
@@ -31,26 +31,26 @@ function layoutReads(): () => number {
 
 /** Presses card `id` and passes the threshold; returns the pointer and the lift's time in ms. */
 function lift(id: string): Lift {
-  const from = centerOf(byTestId(`card-${id}`));
-  const pointer = createPointer();
-  pointer.down(from);
-  pointer.at = { x: from.x + 6, y: from.y };
+  const from = pointer.centerOf(byTestId(`card-${id}`));
+  const mouse = pointer.create();
+  mouse.down(from);
+  mouse.at = { x: from.x + 6, y: from.y };
   const start = performance.now();
-  pointer.fire("pointermove");
+  mouse.fire("pointermove");
 
-  return { ms: performance.now() - start, pointer };
+  return { mouse, ms: performance.now() - start };
 }
 
 /** Drags card `id` down 120px in `steps` moves within its cell; returns the layout reads the moves made. */
 async function dragDown(id: string, steps: number, reads: () => number): Promise<number> {
   const card = byTestId(`card-${id}`);
-  const { pointer } = lift(id);
+  const { mouse } = lift(id);
 
   expect(card.hasAttribute("data-dnd-dragging")).toBe(true);
   const before = reads();
-  await pointer.move({ x: pointer.at.x, y: pointer.at.y + 120 }, steps);
+  await mouse.move({ x: mouse.at.x, y: mouse.at.y + 120 }, steps);
   const moved = reads() - before;
-  pointer.up();
+  mouse.up();
   await expect.poll(() => card.hasAttribute("data-dnd-dragging")).toBe(false);
   await expect.poll(() => outcome("board")).toContain(id);
 
@@ -62,10 +62,10 @@ async function bestLift(ids: string[]): Promise<number> {
   const [id, ...rest] = ids;
 
   if (id === undefined) return Number.POSITIVE_INFINITY;
-  const { ms, pointer } = lift(id);
+  const { ms, mouse } = lift(id);
   expect(byTestId(`card-${id}`).hasAttribute("data-dnd-dragging")).toBe(true);
   await userEvent.keyboard("{Escape}");
-  pointer.up();
+  mouse.up();
   await expect.poll(() => outcome("board")).toBe("cancel");
   await expect.poll(() => document.documentElement.hasAttribute("data-dnd-active")).toBe(false);
 

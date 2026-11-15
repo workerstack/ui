@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { renderServer, slots, text } from "../../../../../test/server.ts";
+import { renderServer, tags, text } from "@workerstack/testing/web/solid";
 import { ProfileForm } from "./profile-form.fixture.tsx";
 import { FILLED_PROFILE, type ProfileField } from "./profile.fixture.ts";
 
@@ -30,15 +30,15 @@ export function testFieldServer(c: ServerCase): void {
     const { html, warnings } = renderServer(() => <ProfileForm field={c.field} defaults={FILLED_PROFILE} />);
     // A field whose content part warns (UISDK-1) is checked for the rest only.
     expect(c.warns === true ? [] : warnings).toStrictEqual([]);
-    expect(slots(html, "field-error")).toStrictEqual([]);
-    expect(slots(html, "view")).toStrictEqual([]);
+    expect(tags(html, { "data-slot": "field-error" })).toStrictEqual([]);
+    expect(tags(html, { "data-slot": "view" })).toStrictEqual([]);
     expect(c.rendered(html)).toStrictEqual(c.expected);
   });
 
   it(`${c.title} on the server renders its View in a read-only form`, () => {
     const { html } = renderServer(() => <ProfileForm field={c.field} readOnly defaults={FILLED_PROFILE} />);
-    expect(slots(html, "input")).toStrictEqual([]);
-    expect(slots(html, "view")).toHaveLength(c.shown.length);
+    expect(tags(html, { "data-slot": "input" })).toStrictEqual([]);
+    expect(tags(html, { "data-slot": "view" })).toHaveLength(c.shown.length);
     expect(c.shown.filter((shown) => !text(html).includes(shown))).toStrictEqual([]);
   });
 }

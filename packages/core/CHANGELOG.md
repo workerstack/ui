@@ -28,3 +28,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Fixed
 
 - Button no longer builds a hidden disclosure chevron, which made every Button miss a hydration key
+- An open Menu builds its items once, so hydration claims the server's items instead of missing their keys

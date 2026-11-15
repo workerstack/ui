@@ -1,14 +1,14 @@
 import { cleanup } from "@solidjs/testing-library";
+import { recordWarnings } from "@workerstack/testing/web/solid";
 import { afterEach, expect, it } from "vitest";
 
-import { collectWarningsAsync } from "../../../../test/warnings.ts";
 import { settle, submit } from "../form/__fixtures__/form-testing.ts";
 import { emails, press, renderInvites } from "./__fixtures__/invites-testing.tsx";
 
 afterEach(cleanup);
 
 it("FormArray adds, moves and removes items, and submits, with no Solid warning", async () => {
-  const { result, warnings } = await collectWarningsAsync(async () => {
+  const { result, warnings } = await recordWarnings(async () => {
     const { container } = await renderInvites();
     await press("Add invite");
     await press("Move item 1 down");
@@ -25,7 +25,7 @@ it("FormArray adds, moves and removes items, and submits, with no Solid warning"
 });
 
 it("FormArray takes items written from outside, and unmounts, with no Solid warning", async () => {
-  const { warnings } = await collectWarningsAsync(async () => {
+  const { warnings } = await recordWarnings(async () => {
     const { form } = await renderInvites();
     form.setFieldValue("invites", [{ email: "linus@acme.dev" }]);
     await settle();

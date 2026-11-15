@@ -1,6 +1,6 @@
+import { renderServer, text } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { renderServer, text } from "../../test/server.ts";
 import { ComboboxView } from "./index.ts";
 
 it("ComboboxView on the server shows one label, several joined and the empty marker, without warnings", () => {

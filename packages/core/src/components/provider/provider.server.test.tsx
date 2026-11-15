@@ -1,6 +1,6 @@
+import { renderServer, text } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 
-import { renderServer, text } from "../../test/server.ts";
 import { ProviderProbe } from "./__fixtures__/provider.fixture.tsx";
 import { UiProvider } from "./index.ts";
 

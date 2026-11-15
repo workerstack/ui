@@ -1,10 +1,10 @@
 import { cleanup, fireEvent, render, screen } from "@solidjs/testing-library";
+import { recordWarnings } from "@workerstack/testing/web/solid";
 import { flush } from "solid-js";
 import { afterEach, expect, it, vi } from "vitest";
 
 import { mounted, type as typeText } from "../../../../test/dom.ts";
 import { required } from "../../../../test/required.ts";
-import { collectWarnings } from "../../../../test/warnings.ts";
 import { settle } from "../form/__fixtures__/form-testing.ts";
 import { ProfileDialog, ProfileDrawer, type Profile } from "./__fixtures__/form-dialog.fixture.tsx";
 
@@ -56,7 +56,7 @@ async function save(): Promise<void> {
 }
 
 it("FormDialog and FormDrawer render their triggers without a Solid warning", () => {
-  const { warnings } = collectWarnings(() => {
+  const { warnings } = recordWarnings(() => {
     render(() => (
       <>
         <ProfileDialog />

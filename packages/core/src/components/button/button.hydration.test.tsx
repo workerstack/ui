@@ -1,14 +1,15 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import { ButtonFixture } from "./__fixtures__/button.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/button.hydration.fixture.tsx", import.meta.url), { ButtonFixture });
 
 it("hydrating Button claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("ButtonFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("ButtonFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Button runs the handler on the server's button and updates its text", async () => {

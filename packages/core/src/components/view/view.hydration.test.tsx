@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { EmptyViewFixture, ViewFixture } from "./__fixtures__/view.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/view.hydration.fixture.tsx", import.meta.url), {
@@ -10,7 +10,8 @@ const hydrate = hydrator(new URL("./__fixtures__/view.hydration.fixture.tsx", im
 });
 
 it("hydrating View claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("ViewFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("ViewFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating View keeps each label naming its output", async () => {
@@ -21,5 +22,6 @@ it("hydrating View keeps each label naming its output", async () => {
 });
 
 it("hydrating an empty View claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("EmptyViewFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("EmptyViewFixture");
+  expect(mismatches).toStrictEqual({});
 });

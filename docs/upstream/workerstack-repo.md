@@ -27,7 +27,7 @@ Bugs and gaps in [`@workerstack/repo`](https://github.com/workerstack/repo) foun
   It rewrites the block to `type BrowserCommands = { … }`. A type alias can't merge into the module's interface, so TypeScript reports `Duplicate identifier 'BrowserCommands'` and every `commands.serverRender` call fails to typecheck.
 - **Where:** the generated `.oxlintrc.json` sets `typescript/consistent-type-definitions` to `type`. The rule doesn't exempt declaration merging.
 - **Fix idea:** exempt interfaces inside `declare module` / `declare global` (they exist to merge) in the preset, or report them without the autofix.
-- **Fixed:** current `@workerstack/repo` main no longer runs `typescript/consistent-type-definitions`, so the `lint.skip` entry for `packages/core/vitest.hydration.commands.ts` and `packages/core/chromium.shared.ts` is gone from `repo.config.ts`.
+- **Fixed:** current `@workerstack/repo` main no longer runs `typescript/consistent-type-definitions`, so the `lint.skip` entry for the hydration commands file (since deleted) and `packages/core/chromium.shared.ts` is gone from `repo.config.ts`.
 - **Pinned by:** no test yet. A pinning test would run `oxlint --fix` on a fixture with the block above and expect it unchanged.
 
 ## REPO-3

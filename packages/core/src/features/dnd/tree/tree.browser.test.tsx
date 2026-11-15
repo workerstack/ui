@@ -1,6 +1,6 @@
+import { pointer, type Pointer, type Spot } from "@workerstack/testing/web/dom";
 import { afterEach, expect, it } from "vitest";
 
-import { centerOf, type Pointer, type Spot } from "../../../test/pointer.ts";
 import { DIRECTIONS, type Direction, mount, unmount } from "../__fixtures__/mount.fixture.ts";
 import { byTestId, order } from "../__fixtures__/page.fixture.ts";
 import { holdRow, TREE_START, TreePage, treeRow } from "../__fixtures__/tree-page.fixture.tsx";
@@ -18,15 +18,15 @@ function on(id: string, share: number): Spot {
 }
 
 /** What a tree drag does: which row, where to, how many levels deeper, and what to check before the release. */
-type TreeDrag = { id: string; to: Spot; deeper?: number; during?: (pointer: Pointer) => Promise<void> };
+type TreeDrag = { id: string; to: Spot; deeper?: number; during?: (mouse: Pointer) => Promise<void> };
 
 /** Lifts row `id` from its center, moves to `to` plus `deeper` levels of travel, runs `during`, and releases. */
 async function treeDrag(dir: Direction, { id, to, deeper = 0, during }: TreeDrag): Promise<void> {
-  const x = centerOf(treeRow(id)).x + deeper * INDENT[dir];
-  const pointer = await holdRow(id, { x, y: to.y });
-  await pointer.move({ x, y: to.y }, 2);
-  await during?.(pointer);
-  pointer.up();
+  const x = pointer.centerOf(treeRow(id)).x + deeper * INDENT[dir];
+  const mouse = await holdRow(id, { x, y: to.y });
+  await mouse.move({ x, y: to.y }, 2);
+  await during?.(mouse);
+  mouse.up();
 }
 
 /** The tree page in `dir`, at its start order. */

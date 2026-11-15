@@ -1,7 +1,7 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
-import { hydrator, mismatch } from "../../../../test/hydration.ts";
 import { SaveBarProfile, UnsavedFormsPage } from "./__fixtures__/unsaved.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/unsaved.hydration.fixture.tsx", import.meta.url), {
@@ -10,11 +10,13 @@ const hydrate = hydrator(new URL("./__fixtures__/unsaved.hydration.fixture.tsx",
 });
 
 it("hydrating unsaved forms under the provider adds nothing the server didn't render", async () => {
-  expect(mismatch(await hydrate("UnsavedFormsPage"))).toStrictEqual({});
+  const { mismatches } = await hydrate("UnsavedFormsPage");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating a form with a save bar adds nothing the server didn't render", async () => {
-  expect(mismatch(await hydrate("SaveBarProfile"))).toStrictEqual({});
+  const { mismatches } = await hydrate("SaveBarProfile");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating a form with a save bar binds it: an edit shows the bar", async () => {

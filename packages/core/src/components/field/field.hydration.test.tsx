@@ -1,8 +1,8 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
 import { inputElement } from "../../test/dom.ts";
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { required } from "../../test/required.ts";
 import { BareFieldFixture, FieldFixture } from "./__fixtures__/field.hydration.fixture.tsx";
 
@@ -22,7 +22,8 @@ function allInPage(list: string[]): boolean {
 }
 
 it("hydrating Field claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("FieldFixture"))).toStrictEqual({});
+  const { mismatches } = await hydrate("FieldFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 it("hydrating Field keeps the server's ids, so the label still names the input", async () => {
@@ -49,5 +50,6 @@ it("hydrating Field reports typing into the server's input", async () => {
 });
 
 it("hydrating Field with no description or error warns about nothing", async () => {
-  expect(mismatch(await hydrate("BareFieldFixture"), ["warnings", "replaced"])).toStrictEqual({});
+  const { mismatches } = await hydrate("BareFieldFixture");
+  expect(mismatches).toStrictEqual({});
 });

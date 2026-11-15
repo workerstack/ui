@@ -1,9 +1,9 @@
 import { cleanup, render, screen } from "@solidjs/testing-library";
+import { recordWarnings } from "@workerstack/testing/web/solid";
 import { createSignal, flush } from "solid-js";
 import { afterEach, expect, it } from "vitest";
 
 import { inputElement, mounted } from "../../../../test/dom.ts";
-import { collectWarnings } from "../../../../test/warnings.ts";
 import { captured, settle, typeInto } from "../form/__fixtures__/form-testing.ts";
 import type { FormEngine, FormValues } from "../form/index.ts";
 import { ProfileForm } from "./__fixtures__/profile-form.fixture.tsx";
@@ -82,7 +82,7 @@ it("FormArrivingValues rebases as values load, keeps edits, and logs no Solid wa
   await mounted();
   typeInto(box("Email"), "mine@example.com");
 
-  const { warnings } = collectWarnings(() => {
+  const { warnings } = recordWarnings(() => {
     setValues({ email: "server@example.com", name: "Ada" });
     flush();
   });

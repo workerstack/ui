@@ -1,8 +1,8 @@
+import { hydrator } from "@workerstack/testing/web/solid";
 import { expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
 import { inputElement } from "../../test/dom.ts";
-import { hydrator, mismatch } from "../../test/hydration.ts";
 import { InputGroupFixture } from "./__fixtures__/input.hydration.fixture.tsx";
 
 const hydrate = hydrator(new URL("./__fixtures__/input.hydration.fixture.tsx", import.meta.url), {
@@ -12,7 +12,8 @@ const hydrate = hydrator(new URL("./__fixtures__/input.hydration.fixture.tsx", i
 const SEARCH = { name: "Search" };
 
 it("hydrating Input claims the server's nodes without warnings", async () => {
-  expect(mismatch(await hydrate("InputGroupFixture"), ["serverWarnings", "warnings", "replaced"])).toStrictEqual({});
+  const { mismatches } = await hydrate("InputGroupFixture");
+  expect(mismatches).toStrictEqual({});
 });
 
 // UI SDK 0.1.0-beta.2 leaves InputClear out of the server HTML (see input.server.test.tsx), so
