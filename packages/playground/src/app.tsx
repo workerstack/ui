@@ -13,6 +13,7 @@ import { Cards } from "./sections/cards.tsx";
 import { Checkboxes } from "./sections/checkboxes.tsx";
 import { Comboboxes } from "./sections/comboboxes.tsx";
 import { Dialogs } from "./sections/dialogs.tsx";
+import { DragAndDrop } from "./sections/drag-and-drop.tsx";
 import { Drawers } from "./sections/drawers.tsx";
 import { Fields } from "./sections/fields.tsx";
 import { Forms } from "./sections/forms.tsx";
@@ -48,6 +49,7 @@ const NAV = [
   { id: "toast", label: "Toast" },
   { id: "badge", label: "Badge" },
   { id: "card", label: "Card" },
+  { id: "drag-and-drop", label: "Drag and drop" },
   { id: "view", label: "View" },
   { id: "form", label: "Form" },
 ] as const;
@@ -124,6 +126,7 @@ function Sections(): JSX.Element {
       <Toasts />
       <Badges />
       <Cards />
+      <DragAndDrop />
       <Views />
       <Forms />
     </main>

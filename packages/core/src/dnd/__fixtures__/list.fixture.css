@@ -1,0 +1,113 @@
+/* The monorepo harness's base and list styles: real layout for the engine to measure. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+  font: 14px/1.4 system-ui, sans-serif;
+  color: #111;
+  background: #fff;
+}
+
+[data-dnd-dragging] {
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+}
+
+.harness-columns {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+}
+
+.harness-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 260px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: #f4f4f5;
+  border-radius: 8px;
+}
+
+.harness-item,
+.harness-chip,
+.harness-tile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 8px;
+  background: #fff;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+}
+
+.harness-handle {
+  width: 28px;
+  height: 28px;
+  cursor: grab;
+}
+
+.harness-inner {
+  margin-inline-start: auto;
+}
+
+.harness-row {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: #f4f4f5;
+}
+
+.harness-chip {
+  width: 120px;
+}
+
+.harness-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 312px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.harness-tile {
+  flex-direction: column;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+}
+
+.harness-panel {
+  height: 240px;
+  width: 320px;
+  overflow: auto;
+  border: 1px solid #a1a1aa;
+}
+
+.harness-spacer {
+  height: 120px;
+}
+
+.harness-tall {
+  height: 1600px;
+}
+
+.harness-dialog {
+  padding: 16px;
+}
+
+.harness-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+}

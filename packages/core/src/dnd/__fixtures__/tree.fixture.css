@@ -1,0 +1,72 @@
+/* The monorepo harness's tree and file drop styles. */
+.harness-tree,
+.harness-tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.harness-tree {
+  position: relative;
+  width: 360px;
+  border: 1px solid #a1a1aa;
+}
+
+.tree-row {
+  height: 28px;
+  line-height: 28px;
+  cursor: default;
+}
+
+.tree-row[data-dnd-source] {
+  opacity: 0.4;
+}
+
+.tree-row[data-dnd-target] {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+}
+
+.tree-row[data-dnd-target][data-dnd-blocked] {
+  outline-color: #dc2626;
+}
+
+.tree-indicator {
+  position: absolute;
+  display: none;
+  height: 2px;
+  margin-top: -1px;
+  background: #2563eb;
+  pointer-events: none;
+}
+
+.tree-indicator[data-active] {
+  display: block;
+}
+
+.tree-indicator[data-dnd-blocked] {
+  background: #dc2626;
+}
+
+.tree-chip:not(:popover-open) {
+  display: none;
+}
+
+.tree-chip {
+  padding: 2px 8px;
+  border: 1px solid #a1a1aa;
+  border-radius: 4px;
+  background: #fff;
+  color: #18181b;
+}
+
+.drop-zone {
+  width: 320px;
+  padding: 24px;
+  margin-block: 8px;
+  border: 2px dashed #a1a1aa;
+}
+
+.drop-zone[data-over] {
+  border-color: #2563eb;
+}

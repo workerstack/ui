@@ -1,0 +1,93 @@
+/* The monorepo harness's board and table styles. */
+.board {
+  width: 960px;
+  overflow-x: auto;
+  border: 1px solid #a1a1aa;
+}
+
+.board-row {
+  display: grid;
+  grid-template-columns: 60px repeat(4, 200px);
+  gap: 12px;
+  padding: 8px;
+}
+
+.board-head {
+  position: sticky;
+  top: 0;
+  background: #fff;
+}
+
+.board-lane {
+  border-top: 1px solid #d4d4d8;
+}
+
+.board-lane-name {
+  margin: 8px;
+}
+
+.board-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 64px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: #f4f4f5;
+  border-radius: 8px;
+}
+
+.board-list[data-dnd-target] {
+  outline: 2px solid #3b82f6;
+}
+
+.board-list[data-dnd-blocked] {
+  outline-color: #dc2626;
+}
+
+.board-card {
+  height: 36px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+}
+
+.board-card-tall {
+  height: 72px;
+}
+
+.board-card[data-dnd-dragging] {
+  rotate: 2deg;
+}
+
+.board-narrow {
+  width: 640px;
+}
+
+.table-scroll {
+  height: 260px;
+  width: 720px;
+  overflow: auto;
+  border: 1px solid #a1a1aa;
+}
+
+.harness-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.harness-table th,
+.harness-table td {
+  padding: 8px 12px;
+  text-align: start;
+  background: #fff;
+  border-bottom: 1px solid #e4e4e7;
+}
+
+.table-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}

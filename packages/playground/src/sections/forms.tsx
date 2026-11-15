@@ -1,6 +1,7 @@
 import type { JSX } from "@solidjs/web";
 
 import { Section } from "../section.tsx";
+import { FormArray } from "./form-array.tsx";
 import { ProfileForm } from "./profile-form.tsx";
 import { RecordDialogs } from "./record-dialogs.tsx";
 import { UnsavedForm } from "./unsaved-form.tsx";
@@ -14,6 +15,7 @@ export function Forms(): JSX.Element {
       description="TanStack forms with the UI's fields, server errors, unsaved changes, a dialog and a drawer."
     >
       <ProfileForm />
+      <FormArray />
       <UnsavedForm />
       <RecordDialogs />
     </Section>

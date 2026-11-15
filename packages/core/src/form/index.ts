@@ -1,5 +1,7 @@
 export { createForm, revalidateLogic } from "@tanstack/solid-form";
 
+export * from "./array/index.ts";
+
 export * from "./bound-field-types.ts";
 
 export * from "./controls/index.ts";

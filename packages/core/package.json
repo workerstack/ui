@@ -16,7 +16,7 @@
     "url": "https://github.com/workerstack/ui/issues"
   },
   "license": "MIT",
-  "author": "Lovro Žagar",
+  "author": "Lovro \u017dagar",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/workerstack/ui.git",
@@ -153,6 +153,26 @@
       "types": "./dist/form/index.d.ts",
       "solid": "./dist/form/index.js",
       "default": "./dist/form/index.js"
+    },
+    "./dnd/sortable": {
+      "types": "./dist/dnd/sortable/index.d.ts",
+      "default": "./dist/dnd/sortable/index.js"
+    },
+    "./dnd/sortable/core": {
+      "types": "./dist/dnd/sortable/core/index.d.ts",
+      "default": "./dist/dnd/sortable/core/index.js"
+    },
+    "./dnd/tree": {
+      "types": "./dist/dnd/tree/index.d.ts",
+      "default": "./dist/dnd/tree/index.js"
+    },
+    "./dnd/file-drop": {
+      "types": "./dist/dnd/file-drop/index.d.ts",
+      "default": "./dist/dnd/file-drop/index.js"
+    },
+    "./dnd/keyboard": {
+      "types": "./dist/dnd/keyboard/index.d.ts",
+      "default": "./dist/dnd/keyboard/index.js"
     },
     "./theme.css": "./dist/theme.css",
     "./package.json": "./package.json"
