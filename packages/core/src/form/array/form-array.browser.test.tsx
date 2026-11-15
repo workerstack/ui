@@ -19,7 +19,7 @@ function handleOf(container: Element, index: number): HTMLElement {
   return required(item.querySelector<HTMLElement>("[data-slot=form-array-handle]"), "a handle");
 }
 
-it("formArray.Handle drags a row below the next one, values and focus following, with no Solid warning", async () => {
+it("FormArray.Handle drags a row below the next one, values and focus following, with no Solid warning", async () => {
   const { result, warnings } = await collectWarningsAsync(async () => {
     const { container, form } = await renderInvites();
     const second = required(container.querySelector('[data-slot=form-array-item][data-index="1"]'), "the second item");
@@ -39,7 +39,7 @@ it("formArray.Handle drags a row below the next one, values and focus following,
   expect(warnings).toStrictEqual([]);
 });
 
-it("formArray.Handle draws a grip and the buttons draw the theme's chevron and x", async () => {
+it("FormArray.Handle draws a grip and the buttons draw the theme's chevron and x", async () => {
   const { container } = await renderInvites();
   const grip = required(handleOf(container, 0).querySelector("[data-icon]"), "a grip");
 
@@ -49,7 +49,7 @@ it("formArray.Handle draws a grip and the buttons draw the theme's chevron and x
   expect(glyph("--ui-icon-x")).not.toBe("none");
 });
 
-it("formArray's move buttons move a row from the keyboard, focus following the row", async () => {
+it("FormArray's move buttons move a row from the keyboard, focus following the row", async () => {
   const { container } = await renderInvites();
   await userEvent.click(screen.getByRole("textbox", { name: "Email 1" }));
   // Move item 1 up is disabled on the first row, so Tab lands on Move item 1 down.

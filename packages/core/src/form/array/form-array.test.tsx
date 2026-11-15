@@ -16,7 +16,7 @@ function emailBox(position: number): HTMLInputElement {
   return inputElement(screen.getByRole("textbox", { name: `Email ${position}` }));
 }
 
-it("formArray.Root is a group named by its legend, with an item group per value bound by path", async () => {
+it("FormArray.Root is a group named by its legend, with an item group per value bound by path", async () => {
   const { container } = await renderInvites();
 
   expect(screen.getByRole("group", { name: "Invites" }).dataset["fieldName"]).toBe("invites");
@@ -26,7 +26,7 @@ it("formArray.Root is a group named by its legend, with an item group per value 
   expect(emails(container)).toStrictEqual(["ada@acme.dev", "grace@acme.dev"]);
 });
 
-it("formArray.Items writes an item's change to its path", async () => {
+it("FormArray.Items writes an item's change to its path", async () => {
   const { form } = await renderInvites();
   typeInto(emailBox(2), "hopper@acme.dev");
   await settle();
@@ -34,7 +34,7 @@ it("formArray.Items writes an item's change to its path", async () => {
   expect(invitesOf(form)).toStrictEqual([{ email: "ada@acme.dev" }, { email: "hopper@acme.dev" }]);
 });
 
-it("formArray.Add appends the new item and focuses its first control", async () => {
+it("FormArray.Add appends the new item and focuses its first control", async () => {
   const { container, form } = await renderInvites();
   await press("Add invite");
 
@@ -43,7 +43,7 @@ it("formArray.Add appends the new item and focuses its first control", async () 
   expect(document.activeElement).toBe(emailBox(3));
 });
 
-it("formArray.Remove drops its item and focuses the item now at that position", async () => {
+it("FormArray.Remove drops its item and focuses the item now at that position", async () => {
   const { container, form } = await renderInvites();
   await press("Remove item 1");
 
@@ -52,7 +52,7 @@ it("formArray.Remove drops its item and focuses the item now at that position", 
   expect(document.activeElement).toBe(emailBox(1));
 });
 
-it("formArray.MoveUp and MoveDown reorder the items, focus follows, and the ends disable", async () => {
+it("FormArray.MoveUp and MoveDown reorder the items, focus follows, and the ends disable", async () => {
   const { container, form } = await renderInvites();
 
   expect(button("Move item 1 up").disabled).toBe(true);
@@ -69,7 +69,7 @@ it("formArray.MoveUp and MoveDown reorder the items, focus follows, and the ends
   expect(document.activeElement).toBe(button("Move item 1 down"));
 });
 
-it("formArray.Remove disables at min and formArray.Add at max", async () => {
+it("FormArray.Remove disables at min and formArray.Add at max", async () => {
   await renderInvites({ max: 3, min: 1 });
   await press("Add invite");
 
@@ -81,7 +81,7 @@ it("formArray.Remove disables at min and formArray.Add at max", async () => {
   expect(button("Add invite").disabled).toBe(false);
 });
 
-it("formArray.Error shows the array's own rule, run on an item's change, after a submit", async () => {
+it("FormArray.Error shows the array's own rule, run on an item's change, after a submit", async () => {
   const { container, form } = await renderInvites();
   typeInto(emailBox(2), "ada@acme.dev");
   await settle();
@@ -100,7 +100,7 @@ it("formArray.Error shows the array's own rule, run on an item's change, after a
   expect(container.querySelector("[data-slot=form-array-error]")).toBeNull();
 });
 
-it("formArray.Items shows items written from outside, and reset restores the start", async () => {
+it("FormArray.Items shows items written from outside, and reset restores the start", async () => {
   const { container, form } = await renderInvites();
   form.setFieldValue("invites", [{ email: "linus@acme.dev" }]);
   await settle();

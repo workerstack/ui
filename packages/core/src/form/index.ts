@@ -4,13 +4,17 @@ export * from "./array/index.ts";
 
 export * from "./bound-field-types.ts";
 
-export * from "./controls/index.ts";
-
 export { focusLeaves } from "./bound-field.ts";
 
 export * from "./define-field-module.tsx";
 
 export * from "./dialog/index.ts";
+
+export type { GroupLegend } from "./field-kit/group-fieldset.tsx";
+
+export type { OptionValue } from "./field-kit/option-value.ts";
+
+export type { ViewSlot } from "./field-kit/view-slot.ts";
 
 export * from "./field-module-shape.ts";
 

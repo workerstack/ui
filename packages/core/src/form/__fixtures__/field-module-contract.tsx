@@ -4,12 +4,12 @@ import { createForm } from "@tanstack/solid-form";
 import { expect, it } from "vitest";
 
 import { mounted } from "../../test/dom.ts";
-import { type FieldModule, Form } from "../index.ts";
+import { type FieldModule, Form, type RootProps } from "../index.ts";
 import { errorTexts, submit } from "./form-testing.ts";
 
-// The contract every field module keeps, for a wrapper's own test file:
+// The contract every field module keeps, for a control field's own test file:
 //
-//     testFieldModule({ module: FormSwitch, Control: FormSwitch.Control, empty: false, value: true });
+//     testFieldModule({ module: switchField, Control: switchField.Control, empty: false, value: true });
 //
 // Each test renders the module's Root, Label, Control and Error in a Form of one field.
 
@@ -24,6 +24,17 @@ export type FieldModuleContract<TValue> = {
   /** The text the View shows for `value`. */
   shown: string;
 };
+
+/** What a contract Root takes: the contract's one field. */
+export type ContractRootProps = RootProps<{ answer: unknown }, "answer">;
+
+/**
+ * A module whose Root takes options, or whose value the contract can't name, as the contract takes
+ * it: the contract renders a field of `unknown`.
+ */
+export function asContract<TValue>(module: object): FieldModule<TValue> {
+  return module /* rendered against the contract's own field of unknown */ as FieldModule<TValue>;
+}
 
 /** The label every contract test gives the field. */
 export const CONTRACT_LABEL = "Answer";

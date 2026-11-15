@@ -1,7 +1,10 @@
 import type { JSX } from "@solidjs/web";
 import { Checkbox } from "@workerstack/ui/checkbox";
-import { formCheckbox, formCheckboxGroup, formRadioGroup, formSwitch, type FormFor } from "@workerstack/ui/form";
+import { checkboxField, checkboxGroupField } from "@workerstack/ui/checkbox-field";
+import type { FormFor } from "@workerstack/ui/form";
 import { Radio } from "@workerstack/ui/radio-group";
+import { radioGroupField } from "@workerstack/ui/radio-group-field";
+import { switchField } from "@workerstack/ui/switch-field";
 import { For } from "solid-js";
 
 import { profileOptions, type Profile } from "./profile-options.ts";
@@ -11,21 +14,21 @@ type FieldProps = { form: FormFor<Profile> };
 
 function TermsField(props: FieldProps): JSX.Element {
   return (
-    <formCheckbox.Root form={props.form} name="terms" validators={{ onChange: required.on("Accept the terms.") }}>
-      <formCheckbox.Control />
-      <formCheckbox.Label>Terms</formCheckbox.Label>
-      <formCheckbox.Error />
-    </formCheckbox.Root>
+    <checkboxField.Root form={props.form} name="terms" validators={{ onChange: required.on("Accept the terms.") }}>
+      <checkboxField.Control />
+      <checkboxField.Label>Terms</checkboxField.Label>
+      <checkboxField.Error />
+    </checkboxField.Root>
   );
 }
 
 function AlertsField(props: FieldProps): JSX.Element {
   return (
-    <formSwitch.Root form={props.form} name="alerts">
-      <formSwitch.Control />
-      <formSwitch.Label>Alerts</formSwitch.Label>
-      <formSwitch.Error />
-    </formSwitch.Root>
+    <switchField.Root form={props.form} name="alerts">
+      <switchField.Control />
+      <switchField.Label>Alerts</switchField.Label>
+      <switchField.Error />
+    </switchField.Root>
   );
 }
 
@@ -33,10 +36,10 @@ function ToppingsField(props: FieldProps): JSX.Element {
   const validators = { onChange: required.items("Pick a topping.") };
 
   return (
-    <formCheckboxGroup.Root form={props.form} name="toppings" validators={validators}>
-      <formCheckboxGroup.Control
+    <checkboxGroupField.Root form={props.form} name="toppings" validators={validators}>
+      <checkboxGroupField.Control
         items={profileOptions.toppings}
-        legend={<formCheckboxGroup.Legend>Toppings</formCheckboxGroup.Legend>}
+        legend={<checkboxGroupField.Legend>Toppings</checkboxGroupField.Legend>}
       >
         <For each={profileOptions.toppings}>
           {(topping) => (
@@ -46,20 +49,23 @@ function ToppingsField(props: FieldProps): JSX.Element {
             </label>
           )}
         </For>
-      </formCheckboxGroup.Control>
-      <formCheckboxGroup.Error />
-    </formCheckboxGroup.Root>
+      </checkboxGroupField.Control>
+      <checkboxGroupField.Error />
+    </checkboxGroupField.Root>
   );
 }
 
 function PlanField(props: FieldProps): JSX.Element {
   return (
-    <formRadioGroup.Root form={props.form} name="plan" validators={{ onChange: required.pick("Pick a plan.") }}>
-      <formRadioGroup.Control items={profileOptions.plans} legend={<formRadioGroup.Legend>Plan</formRadioGroup.Legend>}>
+    <radioGroupField.Root form={props.form} name="plan" validators={{ onChange: required.pick("Pick a plan.") }}>
+      <radioGroupField.Control
+        items={profileOptions.plans}
+        legend={<radioGroupField.Legend>Plan</radioGroupField.Legend>}
+      >
         <For each={profileOptions.plans}>{(plan) => <Radio value={plan.value}>{plan.label}</Radio>}</For>
-      </formRadioGroup.Control>
-      <formRadioGroup.Error />
-    </formRadioGroup.Root>
+      </radioGroupField.Control>
+      <radioGroupField.Error />
+    </radioGroupField.Root>
   );
 }
 

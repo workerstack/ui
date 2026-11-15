@@ -17,3 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - A TanStack Form layer at `@workerstack/ui/form`: Form, field modules on our Field, wrappers for text input, textarea, checkbox, checkbox group, switch, radio group, select, combobox and input group, an error summary, server errors, drafts and unsaved-change guards, and FormDialog and FormDrawer.
 - Drag and drop under @workerstack/ui/dnd/sortable, dnd/sortable/core, dnd/tree, dnd/file-drop and dnd/keyboard: pointer, touch and keyboard sorting, boards, trees, auto scroll, announcements and file drops.
 - formArray (Root, Items, Handle, Add, Remove, MoveUp, MoveDown, Error) sorts a form's array field by drag, by buttons and by keyboard.
+
+### Changed
+
+- Each form-bound control now sits beside its plain control, at its own subpath: formTextInput, formTextarea, formCheckbox, formCheckboxGroup, formSwitch, formRadioGroup, formSelect, formCombobox, formMultiCombobox and formInputGroup from @workerstack/ui/form are now textInputField from @workerstack/ui/text-input-field, textareaField from /textarea-field, checkboxField and checkboxGroupField from /checkbox-field, switchField from /switch-field, radioGroupField from /radio-group-field, selectField from /select-field, comboboxField and multiComboboxField from /combobox-field, and inputGroupField from /input-field; their prop types follow (FormTextInputControlProps is TextInputFieldControlProps). The plain control subpaths load no TanStack code.

@@ -7,7 +7,7 @@ import { emails, press, renderInvites } from "./__fixtures__/invites-testing.tsx
 
 afterEach(cleanup);
 
-it("formArray adds, moves and removes items, and submits, with no Solid warning", async () => {
+it("FormArray adds, moves and removes items, and submits, with no Solid warning", async () => {
   const { result, warnings } = await collectWarningsAsync(async () => {
     const { container } = await renderInvites();
     await press("Add invite");
@@ -24,7 +24,7 @@ it("formArray adds, moves and removes items, and submits, with no Solid warning"
   expect(warnings).toStrictEqual([]);
 });
 
-it("formArray takes items written from outside, and unmounts, with no Solid warning", async () => {
+it("FormArray takes items written from outside, and unmounts, with no Solid warning", async () => {
   const { warnings } = await collectWarningsAsync(async () => {
     const { form } = await renderInvites();
     form.setFieldValue("invites", [{ email: "linus@acme.dev" }]);

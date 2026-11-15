@@ -126,7 +126,7 @@ export type FieldRoot<TWrites, TShows = TWrites, TRootData = object> = {
   readonly [moduleValue]?: ModuleValue<TWrites, TShows>;
 };
 
-/** The value type a module's control writes (`FieldModuleValue<typeof FormTextInput>` is `string`). */
+/** The value type a module's control writes (`FieldModuleValue<typeof textInputField>` is `string`). */
 export type FieldModuleValue<TModule> = TModule extends {
   readonly Root: { readonly [moduleValue]?: ModuleValue<infer TValue, never> };
 }

@@ -13,7 +13,7 @@ export type PartRender<TProps, TWrites, TShows, TRootData = unknown> = (
 
 /** What `defineFieldModule` takes. */
 export type FieldModuleOptions<TShows> = {
-  /** The module's name, as apps import it (`FormTextInput`): errors name it. */
+  /** The module's name, as apps import it (`textInputField`): errors name it. */
   name: string;
   /** What the control shows while the field is unset. */
   empty: TShows;

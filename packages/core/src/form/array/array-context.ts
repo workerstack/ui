@@ -53,7 +53,7 @@ export function useFormArray(part: string): FormArrayState {
 export function useFormArrayItems(): Sortable {
   const sortable = useContext(FORM_ARRAY_ITEMS_CONTEXT);
 
-  if (sortable === null) throw new Error("formArray.Handle must sit inside formArray.Items.");
+  if (sortable === null) throw new Error("FormArray.Handle must sit inside formArray.Items.");
 
   return sortable;
 }

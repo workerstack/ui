@@ -3,7 +3,6 @@ import { Button } from "@workerstack/ui/button";
 import {
   createForm,
   Form,
-  formTextInput,
   FormDraftNotice,
   FormSaveBar,
   FormUnsaved,
@@ -12,6 +11,7 @@ import {
   UnsavedChangesProvider,
   useConfirmLeave,
 } from "@workerstack/ui/form";
+import { textInputField } from "@workerstack/ui/text-input-field";
 import { createSignal } from "solid-js";
 
 import { useLog } from "../log.tsx";
@@ -52,14 +52,14 @@ function SettingsForm(): JSX.Element {
       <FormUnsaved draftKey="playground:settings">
         <FormSaveBar />
         <FormDraftNotice />
-        <formTextInput.Root form={form} name="name">
-          <formTextInput.Label>Name</formTextInput.Label>
-          <formTextInput.Control />
-        </formTextInput.Root>
-        <formTextInput.Root form={form} name="email">
-          <formTextInput.Label>Email</formTextInput.Label>
-          <formTextInput.Control />
-        </formTextInput.Root>
+        <textInputField.Root form={form} name="name">
+          <textInputField.Label>Name</textInputField.Label>
+          <textInputField.Control />
+        </textInputField.Root>
+        <textInputField.Root form={form} name="email">
+          <textInputField.Label>Email</textInputField.Label>
+          <textInputField.Control />
+        </textInputField.Root>
         <FormUnsavedStatus />
         <SubmitButton>Save</SubmitButton>
       </FormUnsaved>

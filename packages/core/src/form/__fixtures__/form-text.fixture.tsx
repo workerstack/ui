@@ -3,8 +3,8 @@ import type { JSX } from "@solidjs/web";
 import { TextInput, TextInputView, type TextInputProps } from "../../text-input/index.ts";
 import { defineFieldModule, type FieldModule } from "../index.ts";
 
-// A test-only field module over TextInput, built as the wrappers in form/controls/ are: the control
-// binds the field's value, change and blur; read-only it renders TextInputView.
+// A test-only field module over TextInput, built as the control fields beside each control are:
+// the control binds the field's value, change and blur; read-only it renders TextInputView.
 
 const textModule = defineFieldModule<string>({ empty: "", name: "FormText" });
 

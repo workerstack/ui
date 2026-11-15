@@ -1,6 +1,7 @@
 import type { JSX } from "@solidjs/web";
 import { Button } from "@workerstack/ui/button";
-import { formTextInput, FormDialog, FormDrawer, type FormDialogProps } from "@workerstack/ui/form";
+import { FormDialog, FormDrawer, type FormDialogProps } from "@workerstack/ui/form";
+import { textInputField } from "@workerstack/ui/text-input-field";
 
 import { useLog } from "../log.tsx";
 import { SAVE_DELAY, TAKEN_NAME } from "../playground.constants.ts";
@@ -11,11 +12,11 @@ type Record = { name: string };
 function recordProps(log: (source: string, ...args: unknown[]) => void): FormDialogProps<Record> {
   return {
     children: (form) => (
-      <formTextInput.Root form={form} name="name">
-        <formTextInput.Label>Name</formTextInput.Label>
-        <formTextInput.Control />
-        <formTextInput.Error />
-      </formTextInput.Root>
+      <textInputField.Root form={form} name="name">
+        <textInputField.Label>Name</textInputField.Label>
+        <textInputField.Control />
+        <textInputField.Error />
+      </textInputField.Root>
     ),
     description: `Change the name. The server refuses "${TAKEN_NAME}".`,
     onSubmit: async (values) => {

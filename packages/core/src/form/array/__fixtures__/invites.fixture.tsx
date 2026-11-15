@@ -2,7 +2,7 @@ import type { JSX } from "@solidjs/web";
 import { createForm } from "@tanstack/solid-form";
 
 import { FieldsetLegend } from "../../../field/index.ts";
-import { formTextInput } from "../../controls/index.ts";
+import { textInputField } from "../../../text-input/field.ts";
 import { Form } from "../../form.tsx";
 import type { FormFor } from "../../form-field.ts";
 import { formArray } from "../index.ts";
@@ -41,10 +41,10 @@ function Invite(props: { form: FormFor<Invites>; index: number }): JSX.Element {
   return (
     <>
       <formArray.Handle index={props.index} />
-      <formTextInput.Root form={props.form} name={`invites[${props.index}].email`}>
-        <formTextInput.Label>{`Email ${props.index + 1}`}</formTextInput.Label>
-        <formTextInput.Control />
-      </formTextInput.Root>
+      <textInputField.Root form={props.form} name={`invites[${props.index}].email`}>
+        <textInputField.Label>{`Email ${props.index + 1}`}</textInputField.Label>
+        <textInputField.Control />
+      </textInputField.Root>
       <formArray.MoveUp index={props.index} />
       <formArray.MoveDown index={props.index} />
       <formArray.Remove index={props.index} />

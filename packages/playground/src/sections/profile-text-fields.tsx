@@ -1,6 +1,9 @@
 import type { JSX } from "@solidjs/web";
-import { formInputGroup, formTextarea, formTextInput, type FormFor } from "@workerstack/ui/form";
+import type { FormFor } from "@workerstack/ui/form";
 import { InputGroup, InputGroupAddon, InputGroupText } from "@workerstack/ui/input";
+import { inputGroupField } from "@workerstack/ui/input-field";
+import { textInputField } from "@workerstack/ui/text-input-field";
+import { textareaField } from "@workerstack/ui/textarea-field";
 
 import type { Profile } from "./profile-options.ts";
 import { required } from "./required.ts";
@@ -11,21 +14,21 @@ function NameField(props: FieldProps): JSX.Element {
   const validators = { onChange: required.text("Enter your name.") };
 
   return (
-    <formTextInput.Root form={props.form} name="name" required validators={validators}>
-      <formTextInput.Label>Name</formTextInput.Label>
-      <formTextInput.Control />
-      <formTextInput.Error />
-    </formTextInput.Root>
+    <textInputField.Root form={props.form} name="name" required validators={validators}>
+      <textInputField.Label>Name</textInputField.Label>
+      <textInputField.Control />
+      <textInputField.Error />
+    </textInputField.Root>
   );
 }
 
 function BioField(props: FieldProps): JSX.Element {
   return (
-    <formTextarea.Root form={props.form} name="bio" required validators={{ onChange: required.text("Write a bio.") }}>
-      <formTextarea.Label>Bio</formTextarea.Label>
-      <formTextarea.Control />
-      <formTextarea.Error />
-    </formTextarea.Root>
+    <textareaField.Root form={props.form} name="bio" required validators={{ onChange: required.text("Write a bio.") }}>
+      <textareaField.Label>Bio</textareaField.Label>
+      <textareaField.Control />
+      <textareaField.Error />
+    </textareaField.Root>
   );
 }
 
@@ -33,28 +36,28 @@ function SiteField(props: FieldProps): JSX.Element {
   const validators = { onChange: required.text("Enter your site.") };
 
   return (
-    <formInputGroup.Root form={props.form} name="site" required validators={validators}>
-      <formInputGroup.Label>Site</formInputGroup.Label>
+    <inputGroupField.Root form={props.form} name="site" required validators={validators}>
+      <inputGroupField.Label>Site</inputGroupField.Label>
       <InputGroup>
         <InputGroupAddon>
           <InputGroupText>https://</InputGroupText>
         </InputGroupAddon>
-        <formInputGroup.Control />
+        <inputGroupField.Control />
       </InputGroup>
-      <formInputGroup.Error />
-    </formInputGroup.Root>
+      <inputGroupField.Error />
+    </inputGroupField.Root>
   );
 }
 
 function NoteField(props: FieldProps): JSX.Element {
   return (
-    <formInputGroup.Root form={props.form} name="note">
-      <formInputGroup.Label>Note</formInputGroup.Label>
+    <inputGroupField.Root form={props.form} name="note">
+      <inputGroupField.Label>Note</inputGroupField.Label>
       <InputGroup>
-        <formInputGroup.TextareaControl />
+        <inputGroupField.TextareaControl />
       </InputGroup>
-      <formInputGroup.Error />
-    </formInputGroup.Root>
+      <inputGroupField.Error />
+    </inputGroupField.Root>
   );
 }
 

@@ -3,7 +3,7 @@ import { expect, it } from "vitest";
 import { renderServer, slot, slots, tags } from "../../test/server.ts";
 import { InvitesForm } from "./__fixtures__/invites.fixture.tsx";
 
-it("formArray on the server renders an item group per value, its handles and buttons", () => {
+it("FormArray on the server renders an item group per value, its handles and buttons", () => {
   const { html, warnings } = renderServer(() => <InvitesForm />);
 
   expect(warnings).toStrictEqual([]);
@@ -25,7 +25,7 @@ it("formArray on the server renders an item group per value, its handles and but
   ]);
 });
 
-it("formArray on the server names the group by its legend and shows no error before a submit", () => {
+it("FormArray on the server names the group by its legend and shows no error before a submit", () => {
   const { html } = renderServer(() => <InvitesForm />);
 
   expect(slot(html, "fieldset-legend").name).toBe("legend");
@@ -35,7 +35,7 @@ it("formArray on the server names the group by its legend and shows no error bef
   expect(slots(html, "form-array-error")).toStrictEqual([]);
 });
 
-it("formArray in a read-only Form on the server renders its items without handles or buttons", () => {
+it("FormArray in a read-only Form on the server renders its items without handles or buttons", () => {
   const { html } = renderServer(() => <InvitesForm readOnly />);
 
   expect(slots(html, "form-array-item")).toHaveLength(2);

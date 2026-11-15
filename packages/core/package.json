@@ -54,10 +54,20 @@
       "solid": "./dist/input/index.js",
       "default": "./dist/input/index.js"
     },
+    "./input-field": {
+      "types": "./dist/input/field.d.ts",
+      "solid": "./dist/input/field.js",
+      "default": "./dist/input/field.js"
+    },
     "./select": {
       "types": "./dist/select/index.d.ts",
       "solid": "./dist/select/index.js",
       "default": "./dist/select/index.js"
+    },
+    "./select-field": {
+      "types": "./dist/select/field.d.ts",
+      "solid": "./dist/select/field.js",
+      "default": "./dist/select/field.js"
     },
     "./provider": {
       "types": "./dist/provider/index.d.ts",
@@ -79,30 +89,60 @@
       "solid": "./dist/text-input/index.js",
       "default": "./dist/text-input/index.js"
     },
+    "./text-input-field": {
+      "types": "./dist/text-input/field.d.ts",
+      "solid": "./dist/text-input/field.js",
+      "default": "./dist/text-input/field.js"
+    },
     "./textarea": {
       "types": "./dist/textarea/index.d.ts",
       "solid": "./dist/textarea/index.js",
       "default": "./dist/textarea/index.js"
+    },
+    "./textarea-field": {
+      "types": "./dist/textarea/field.d.ts",
+      "solid": "./dist/textarea/field.js",
+      "default": "./dist/textarea/field.js"
     },
     "./checkbox": {
       "types": "./dist/checkbox/index.d.ts",
       "solid": "./dist/checkbox/index.js",
       "default": "./dist/checkbox/index.js"
     },
+    "./checkbox-field": {
+      "types": "./dist/checkbox/field.d.ts",
+      "solid": "./dist/checkbox/field.js",
+      "default": "./dist/checkbox/field.js"
+    },
     "./switch": {
       "types": "./dist/switch/index.d.ts",
       "solid": "./dist/switch/index.js",
       "default": "./dist/switch/index.js"
+    },
+    "./switch-field": {
+      "types": "./dist/switch/field.d.ts",
+      "solid": "./dist/switch/field.js",
+      "default": "./dist/switch/field.js"
     },
     "./radio-group": {
       "types": "./dist/radio-group/index.d.ts",
       "solid": "./dist/radio-group/index.js",
       "default": "./dist/radio-group/index.js"
     },
+    "./radio-group-field": {
+      "types": "./dist/radio-group/field.d.ts",
+      "solid": "./dist/radio-group/field.js",
+      "default": "./dist/radio-group/field.js"
+    },
     "./combobox": {
       "types": "./dist/combobox/index.d.ts",
       "solid": "./dist/combobox/index.js",
       "default": "./dist/combobox/index.js"
+    },
+    "./combobox-field": {
+      "types": "./dist/combobox/field.d.ts",
+      "solid": "./dist/combobox/field.js",
+      "default": "./dist/combobox/field.js"
     },
     "./popover": {
       "types": "./dist/popover/index.d.ts",

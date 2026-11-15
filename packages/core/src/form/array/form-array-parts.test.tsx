@@ -10,7 +10,7 @@ import { formArray } from "./index.ts";
 
 afterEach(cleanup);
 
-it("formArray.Handle is a grip hidden from assistive technology, one per item", async () => {
+it("FormArray.Handle is a grip hidden from assistive technology, one per item", async () => {
   const { container } = await renderInvites();
   const handles = [...container.querySelectorAll<HTMLElement>("[data-slot=form-array-handle]")];
 
@@ -20,7 +20,7 @@ it("formArray.Handle is a grip hidden from assistive technology, one per item", 
   expect(owners).toStrictEqual(["0", "1"]);
 });
 
-it("formArray's buttons are named by the provider's strings, by position", async () => {
+it("FormArray's buttons are named by the provider's strings, by position", async () => {
   await renderInvites();
 
   const names = screen.getAllByRole("button").map((button) => button.getAttribute("aria-label") ?? button.textContent);
@@ -36,14 +36,14 @@ it("formArray's buttons are named by the provider's strings, by position", async
   ]);
 });
 
-it("formArray in a read-only Form shows the items without its handles and buttons", async () => {
+it("FormArray in a read-only Form shows the items without its handles and buttons", async () => {
   const { container } = await renderInvites({ readOnly: true });
 
   expect(screen.getAllByRole("group", { name: /^Item / })).toHaveLength(2);
   expect(container.querySelectorAll("[data-slot=form-array-handle], button")).toHaveLength(0);
 });
 
-it("formArray.Add outside formArray.Root throws, naming the part", () => {
+it("FormArray.Add outside formArray.Root throws, naming the part", () => {
   render(() => (
     <Errored fallback={(error) => <p role="alert">{String(error())}</p>}>
       <formArray.Add value="tag">Add tag</formArray.Add>

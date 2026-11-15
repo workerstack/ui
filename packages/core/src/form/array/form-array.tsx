@@ -44,7 +44,7 @@ export type FormArray = {
  *         {(index) => (
  *           <>
  *             <formArray.Handle index={index} />
- *             <formTextInput.Root form={form} name={`invites[${index}].email`}>…</formTextInput.Root>
+ *             <textInputField.Root form={form} name={`invites[${index}].email`}>…</textInputField.Root>
  *             <formArray.MoveUp index={index} />
  *             <formArray.MoveDown index={index} />
  *             <formArray.Remove index={index} />

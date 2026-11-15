@@ -35,13 +35,13 @@ function createProfileForm(log: Log): FormFor<Profile> {
   return form;
 }
 
-/** A profile form of one field per wrapper, a fake save that refuses one name, and a read-only toggle. */
+/** A profile form with every control field, a fake save that refuses one name, and a read-only toggle. */
 export function ProfileForm(): JSX.Element {
   const [isReadOnly, setIsReadOnly] = createSignal(false, { ownedWrite: true });
   const form = createProfileForm(useLog());
 
   return (
-    <Example align="start" label={`Every wrapper (the server refuses the name "${TAKEN_NAME}")`}>
+    <Example align="start" label={`Every control field (the server refuses the name "${TAKEN_NAME}")`}>
       <div class="flex w-full max-w-md flex-col gap-4">
         <Field>
           <FieldLabel>Read-only</FieldLabel>

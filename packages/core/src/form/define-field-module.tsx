@@ -170,7 +170,7 @@ function controlOf<TWrites, TShows, TRootData>(
 
 /**
  * Defines a field module whose control writes `TWrites` (and shows `TShows`, when it shows more
- * than it writes). The library's wrappers and an app's own controls are built the same way:
+ * than it writes). The library's control fields and an app's own controls are built the same way:
  *
  *     const FormRemember = defineFieldModule<boolean>({ empty: false, name: "FormRemember" });
  *     export const Control = FormRemember.control((props: SwitchProps, field) => (

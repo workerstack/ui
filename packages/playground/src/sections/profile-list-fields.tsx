@@ -1,7 +1,9 @@
 import type { JSX } from "@solidjs/web";
 import { ComboboxChip, ComboboxChips, ComboboxContent, ComboboxValue } from "@workerstack/ui/combobox";
-import { formCombobox, formMultiCombobox, formSelect, type FormFor } from "@workerstack/ui/form";
+import { comboboxField, multiComboboxField } from "@workerstack/ui/combobox-field";
+import type { FormFor } from "@workerstack/ui/form";
 import { SelectContent, SelectValue } from "@workerstack/ui/select";
+import { selectField } from "@workerstack/ui/select-field";
 import { For } from "solid-js";
 
 import { profileOptions, type Profile } from "./profile-options.ts";
@@ -17,37 +19,37 @@ function RoleField(props: FieldProps): JSX.Element {
   const validators = { onChange: required.pick("Pick a role.") };
 
   return (
-    <formSelect.Root form={props.form} name="role" items={profileOptions.roles} validators={validators}>
-      <formSelect.Label>Role</formSelect.Label>
-      <formSelect.Control placeholder="Pick a role">
-        <formSelect.Trigger>
+    <selectField.Root form={props.form} name="role" items={profileOptions.roles} validators={validators}>
+      <selectField.Label>Role</selectField.Label>
+      <selectField.Control placeholder="Pick a role">
+        <selectField.Trigger>
           <SelectValue />
-        </formSelect.Trigger>
+        </selectField.Trigger>
         <SelectContent />
-      </formSelect.Control>
-      <formSelect.Error />
-    </formSelect.Root>
+      </selectField.Control>
+      <selectField.Error />
+    </selectField.Root>
   );
 }
 
 function FruitField(props: FieldProps): JSX.Element {
   return (
-    <formCombobox.Root form={props.form} name="fruit" items={profileOptions.fruits}>
-      <formCombobox.Label>Fruit</formCombobox.Label>
-      <formCombobox.Control>
-        <formCombobox.Input placeholder="Pick a fruit" />
+    <comboboxField.Root form={props.form} name="fruit" items={profileOptions.fruits}>
+      <comboboxField.Label>Fruit</comboboxField.Label>
+      <comboboxField.Control>
+        <comboboxField.Input placeholder="Pick a fruit" />
         <ComboboxContent />
-      </formCombobox.Control>
-      <formCombobox.Error />
-    </formCombobox.Root>
+      </comboboxField.Control>
+      <comboboxField.Error />
+    </comboboxField.Root>
   );
 }
 
 function TagsField(props: FieldProps): JSX.Element {
   return (
-    <formMultiCombobox.Root form={props.form} name="tags" items={profileOptions.tags}>
-      <formMultiCombobox.Label>Tags</formMultiCombobox.Label>
-      <formMultiCombobox.Control>
+    <multiComboboxField.Root form={props.form} name="tags" items={profileOptions.tags}>
+      <multiComboboxField.Label>Tags</multiComboboxField.Label>
+      <multiComboboxField.Control>
         <ComboboxChips>
           <ComboboxValue>
             {(state) => (
@@ -56,12 +58,12 @@ function TagsField(props: FieldProps): JSX.Element {
               </For>
             )}
           </ComboboxValue>
-          <formMultiCombobox.ChipsInput placeholder="Add a tag" />
+          <multiComboboxField.ChipsInput placeholder="Add a tag" />
         </ComboboxChips>
         <ComboboxContent />
-      </formMultiCombobox.Control>
-      <formMultiCombobox.Error />
-    </formMultiCombobox.Root>
+      </multiComboboxField.Control>
+      <multiComboboxField.Error />
+    </multiComboboxField.Root>
   );
 }
 

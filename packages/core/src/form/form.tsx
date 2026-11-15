@@ -172,7 +172,7 @@ function FormContexts(props: FormContextsProps): JSX.Element {
  *
  *     const form = createForm(() => ({ defaultValues: { email: "" }, onSubmit }));
  *     <Form form={form}>
- *       <FormTextInput.Root form={form} name="email">…</FormTextInput.Root>
+ *       <textInputField.Root form={form} name="email">…</textInputField.Root>
  *       <SubmitButton>Save</SubmitButton>
  *     </Form>
  */
