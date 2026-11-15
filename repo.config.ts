@@ -4,7 +4,7 @@ export default defineConfig({
   packs: ["standards", "docs", "agents"],
   workflow: "main",
   agents: {
-    defaultApproval: "away",
+    defaultApproval: "ask",
     defaultEffort: "fast",
     defaultStrategy: "spawn-fast",
     hosts: ["claude", "codex", "antigravity", "grok", "cursor"],
