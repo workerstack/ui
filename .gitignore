@@ -29,3 +29,6 @@ knip.unignored-*.jsonc
 .cursor/
 .grok/
 # /repo:ignore
+
+# Local benchmarks: they compare against sibling checkouts on this machine.
+.repo/bench/

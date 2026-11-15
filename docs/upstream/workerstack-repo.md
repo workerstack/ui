@@ -6,6 +6,7 @@ Bugs and gaps in [`@workerstack/repo`](https://github.com/workerstack/repo) foun
 | --- | --- | --- | --- | --- | --- |
 | [REPO-1](#repo-1) | `lint --fix` turns a module augmentation's `interface` into a `type`, which breaks the augmentation | standards: oxlint config | Medium: the fix breaks the typecheck | open | — |
 | [REPO-3](#repo-3) | `lint --fix` rewrites `toHaveBeenCalled()` to `toHaveBeenCalledWith()`, which asserts a call with no arguments | standards: oxlint config (rule from oxlint's vitest plugin) | High: the fix silently changes what a test asserts | open | — |
+| [REPO-4](#repo-4) | A root that holds only config files cannot type check them: every rule path ends in a refusal or an empty program | standards: tsconfig checks | Medium: root configs go unchecked | open | — |
 | [REPO-2](#repo-2) | The published docs name `repo.config.ts`; `init` and `sync` use `workerstack.config.ts` | docs | Low | open | — |
 
 ---
@@ -43,3 +44,18 @@ Bugs and gaps in [`@workerstack/repo`](https://github.com/workerstack/repo) foun
 **Docs name the wrong config file.** `references/exports.md` (`## Config`) and `references/workflow.md` say `repo.config.ts` at the root. `bun repo init` writes `workerstack.config.ts`, and `bun repo sync` reads only that name.
 
 - **Also:** the docs in the `workerstack/repo` checkout describe a `workflow` key (`"worktree" | "pull-request" | "main"`) that `0.2.0-rc.0` rejects (`unknown key "workflow"`). That's expected until the next release, but this repo can't set `workflow: "main"` until then, so it runs without the `agents` pack (which in rc.0 enforces worktrees).
+
+## REPO-4
+
+**A repo root whose only TypeScript files are `repo.config.ts` and `vitest.config.ts` cannot type check them.** Version: `link:../repo` at 2026-11-15.
+
+- **Repro:** add a root `tsconfig.json` that includes `*.ts`. Then:
+  - `bun repo check` requires a root `tsconfig.src.json` that extends `@workerstack/repo/tsconfig/strict`.
+  - The strict config has `isolatedDeclarations`, so `export default defineConfig(...)` fails with TS9037.
+  - Typing the export (`const config: RepoConfig = defineConfig(...)`) fails `repo(config-file)`, and `RepoConfig` without its pack parameters does not accept the narrowed config (TS2322 on `nightly`).
+  - Excluding `*.config.ts`, as the sibling repos do, leaves the strict config with no inputs (TS18003), and `"files": []` is refused because it drops the base's `reset.d.ts`.
+  - Overriding `isolatedDeclarations: false` is refused.
+- **Where:** the tsconfig checks in `bun repo check` assume every tsconfig has source beyond its configs.
+- **Fix idea:** do not require a strict sibling when the plain config holds only `*.config.ts`, or let the strict sibling be skipped when it would have no inputs.
+- **Here:** no root tsconfig, so the two root configs are not type checked. The editor checks them with its default settings.
+- **Pinned by:** no test yet (same as REPO-1).
