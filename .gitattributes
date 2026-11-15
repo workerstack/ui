@@ -1,8 +1,9 @@
-# repo:generated 0e0d08c7
+# repo:generated eccd256c
 * text=auto eol=lf
 .githooks/commit-msg linguist-generated
 .githooks/pre-commit linguist-generated
 .githooks/pre-push linguist-generated
+.githooks/reference-transaction linguist-generated
 .repo/.gitkeep linguist-generated
 .vscode/tasks.json linguist-generated
 bunfig.toml linguist-generated
