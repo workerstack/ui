@@ -143,6 +143,19 @@
       }
     },
     {
+      "label": "workerstack:ui:sync:exports",
+      "type": "shell",
+      "command": "bun run sync:exports",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/core"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "new",
+        "reveal": "always"
+      }
+    },
+    {
       "label": "workerstack:ui:test",
       "type": "shell",
       "command": "bun run test",

@@ -1,18 +1,13 @@
 import { execFileSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, relative, sep } from "node:path";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-
-import { INDEX_FILE } from "./index-file.constants.ts";
 
 // Bundles a consumer module with Bun the way an app's bundler would: for the browser, minified, every package
 // external, so what lands in the output is only our code.
 
 /** The package's `src/` folder, with a trailing separator. */
 export const SRC: string = /* @__PURE__ */ fileURLToPath(/* @__PURE__ */ new URL("../", import.meta.url));
-
-/** Folders that are never public: helpers, private internals and test fixtures. */
-const PRIVATE: readonly string[] = ["__fixtures__", "internal", "test"];
 
 /** What one bundle holds: its code, and the bytes each module put in it, keyed by path relative to the root. */
 export type Bundled = {
@@ -25,15 +20,6 @@ type Metafile = { outputs: Record<string, { inputs: Record<string, { bytesInOutp
 
 /** A relative module specifier in an import or export statement, or in a dynamic import. */
 const SPECIFIER = /(?:\bfrom\s*|\bimport\s*\(?\s*)"(\.[^"]+)"/gu;
-
-/** Every public folder under `root`: one that holds an `index.ts`, outside the private folders. */
-export function publicFolders(root: string = SRC): string[] {
-  return readdirSync(root, { recursive: true, withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name === INDEX_FILE)
-    .map((entry) => relative(root, entry.parentPath).split(sep).join("/"))
-    .filter((folder) => folder !== "" && !folder.split("/").some((part) => PRIVATE.includes(part)))
-    .toSorted();
-}
 
 /**
  * Bundles `source`, written to `out/consumer.js`, with paths in the result relative to `root`. JavaScript, so an

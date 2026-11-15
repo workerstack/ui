@@ -28,7 +28,11 @@ export default defineConfig({
           "(docs/upstream/workerstack-repo.md REPO-1)",
       },
       {
-        files: ["packages/core/scripts/dev.ts", "packages/playground/scripts/dev.ts"],
+        files: [
+          "packages/core/scripts/dev.ts",
+          "packages/core/scripts/sync-exports.ts",
+          "packages/playground/scripts/dev.ts",
+        ],
         rules: ["repo/no-module-side-effects"],
         reason: "a script runs its main() when started, as a bin does; the standards pack exempts bins, not scripts",
       },

@@ -46,6 +46,7 @@ export function testFieldHydration(c: HydrationCase): void {
   it(`hydrating ${c.title} binds its field: a submit shows its error`, async () => {
     await hydrate("Blank");
     await userEvent.click(page.getByRole("button", { name: "Save" }));
-    await expect.element(page.getByText(c.error, { exact: true })).toBeVisible();
+    // In the form: the page announcer may repeat the error for screen readers.
+    await expect.element(page.getByRole("form", { name: "Profile" }).getByText(c.error, { exact: true })).toBeVisible();
   });
 }

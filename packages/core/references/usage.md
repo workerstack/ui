@@ -29,6 +29,8 @@ Dark mode: put `class="dark"` or `data-theme="dark"` on a parent element (usuall
 
 ## Components
 
+Every import path below is its own key in the package's export map, so a path that is not listed does not resolve. Each key is a folder, and `bun run sync:exports` writes the map from the folders.
+
 | Import | Exports |
 | --- | --- |
 | `@workerstack/ui/utils/cn` | `cn` ([`cn`](https://github.com/shadcn-ui/cn)), `cnState` (merges state-function classes) |
