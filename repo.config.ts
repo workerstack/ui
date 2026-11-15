@@ -23,13 +23,6 @@ export default defineConfig({
     tailwind: { entryPoint: "packages/core/src/test/browser.css" },
     skip: [
       {
-        files: ["packages/core/vitest.hydration.commands.ts", "packages/core/chromium.shared.ts"],
-        rules: ["typescript/consistent-type-definitions"],
-        reason:
-          "augments vitest/browser's BrowserCommands, which only an interface can merge into " +
-          "(docs/upstream/workerstack-repo.md REPO-1)",
-      },
-      {
         files: [
           "packages/core/scripts/build-styles.ts",
           "packages/core/scripts/dev.ts",

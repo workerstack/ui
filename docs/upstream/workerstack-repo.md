@@ -4,11 +4,11 @@ Bugs and gaps in [`@workerstack/repo`](https://github.com/workerstack/repo) foun
 
 | ID | Summary | Area | Severity | Status | PR |
 | --- | --- | --- | --- | --- | --- |
-| [REPO-1](#repo-1) | `lint --fix` turns a module augmentation's `interface` into a `type`, which breaks the augmentation | standards: oxlint config | Medium: the fix breaks the typecheck | open | — |
-| [REPO-3](#repo-3) | `lint --fix` rewrites `toHaveBeenCalled()` to `toHaveBeenCalledWith()`, which asserts a call with no arguments | standards: oxlint config (rule from oxlint's vitest plugin) | High: the fix silently changes what a test asserts | open | — |
-| [REPO-4](#repo-4) | A root that holds only config files cannot type check them: every rule path ends in a refusal or an empty program | standards: tsconfig checks | Medium: root configs go unchecked | open | — |
-| [REPO-5](#repo-5) | A public manifest's `author` may be written as `\u` escapes (`Lovro \u017dagar`); check passes it and nothing rewrites it as text | public package checks | Low: the published package.json shows the escape | open | — |
-| [REPO-2](#repo-2) | The published docs name `repo.config.ts`; `init` and `sync` use `workerstack.config.ts` | docs | Low | open | — |
+| [REPO-1](#repo-1) | `lint --fix` turns a module augmentation's `interface` into a `type`, which breaks the augmentation | standards: oxlint config | Medium: the fix breaks the typecheck | fixed | — |
+| [REPO-3](#repo-3) | `lint --fix` rewrites `toHaveBeenCalled()` to `toHaveBeenCalledWith()`, which asserts a call with no arguments | standards: oxlint config (rule from oxlint's vitest plugin) | High: the fix silently changes what a test asserts | fixed | — |
+| [REPO-4](#repo-4) | A root that holds only config files cannot type check them: every rule path ends in a refusal or an empty program | standards: tsconfig checks | Medium: root configs go unchecked | not reproducible on current main | — |
+| [REPO-5](#repo-5) | A public manifest's `author` may be written as `\u` escapes (`Lovro \u017dagar`); check passes it and nothing rewrites it as text | public package checks | Low: the published package.json shows the escape | not reproducible on current main | — |
+| [REPO-2](#repo-2) | The published docs name `repo.config.ts`; `init` and `sync` use `workerstack.config.ts` | docs | Low | not reproducible on current main | — |
 
 ---
 
@@ -27,7 +27,7 @@ Bugs and gaps in [`@workerstack/repo`](https://github.com/workerstack/repo) foun
   It rewrites the block to `type BrowserCommands = { … }`. A type alias can't merge into the module's interface, so TypeScript reports `Duplicate identifier 'BrowserCommands'` and every `commands.serverRender` call fails to typecheck.
 - **Where:** the generated `.oxlintrc.json` sets `typescript/consistent-type-definitions` to `type`. The rule doesn't exempt declaration merging.
 - **Fix idea:** exempt interfaces inside `declare module` / `declare global` (they exist to merge) in the preset, or report them without the autofix.
-- **Workaround here:** a `lint.skip` entry for `packages/core/vitest.hydration.commands.ts` in `workerstack.config.ts`. `respectEslintDisableDirectives` is off, so a disable comment doesn't work.
+- **Fixed:** current `@workerstack/repo` main no longer runs `typescript/consistent-type-definitions`, so the `lint.skip` entry for `packages/core/vitest.hydration.commands.ts` and `packages/core/chromium.shared.ts` is gone from `repo.config.ts`.
 - **Pinned by:** no test yet. A pinning test would run `oxlint --fix` on a fixture with the block above and expect it unchanged.
 
 ## REPO-3
