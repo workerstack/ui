@@ -12,7 +12,7 @@ import { serverRender } from "./vitest.hydration.commands.ts";
 export default defineConfig({
   plugins: [solid({ refresh: false, solid: { hydratable: true } }), tailwind()],
   test: {
-    browser: { ...chromium(), commands: { serverRender } },
+    browser: chromium({ serverRender }),
     globalSetup: ["./vitest.hydration.commands.ts"],
     include: ["src/**/*.hydration.test.tsx"],
     name: "hydration",

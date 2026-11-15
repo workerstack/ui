@@ -21,7 +21,7 @@ export default defineConfig({
     tailwind: { entryPoint: "packages/core/src/test/browser.css" },
     skip: [
       {
-        files: ["packages/core/vitest.hydration.commands.ts"],
+        files: ["packages/core/vitest.hydration.commands.ts", "packages/core/chromium.shared.ts"],
         rules: ["typescript/consistent-type-definitions"],
         reason:
           "augments vitest/browser's BrowserCommands, which only an interface can merge into " +
@@ -39,8 +39,10 @@ export default defineConfig({
       },
       {
         files: ["packages/core/src/test/browser.setup.ts"],
-        rules: ["repo/no-side-effect-import", "import/no-unassigned-import"],
-        reason: "the browser and hydration test projects' setup file exists to load the theme CSS into the test page",
+        rules: ["repo/no-side-effect-import", "import/no-unassigned-import", "repo/no-module-side-effects"],
+        reason:
+          "the browser and hydration test projects' setup file exists to load the theme CSS into the test page " +
+          "and to move the mouse off it before each test",
       },
     ],
   },
