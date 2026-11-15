@@ -27,8 +27,12 @@ In your app stylesheet:
 ```css
 @layer ui-sdk;                      /* must come first: keeps UI SDK's reset below Tailwind */
 @import "tailwindcss";
-@import "@workerstack/ui/theme.css"; /* tokens + makes Tailwind scan this package */
+@import "@workerstack/ui/theme.css"; /* tokens, no component classes */
+@import "@workerstack/ui/components/button/styles.css"; /* one line per entry you import */
+@import "@workerstack/ui/components/dialog/styles.css";
 ```
+
+`theme.css` holds the tokens and base styles and scans nothing. Each entry has a `styles.css` beside it, at `@workerstack/ui/<entry>/styles.css`. It names the files that entry reaches, so Tailwind builds the classes of the entries you import and no others. An entry whose `styles.css` you leave out has no classes in your CSS.
 
 Dark mode: put `class="dark"` or `data-theme="dark"` on a parent element (usually `<html>`). To re-theme, override the tokens (`--primary`, `--radius`, …) on `:root`.
 

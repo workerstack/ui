@@ -1,5 +1,44 @@
-/* The setup the @workerstack/ui README asks of an app. */
+/* The setup the @workerstack/ui README asks of an app: the theme, then one styles.css per entry the app imports. */
 @layer ui-sdk;
 
 @import "tailwindcss";
 @import "@workerstack/ui/theme.css";
+@import "@workerstack/ui/components/alert-dialog/styles.css";
+@import "@workerstack/ui/components/badge/styles.css";
+@import "@workerstack/ui/components/button/styles.css";
+@import "@workerstack/ui/components/card/styles.css";
+@import "@workerstack/ui/components/checkbox/styles.css";
+@import "@workerstack/ui/components/combobox/styles.css";
+@import "@workerstack/ui/components/dialog/styles.css";
+@import "@workerstack/ui/components/drawer/styles.css";
+@import "@workerstack/ui/components/field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/array/styles.css";
+@import "@workerstack/ui/components/form/tanstack/checkbox-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/checkbox-group-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/combobox-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/dialog/styles.css";
+@import "@workerstack/ui/components/form/tanstack/form/styles.css";
+@import "@workerstack/ui/components/form/tanstack/input-group-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/multi-combobox-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/radio-group-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/select-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/switch-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/text-input-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/textarea-field/styles.css";
+@import "@workerstack/ui/components/form/tanstack/unsaved/styles.css";
+@import "@workerstack/ui/components/input/styles.css";
+@import "@workerstack/ui/components/menu/styles.css";
+@import "@workerstack/ui/components/popover/styles.css";
+@import "@workerstack/ui/components/provider/styles.css";
+@import "@workerstack/ui/components/radio-group/styles.css";
+@import "@workerstack/ui/components/select/styles.css";
+@import "@workerstack/ui/components/switch/styles.css";
+@import "@workerstack/ui/components/tabs/styles.css";
+@import "@workerstack/ui/components/text-input/styles.css";
+@import "@workerstack/ui/components/textarea/styles.css";
+@import "@workerstack/ui/components/toast/styles.css";
+@import "@workerstack/ui/components/tooltip/styles.css";
+@import "@workerstack/ui/components/view/styles.css";
+@import "@workerstack/ui/features/dnd/file-drop/styles.css";
+@import "@workerstack/ui/features/dnd/sortable/styles.css";
+@import "@workerstack/ui/features/dnd/tree/styles.css";

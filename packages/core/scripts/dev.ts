@@ -1,14 +1,18 @@
 // Rebuilds dist/ as sources change, for consumers in the workspace (the playground) that import
 // the package the way an app does: through its exports, from dist. tsc watches the TypeScript;
-// theme.css is copied on change, as `build` copies it.
+// theme.css is copied on change, as `build` copies it, and each entry's styles.css is written after every compile.
 import { spawn } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, watch, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { buildStyles } from "./build-styles.ts";
 import { THEME } from "./theme.constants.ts";
 
 const SIGNALS = ["SIGINT", "SIGTERM"] as const;
+
+/** tsc's line once a compile is in dist/. */
+const COMPILED = "Watching for file changes";
 
 /** How long to wait before reading the theme again when an editor's save caught it empty. */
 const RETRY_MS = 50;
@@ -45,6 +49,17 @@ function watchTheme(root: string): void {
   });
 }
 
+/** Passes tsc's output on. After a compile the styles come first, so whoever waits for the line finds them in dist/. */
+async function pass(root: string, chunk: Buffer): Promise<void> {
+  try {
+    if (chunk.toString().includes(COMPILED)) await buildStyles(join(root, "dist"), join(root, "src"));
+  } catch (error) {
+    process.stderr.write(`${String(error)}\n`);
+  } finally {
+    process.stdout.write(chunk);
+  }
+}
+
 /** Starts from an empty dist/, then keeps it current until a signal stops tsc. */
 function run(): void {
   const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -54,8 +69,10 @@ function run(): void {
 
   const tsc = spawn("bunx", ["tsc", "-p", "tsconfig.build.json", "--watch", "--preserveWatchOutput"], {
     cwd: root,
-    stdio: "inherit",
+    stdio: ["ignore", "pipe", "inherit"],
   });
+
+  tsc.stdout.on("data", (chunk: Buffer) => void pass(root, chunk));
 
   for (const signal of SIGNALS) process.on(signal, () => tsc.kill(signal));
   tsc.on("exit", (code) => process.exit(code ?? 0));

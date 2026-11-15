@@ -1,9 +1,13 @@
 /*
- * @workerstack/ui theme. Import it after Tailwind, below a `@layer ui-sdk;` line:
+ * @workerstack/ui theme. Import it after Tailwind, below a `@layer ui-sdk;` line, then add one
+ * styles.css per entry you import. Each names the files that entry reaches, so Tailwind builds
+ * the classes of those entries and no others:
  *
  *   @layer ui-sdk;
  *   @import "tailwindcss";
  *   @import "@workerstack/ui/theme.css";
+ *   @import "@workerstack/ui/components/button/styles.css";
+ *   @import "@workerstack/ui/components/dialog/styles.css";
  *
  * Colors, sizes and icons are UI SDK's `--ui-*` tokens; set them in your own `:root`. Dark mode is
  * `color-scheme`: `.dark` / `.light` (or `data-theme`) force one, neither follows the system.
@@ -11,9 +15,6 @@
 
 /* UI SDK's tokens and part styles, in the `ui-sdk` layer below Tailwind's. */
 @import "@ui-sdk/core/web.css";
-
-/* The components' classes live next to this file. */
-@source "./";
 
 :root {
   --ui-radius: 0.5rem;
