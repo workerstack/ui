@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { Button } from "@workerstack/ui/button";
-import { toast } from "@workerstack/ui/toast";
+import { Button } from "@workerstack/ui/components/button";
+import { toast } from "@workerstack/ui/components/toast";
 
 import { useLog } from "../log.tsx";
 import { Example, Section } from "../section.tsx";

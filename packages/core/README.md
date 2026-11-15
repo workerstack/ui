@@ -36,20 +36,20 @@ Dark mode: put `class="dark"` or `data-theme="dark"` on a parent element (usuall
 
 | Import | Exports |
 | --- | --- |
-| `@workerstack/ui/cn` | `cn` ([`cn`](https://github.com/shadcn-ui/cn)), `cnState` (merges state-function classes) |
-| `@workerstack/ui/button` | `Button`, `buttonClass` (variants: primary, secondary, outline, ghost, destructive, link; sizes: sm, md, lg, icon) |
-| `@workerstack/ui/field` | `Field`, `FieldLabel`, `FieldDescription`, `FieldError` |
-| `@workerstack/ui/input` | `Input`, `InputGroup`, `InputClear` |
-| `@workerstack/ui/select` | `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem`, `SelectGroup`, `SelectGroupLabel`, `SelectSeparator` |
-| `@workerstack/ui/dialog` | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose` |
-| `@workerstack/ui/menu` | `Menu`, `MenuTrigger`, `MenuContent`, `MenuItem`, `MenuCheckboxItem`, `MenuRadioGroup`, `MenuRadioItem`, `MenuGroup`, `MenuGroupLabel`, `MenuSeparator`, `MenuShortcut`, `MenuSub`, `MenuSubTrigger`, `MenuSubContent` |
+| `@workerstack/ui/utils/cn` | `cn` ([`cn`](https://github.com/shadcn-ui/cn)), `cnState` (merges state-function classes) |
+| `@workerstack/ui/components/button` | `Button`, `buttonClass` (variants: primary, secondary, outline, ghost, destructive, link; sizes: sm, md, lg, icon) |
+| `@workerstack/ui/components/field` | `Field`, `FieldLabel`, `FieldDescription`, `FieldError` |
+| `@workerstack/ui/components/input` | `Input`, `InputGroup`, `InputClear` |
+| `@workerstack/ui/components/select` | `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem`, `SelectGroup`, `SelectGroupLabel`, `SelectSeparator` |
+| `@workerstack/ui/components/dialog` | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose` |
+| `@workerstack/ui/components/menu` | `Menu`, `MenuTrigger`, `MenuContent`, `MenuItem`, `MenuCheckboxItem`, `MenuRadioGroup`, `MenuRadioItem`, `MenuGroup`, `MenuGroupLabel`, `MenuSeparator`, `MenuShortcut`, `MenuSub`, `MenuSubTrigger`, `MenuSubContent` |
 
 `class` on any part accepts a string, array, object, or a function of the part's state. It is merged with ours through tailwind-merge, so your classes win.
 
 ```tsx
-import { Button } from "@workerstack/ui/button"
-import { Field, FieldLabel, FieldError } from "@workerstack/ui/field"
-import { Input } from "@workerstack/ui/input"
+import { Button } from "@workerstack/ui/components/button"
+import { Field, FieldLabel, FieldError } from "@workerstack/ui/components/field"
+import { Input } from "@workerstack/ui/components/input"
 
 <Field>
   <FieldLabel>Email</FieldLabel>
@@ -82,7 +82,7 @@ Every component has four test files next to it:
 | `button.server.test.tsx` | `server` | Node, Solid compiled for SSR | `renderToString` output: markup, ARIA, ids, classes, Solid warnings |
 | `button.hydration.test.tsx` | `hydration` | HTML rendered in Node, hydrated in Chromium | The client claims every server node, with no hydration warnings, no replaced or added elements, and server ids kept; the hydrated component then works |
 
-Components that tests render (fixtures) always live in the component's `__fixtures__/` folder, never inline in a test file: `src/dialog/__fixtures__/share-dialog.fixture.tsx` is shared by the dialog's tests, and `__fixtures__/dialog.hydration.fixture.tsx` is what both sides of the hydration test render. On the server it goes through the `serverRender` browser command (`vitest.hydration.commands.ts`); in the browser it is compiled hydratable. Fixtures aren't published.
+Components that tests render (fixtures) always live in the component's `__fixtures__/` folder, never inline in a test file: `src/components/dialog/__fixtures__/share-dialog.fixture.tsx` is shared by the dialog's tests, and `__fixtures__/dialog.hydration.fixture.tsx` is what both sides of the hydration test render. On the server it goes through the `serverRender` browser command (`vitest.hydration.commands.ts`); in the browser it is compiled hydratable. Fixtures aren't published.
 
 Run one with `bun run test:dom`, `test:browser`, `test:server` or `test:hydration`. Each project is its own `vitest.*.config.ts` with its own `solid()` plugin.
 

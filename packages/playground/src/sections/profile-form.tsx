@@ -1,7 +1,13 @@
 import type { JSX } from "@solidjs/web";
-import { Field, FieldLabel } from "@workerstack/ui/field";
-import { applyServerErrors, createForm, Form, SubmitButton, type FormFor } from "@workerstack/ui/form";
-import { Switch } from "@workerstack/ui/switch";
+import { Field, FieldLabel } from "@workerstack/ui/components/field";
+import {
+  applyServerErrors,
+  createForm,
+  Form,
+  SubmitButton,
+  type FormFor,
+} from "@workerstack/ui/components/form/tanstack/form";
+import { Switch } from "@workerstack/ui/components/switch";
 import { createSignal } from "solid-js";
 
 import { useLog, type Log } from "../log.tsx";

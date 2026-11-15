@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { Button, type ButtonSize, type ButtonVariant } from "@workerstack/ui/button";
+import { Button, type ButtonSize, type ButtonVariant } from "@workerstack/ui/components/button";
 import { createSignal, For } from "solid-js";
 
 import { useLog } from "../log.tsx";

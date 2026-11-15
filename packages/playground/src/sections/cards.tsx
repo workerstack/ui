@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { Badge } from "@workerstack/ui/badge";
-import { Button } from "@workerstack/ui/button";
+import { Badge } from "@workerstack/ui/components/badge";
+import { Button } from "@workerstack/ui/components/button";
 import {
   Card,
   CardAction,
@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@workerstack/ui/card";
+} from "@workerstack/ui/components/card";
 
 import { Example, Section } from "../section.tsx";
 

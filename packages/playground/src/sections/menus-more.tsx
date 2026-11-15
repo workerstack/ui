@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { buttonClass } from "@workerstack/ui/button";
+import { buttonClass } from "@workerstack/ui/components/button";
 import {
   Menu,
   MenuContent,
@@ -11,7 +11,7 @@ import {
   MenuList,
   MenuSeparator,
   MenuTrigger,
-} from "@workerstack/ui/menu";
+} from "@workerstack/ui/components/menu";
 import { For } from "solid-js";
 
 import { useLog } from "../log.tsx";

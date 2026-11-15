@@ -1,7 +1,7 @@
 import type { JSX } from "@solidjs/web";
-import { Button } from "@workerstack/ui/button";
-import { FormDialog, FormDrawer, type FormDialogProps } from "@workerstack/ui/form";
-import { textInputField } from "@workerstack/ui/text-input-field";
+import { Button } from "@workerstack/ui/components/button";
+import { FormDialog, FormDrawer, type FormDialogProps } from "@workerstack/ui/components/form/tanstack/dialog";
+import { textInputField } from "@workerstack/ui/components/form/tanstack/text-input-field";
 
 import { useLog } from "../log.tsx";
 import { SAVE_DELAY, TAKEN_NAME } from "../playground.constants.ts";

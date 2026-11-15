@@ -6,7 +6,7 @@ import { DndFileDrop } from "./dnd-file-drop.tsx";
 import { DndList } from "./dnd-list.tsx";
 import { DndTree } from "./dnd-tree.tsx";
 
-/** `@workerstack/ui/dnd/*`: a sortable list, a board, a tree and a file drop zone. */
+/** `@workerstack/ui/features/dnd/*`: a sortable list, a board, a tree and a file drop zone. */
 export function DragAndDrop(): JSX.Element {
   return (
     <Section

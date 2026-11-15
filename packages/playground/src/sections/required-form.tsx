@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { Button } from "@workerstack/ui/button";
+import { Button } from "@workerstack/ui/components/button";
 
 import { Example } from "../section.tsx";
 

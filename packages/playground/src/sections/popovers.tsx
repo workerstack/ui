@@ -1,7 +1,7 @@
 import type { JSX } from "@solidjs/web";
-import { buttonClass } from "@workerstack/ui/button";
-import { Field, FieldLabel } from "@workerstack/ui/field";
-import { Input } from "@workerstack/ui/input";
+import { buttonClass } from "@workerstack/ui/components/button";
+import { Field, FieldLabel } from "@workerstack/ui/components/field";
+import { Input } from "@workerstack/ui/components/input";
 import {
   Popover,
   PopoverClose,
@@ -10,7 +10,7 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "@workerstack/ui/popover";
+} from "@workerstack/ui/components/popover";
 
 import { useLog } from "../log.tsx";
 import { Example, Section } from "../section.tsx";

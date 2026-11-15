@@ -1,9 +1,9 @@
 import type { JSX } from "@solidjs/web";
-import type { FormFor } from "@workerstack/ui/form";
-import { InputGroup, InputGroupAddon, InputGroupText } from "@workerstack/ui/input";
-import { inputGroupField } from "@workerstack/ui/input-field";
-import { textInputField } from "@workerstack/ui/text-input-field";
-import { textareaField } from "@workerstack/ui/textarea-field";
+import type { FormFor } from "@workerstack/ui/components/form/tanstack/form";
+import { inputGroupField } from "@workerstack/ui/components/form/tanstack/input-group-field";
+import { textInputField } from "@workerstack/ui/components/form/tanstack/text-input-field";
+import { textareaField } from "@workerstack/ui/components/form/tanstack/textarea-field";
+import { InputGroup, InputGroupAddon, InputGroupText } from "@workerstack/ui/components/input";
 
 import type { Profile } from "./profile-options.ts";
 import { required } from "./required.ts";

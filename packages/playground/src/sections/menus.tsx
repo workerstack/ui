@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { buttonClass } from "@workerstack/ui/button";
+import { buttonClass } from "@workerstack/ui/components/button";
 import {
   Menu,
   MenuCheckboxItem,
@@ -15,7 +15,7 @@ import {
   MenuSubContent,
   MenuSubTrigger,
   MenuTrigger,
-} from "@workerstack/ui/menu";
+} from "@workerstack/ui/components/menu";
 import { createSignal } from "solid-js";
 
 import { useLog } from "../log.tsx";

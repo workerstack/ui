@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { createFileDrop } from "@workerstack/ui/dnd/file-drop";
+import { createFileDrop } from "@workerstack/ui/features/dnd/file-drop";
 import { cn } from "cn";
 import { createSignal, For } from "solid-js";
 

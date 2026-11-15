@@ -1,6 +1,13 @@
 import type { JSX } from "@solidjs/web";
-import { Field, FieldLabel } from "@workerstack/ui/field";
-import { BooleanView, ChoiceView, OptionBadge, OptionDot, type OptionDotProps, View } from "@workerstack/ui/view";
+import { Field, FieldLabel } from "@workerstack/ui/components/field";
+import {
+  BooleanView,
+  ChoiceView,
+  OptionBadge,
+  OptionDot,
+  type OptionDotProps,
+  View,
+} from "@workerstack/ui/components/view";
 import { For } from "solid-js";
 
 import { Example, Section } from "../section.tsx";

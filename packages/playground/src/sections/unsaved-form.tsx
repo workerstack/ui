@@ -1,17 +1,15 @@
 import type { JSX } from "@solidjs/web";
-import { Button } from "@workerstack/ui/button";
+import { Button } from "@workerstack/ui/components/button";
+import { createForm, Form, SubmitButton } from "@workerstack/ui/components/form/tanstack/form";
+import { textInputField } from "@workerstack/ui/components/form/tanstack/text-input-field";
 import {
-  createForm,
-  Form,
   FormDraftNotice,
   FormSaveBar,
   FormUnsaved,
   FormUnsavedStatus,
-  SubmitButton,
   UnsavedChangesProvider,
   useConfirmLeave,
-} from "@workerstack/ui/form";
-import { textInputField } from "@workerstack/ui/text-input-field";
+} from "@workerstack/ui/components/form/tanstack/unsaved";
 import { createSignal } from "solid-js";
 
 import { useLog } from "../log.tsx";

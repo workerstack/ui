@@ -1,9 +1,10 @@
 import type { JSX } from "@solidjs/web";
-import { ComboboxChip, ComboboxChips, ComboboxContent, ComboboxValue } from "@workerstack/ui/combobox";
-import { comboboxField, multiComboboxField } from "@workerstack/ui/combobox-field";
-import type { FormFor } from "@workerstack/ui/form";
-import { SelectContent, SelectValue } from "@workerstack/ui/select";
-import { selectField } from "@workerstack/ui/select-field";
+import { ComboboxChip, ComboboxChips, ComboboxContent, ComboboxValue } from "@workerstack/ui/components/combobox";
+import { comboboxField } from "@workerstack/ui/components/form/tanstack/combobox-field";
+import type { FormFor } from "@workerstack/ui/components/form/tanstack/form";
+import { multiComboboxField } from "@workerstack/ui/components/form/tanstack/multi-combobox-field";
+import { selectField } from "@workerstack/ui/components/form/tanstack/select-field";
+import { SelectContent, SelectValue } from "@workerstack/ui/components/select";
 import { For } from "solid-js";
 
 import { profileOptions, type Profile } from "./profile-options.ts";

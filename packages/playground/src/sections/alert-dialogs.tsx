@@ -9,8 +9,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@workerstack/ui/alert-dialog";
-import { buttonClass } from "@workerstack/ui/button";
+} from "@workerstack/ui/components/alert-dialog";
+import { buttonClass } from "@workerstack/ui/components/button";
 
 import { useLog } from "../log.tsx";
 import { Example, Section } from "../section.tsx";

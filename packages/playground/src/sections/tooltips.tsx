@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { buttonClass } from "@workerstack/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@workerstack/ui/tooltip";
+import { buttonClass } from "@workerstack/ui/components/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@workerstack/ui/components/tooltip";
 import { For } from "solid-js";
 
 import { Example, Section } from "../section.tsx";

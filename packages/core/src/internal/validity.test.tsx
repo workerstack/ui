@@ -3,7 +3,7 @@ import type { JSX } from "@solidjs/web";
 import { flush } from "solid-js";
 import { afterEach, expect, it } from "vitest";
 
-import { UI_MESSAGES_EN as M } from "../provider/index.ts";
+import { UI_MESSAGES_EN as M } from "../components/provider/index.ts";
 import { inputElement, mounted, type } from "../test/dom.ts";
 import { ValidityInput, ValidityTextarea } from "./__fixtures__/validity.fixture.tsx";
 import { setRequired, setValidity } from "./validity.ts";

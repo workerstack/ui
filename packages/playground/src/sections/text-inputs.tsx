@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { Field, FieldDescription, FieldLabel } from "@workerstack/ui/field";
-import { TextInput, TextInputView } from "@workerstack/ui/text-input";
+import { Field, FieldDescription, FieldLabel } from "@workerstack/ui/components/field";
+import { TextInput, TextInputView } from "@workerstack/ui/components/text-input";
 
 import { useLog } from "../log.tsx";
 import { Example, Section } from "../section.tsx";

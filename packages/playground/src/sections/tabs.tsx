@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { Tabs as TabsRoot, TabsList, TabsPanel, TabsTab, type TabsVariant } from "@workerstack/ui/tabs";
+import { Tabs as TabsRoot, TabsList, TabsPanel, TabsTab, type TabsVariant } from "@workerstack/ui/components/tabs";
 import { For } from "solid-js";
 
 import { useLog } from "../log.tsx";

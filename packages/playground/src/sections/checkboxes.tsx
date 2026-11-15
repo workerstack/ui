@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { Checkbox, CheckboxGroup, CheckboxGroupView, CheckboxView } from "@workerstack/ui/checkbox";
-import { Field, FieldError, FieldLabel } from "@workerstack/ui/field";
+import { Checkbox, CheckboxGroup, CheckboxGroupView, CheckboxView } from "@workerstack/ui/components/checkbox";
+import { Field, FieldError, FieldLabel } from "@workerstack/ui/components/field";
 import { For } from "solid-js";
 
 import { useLog } from "../log.tsx";

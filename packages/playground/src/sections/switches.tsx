@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { Field, FieldError, FieldLabel } from "@workerstack/ui/field";
-import { Switch, SwitchView } from "@workerstack/ui/switch";
+import { Field, FieldError, FieldLabel } from "@workerstack/ui/components/field";
+import { Switch, SwitchView } from "@workerstack/ui/components/switch";
 
 import { useLog } from "../log.tsx";
 import { Example, Section } from "../section.tsx";

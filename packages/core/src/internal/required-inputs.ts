@@ -1,6 +1,6 @@
 import { createSignal, untrack, type Accessor } from "solid-js";
 
-import { useRequiredMark } from "../field/field-marks.tsx";
+import { useRequiredMark } from "../components/field/field-marks.tsx";
 import { callRef, type RefLike } from "./ref.ts";
 import { REQUIRED_RULE } from "./validity.constants.ts";
 import { createRequiredRule, setValidity } from "./validity.ts";

@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { Field, FieldDescription, FieldLabel } from "@workerstack/ui/field";
+import { Field, FieldDescription, FieldLabel } from "@workerstack/ui/components/field";
 import {
   Input,
   InputGroup,
@@ -9,7 +9,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
   InputView,
-} from "@workerstack/ui/input";
+} from "@workerstack/ui/components/input";
 
 import { useLog } from "../log.tsx";
 import { Example } from "../section.tsx";

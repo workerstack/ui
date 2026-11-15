@@ -1,5 +1,5 @@
 import { createRequiredText, type RequiredTextProps } from "../validity.ts";
-import { UI_MESSAGES_EN } from "../../provider/index.ts";
+import { UI_MESSAGES_EN } from "../../components/provider/index.ts";
 
 /** A text box with the required and length rules wired, on a plain `<input>`. */
 export function ValidityInput(props: RequiredTextProps & { defaultValue?: string; type?: string }) {

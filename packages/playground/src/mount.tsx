@@ -1,5 +1,5 @@
 import { render } from "@solidjs/web";
-import { UiProvider } from "@workerstack/ui/provider";
+import { UiProvider } from "@workerstack/ui/components/provider";
 
 import { App } from "./app.tsx";
 

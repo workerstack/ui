@@ -1,4 +1,4 @@
-import type { SortableMove } from "@workerstack/ui/dnd/sortable";
+import type { SortableMove } from "@workerstack/ui/features/dnd/sortable";
 
 /** One column of the board. */
 export type Column = { id: string; name: string };

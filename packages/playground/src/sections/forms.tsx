@@ -6,7 +6,10 @@ import { ProfileForm } from "./profile-form.tsx";
 import { RecordDialogs } from "./record-dialogs.tsx";
 import { UnsavedForm } from "./unsaved-form.tsx";
 
-/** `@workerstack/ui/form` with the control fields: a profile, an array, the unsaved layer, the dialog and drawer. */
+/**
+ * `@workerstack/ui/components/form/tanstack/*`: the form with its bound fields: a profile, an array, the unsaved
+ * layer, the dialog and drawer.
+ */
 export function Forms(): JSX.Element {
   return (
     <Section

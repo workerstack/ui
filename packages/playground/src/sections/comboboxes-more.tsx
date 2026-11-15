@@ -1,7 +1,13 @@
 import type { JSX } from "@solidjs/web";
-import { Combobox, ComboboxColorDot, ComboboxContent, ComboboxInput, ComboboxView } from "@workerstack/ui/combobox";
-import { Field, FieldLabel } from "@workerstack/ui/field";
-import type { OptionDotProps } from "@workerstack/ui/view";
+import {
+  Combobox,
+  ComboboxColorDot,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxView,
+} from "@workerstack/ui/components/combobox";
+import { Field, FieldLabel } from "@workerstack/ui/components/field";
+import type { OptionDotProps } from "@workerstack/ui/components/view";
 
 import { Example } from "../section.tsx";
 

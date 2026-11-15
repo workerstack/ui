@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { Button } from "@workerstack/ui/button";
-import { Toaster } from "@workerstack/ui/toast";
+import { Button } from "@workerstack/ui/components/button";
+import { Toaster } from "@workerstack/ui/components/toast";
 import { cn } from "cn";
 import { createSignal, For } from "solid-js";
 

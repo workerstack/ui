@@ -1,4 +1,4 @@
-import type { TreeMove } from "@workerstack/ui/dnd/tree";
+import type { TreeMove } from "@workerstack/ui/features/dnd/tree";
 
 import { LOCKED } from "./dnd-tree.constants.ts";
 

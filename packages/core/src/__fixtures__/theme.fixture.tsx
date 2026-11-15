@@ -1,4 +1,4 @@
-import { Input } from "../input/index.ts";
+import { Input } from "../components/input/index.ts";
 
 /** A required label mark and an optional one, drawn by the theme from `data-mark-text`. */
 export function MarkFixture() {

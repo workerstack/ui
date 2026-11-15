@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { Field, FieldLabel } from "@workerstack/ui/field";
+import { Field, FieldLabel } from "@workerstack/ui/components/field";
 import {
   Select,
   SelectContent,
@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
   SelectView,
-} from "@workerstack/ui/select";
+} from "@workerstack/ui/components/select";
 import { For } from "solid-js";
 
 import { useLog } from "../log.tsx";

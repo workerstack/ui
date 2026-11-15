@@ -12,8 +12,8 @@ import {
   ComboboxItem,
   ComboboxList,
   ComboboxValue,
-} from "@workerstack/ui/combobox";
-import { Field, FieldError, FieldLabel } from "@workerstack/ui/field";
+} from "@workerstack/ui/components/combobox";
+import { Field, FieldError, FieldLabel } from "@workerstack/ui/components/field";
 import { createSignal, For } from "solid-js";
 
 import { useLog } from "../log.tsx";

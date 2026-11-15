@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { Badge, badgeClass, type BadgeVariant } from "@workerstack/ui/badge";
+import { Badge, badgeClass, type BadgeVariant } from "@workerstack/ui/components/badge";
 import { For } from "solid-js";
 
 import { Example, Section } from "../section.tsx";

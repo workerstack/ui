@@ -1,10 +1,11 @@
 import type { JSX } from "@solidjs/web";
-import { Checkbox } from "@workerstack/ui/checkbox";
-import { checkboxField, checkboxGroupField } from "@workerstack/ui/checkbox-field";
-import type { FormFor } from "@workerstack/ui/form";
-import { Radio } from "@workerstack/ui/radio-group";
-import { radioGroupField } from "@workerstack/ui/radio-group-field";
-import { switchField } from "@workerstack/ui/switch-field";
+import { Checkbox } from "@workerstack/ui/components/checkbox";
+import { checkboxField } from "@workerstack/ui/components/form/tanstack/checkbox-field";
+import { checkboxGroupField } from "@workerstack/ui/components/form/tanstack/checkbox-group-field";
+import type { FormFor } from "@workerstack/ui/components/form/tanstack/form";
+import { radioGroupField } from "@workerstack/ui/components/form/tanstack/radio-group-field";
+import { switchField } from "@workerstack/ui/components/form/tanstack/switch-field";
+import { Radio } from "@workerstack/ui/components/radio-group";
 import { For } from "solid-js";
 
 import { profileOptions, type Profile } from "./profile-options.ts";

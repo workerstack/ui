@@ -1,7 +1,7 @@
 import { createEffect, onSettled, untrack } from "solid-js";
 
-import type { UiMessages } from "../provider/index.ts";
-import { isBlankText, textLength } from "../text-hygiene/index.ts";
+import type { UiMessages } from "../components/provider/index.ts";
+import { isBlankText, textLength } from "../utils/text-hygiene/index.ts";
 import { LENGTH_RULE, PASSWORD_TYPE, REQUIRED_RULE } from "./validity.constants.ts";
 
 // A control's validity, rule by rule. Several rules can speak for one element (the box's own

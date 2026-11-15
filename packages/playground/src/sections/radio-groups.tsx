@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
-import { Field, FieldError, FieldLabel } from "@workerstack/ui/field";
-import { Radio, RadioGroup, RadioGroupView } from "@workerstack/ui/radio-group";
+import { Field, FieldError, FieldLabel } from "@workerstack/ui/components/field";
+import { Radio, RadioGroup, RadioGroupView } from "@workerstack/ui/components/radio-group";
 import { For } from "solid-js";
 
 import { useLog } from "../log.tsx";

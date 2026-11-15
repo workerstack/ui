@@ -1,4 +1,4 @@
-import type { UiMessages } from "../provider/index.ts";
+import type { UiMessages } from "../components/provider/index.ts";
 import { callRef, type RefLike } from "./ref.ts";
 import { createRequiredText, type RequiredText } from "./validity.ts";
 

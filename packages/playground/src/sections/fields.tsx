@@ -10,8 +10,8 @@ import {
   Fieldset,
   FieldsetDescription,
   FieldsetLegend,
-} from "@workerstack/ui/field";
-import { Input, InputClear, InputGroup } from "@workerstack/ui/input";
+} from "@workerstack/ui/components/field";
+import { Input, InputClear, InputGroup } from "@workerstack/ui/components/input";
 import { createSignal } from "solid-js";
 
 import { useLog } from "../log.tsx";

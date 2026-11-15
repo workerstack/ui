@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { createSortableTree, type SortableTree } from "@workerstack/ui/dnd/tree";
+import { createSortableTree, type SortableTree } from "@workerstack/ui/features/dnd/tree";
 import { createSignal } from "solid-js";
 
 import { useLog, type Log } from "../log.tsx";

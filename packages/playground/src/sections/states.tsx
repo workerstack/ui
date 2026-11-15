@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { Field, FieldError, FieldLabel } from "@workerstack/ui/field";
+import { Field, FieldError, FieldLabel } from "@workerstack/ui/components/field";
 
 import { Example } from "../section.tsx";
 

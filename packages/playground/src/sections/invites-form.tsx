@@ -1,7 +1,8 @@
 import type { JSX } from "@solidjs/web";
-import { FieldsetLegend } from "@workerstack/ui/field";
-import { createForm, Form, formArray, SubmitButton, type FormFor } from "@workerstack/ui/form";
-import { textInputField } from "@workerstack/ui/text-input-field";
+import { FieldsetLegend } from "@workerstack/ui/components/field";
+import { formArray } from "@workerstack/ui/components/form/tanstack/array";
+import { createForm, Form, SubmitButton, type FormFor } from "@workerstack/ui/components/form/tanstack/form";
+import { textInputField } from "@workerstack/ui/components/form/tanstack/text-input-field";
 
 import { useLog } from "../log.tsx";
 import { Example } from "../section.tsx";

@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { buttonClass } from "@workerstack/ui/button";
+import { buttonClass } from "@workerstack/ui/components/button";
 import {
   Drawer,
   DrawerClose,
@@ -10,7 +10,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
   type DrawerSide,
-} from "@workerstack/ui/drawer";
+} from "@workerstack/ui/components/drawer";
 import { For } from "solid-js";
 
 import { useLog } from "../log.tsx";

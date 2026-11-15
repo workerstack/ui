@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { Button, buttonClass } from "@workerstack/ui/button";
+import { Button, buttonClass } from "@workerstack/ui/components/button";
 import {
   Dialog,
   DialogClose,
@@ -9,9 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@workerstack/ui/dialog";
-import { Field, FieldLabel } from "@workerstack/ui/field";
-import { Input } from "@workerstack/ui/input";
+} from "@workerstack/ui/components/dialog";
+import { Field, FieldLabel } from "@workerstack/ui/components/field";
+import { Input } from "@workerstack/ui/components/input";
 import { createSignal } from "solid-js";
 
 import { useLog } from "../log.tsx";
