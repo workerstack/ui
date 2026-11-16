@@ -57,13 +57,36 @@ describe("ui.config.ts types", () => {
   });
 });
 
+describe("ui.config.ts option tokens", () => {
+  it("refuses a length given to chart-1", () => {
+    const { output, status } = tsc("chart-as-length");
+
+    expect(status).not.toBe(0);
+    expect(output).toContain("TS2322");
+    expect(output).toContain("chart-1");
+  });
+
+  it("refuses a token's name as an own color, so success belongs to tokens", () => {
+    const { output, status } = tsc("token-as-color");
+
+    expect(status).not.toBe(0);
+    expect(output).toContain("TS2322");
+    expect(output).toContain("success");
+  });
+});
+
 describe("TOKENS", () => {
-  it("names every --ui-* property UI SDK's web.css defines, but the --ui-icon slot", () => {
+  it("names every --ui-* property UI SDK's web.css and base.css's :root define, but the --ui-icon slot", () => {
     const css = readFileSync(require.resolve("@ui-sdk/core/web.css"), "utf8");
     const defined = new Set([...css.matchAll(/(--ui-[a-z0-9-]+)\s*:/g)].map((match) => match[1]));
     defined.delete("--ui-icon");
 
+    const base = readFileSync(fileURLToPath(new URL("../base.css", import.meta.url)), "utf8");
+    const roots = [...base.matchAll(/:root\s*\{([^}]*)\}/g)].map((match) => match[1] ?? "").join("\n");
+
+    for (const match of roots.matchAll(/(--ui-[a-z0-9-]+)\s*:/g)) defined.add(match[1] ?? "");
+
     expect(new Set(Object.keys(TOKENS).map((name) => `--ui-${name}`))).toStrictEqual(defined);
-    expect(defined.size).toBe(35);
+    expect(defined.size).toBe(44);
   });
 });

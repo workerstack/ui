@@ -5,20 +5,20 @@ import { cn } from "../../utils/cn/index.ts";
 import { Badge } from "../badge/index.ts";
 
 // Each color sets `--option`. Status colors follow UI SDK's palette where it has one; the rest
-// read their own `--ui-*` token (set it in `:root` to retheme) and fall back to a fixed hue.
+// read their own `--ui-*` token, which base.css defaults (set it in `:root` to retheme).
 const COLORS: Record<OptionColor, string> = {
   accent: "[--option:var(--ui-primary)]",
-  "chart-1": "[--option:var(--ui-chart-1,oklch(0.62_0.16_25))]",
-  "chart-2": "[--option:var(--ui-chart-2,oklch(0.7_0.15_85))]",
-  "chart-3": "[--option:var(--ui-chart-3,oklch(0.65_0.16_145))]",
-  "chart-4": "[--option:var(--ui-chart-4,oklch(0.65_0.13_205))]",
-  "chart-5": "[--option:var(--ui-chart-5,oklch(0.58_0.18_265))]",
-  "chart-6": "[--option:var(--ui-chart-6,oklch(0.62_0.18_325))]",
+  "chart-1": "[--option:var(--ui-chart-1)]",
+  "chart-2": "[--option:var(--ui-chart-2)]",
+  "chart-3": "[--option:var(--ui-chart-3)]",
+  "chart-4": "[--option:var(--ui-chart-4)]",
+  "chart-5": "[--option:var(--ui-chart-5)]",
+  "chart-6": "[--option:var(--ui-chart-6)]",
   danger: "[--option:var(--ui-destructive)]",
-  info: "[--option:var(--ui-info,oklch(0.62_0.15_250))]",
+  info: "[--option:var(--ui-info)]",
   neutral: "[--option:var(--ui-muted-foreground)]",
-  success: "[--option:var(--ui-success,oklch(0.64_0.16_150))]",
-  warning: "[--option:var(--ui-warning,oklch(0.78_0.15_80))]",
+  success: "[--option:var(--ui-success)]",
+  warning: "[--option:var(--ui-warning)]",
 };
 
 /** What `OptionDot` takes. */

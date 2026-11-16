@@ -23,8 +23,16 @@ export default defineConfig({
     ],
   },
   lint: {
-    tailwind: { entryPoint: "packages/core/src/test/browser.css" },
+    tailwind: {
+      entryPoint: "packages/core/src/test/browser.css",
+      vars: ["--anchor-width", "--available-height", "--transform-origin", "--toast-*"],
+    },
     skip: [
+      {
+        files: ["packages/core/src/vite/theme.server.test.ts"],
+        rules: ["repo/no-undefined-var"],
+        reason: "the test asserts the generated CSS text, whose own color the test's config defines",
+      },
       {
         files: [
           "packages/core/scripts/build-classes.ts",

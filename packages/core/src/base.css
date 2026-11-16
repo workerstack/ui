@@ -45,6 +45,22 @@
   --font-mono: var(--ui-font-mono);
 }
 
+/* The option colors (`OptionDot`, `OptionBadge`), in the same layer as UI SDK's tokens: an app's `:root`, unlayered
+   or in a later layer, sets them over these. */
+@layer theme.ui-sdk {
+  :root {
+    --ui-chart-1: oklch(62% 0.16 25deg);
+    --ui-chart-2: oklch(70% 0.15 85deg);
+    --ui-chart-3: oklch(65% 0.16 145deg);
+    --ui-chart-4: oklch(65% 0.13 205deg);
+    --ui-chart-5: oklch(58% 0.18 265deg);
+    --ui-chart-6: oklch(62% 0.18 325deg);
+    --ui-info: oklch(62% 0.15 250deg);
+    --ui-success: oklch(64% 0.16 150deg);
+    --ui-warning: oklch(78% 0.15 80deg);
+  }
+}
+
 @layer theme.ui-sdk {
   /* Our own icon parts (a dialog's close, an input's clear), drawn like UI SDK draws its own:
      a mask over currentColor, replaced by any <svg> child. */

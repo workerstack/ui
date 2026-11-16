@@ -1,7 +1,8 @@
 import type { TOKENS, TokenKind, TokenName } from "./tokens.ts";
 
-// The value types of `ui.config.ts`: what each kind of token holds, so a length given to a color, or a token UI SDK
-// does not define, fails in the editor and in `tsc` instead of in the browser.
+// The value types of `ui.config.ts`: what each kind of token holds (UI SDK's tokens and our nine option colors, which
+// `colors` refuses), so a length given to a color, or a token UI SDK does not define,
+// fails in the editor and in `tsc` instead of in the browser.
 
 /** A CSS function with arguments, as a template literal: `fn(${string})`. */
 type Fn<Name extends string> = `${Name}(${string})`;

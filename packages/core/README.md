@@ -54,8 +54,8 @@ export default defineConfig({
 ```
 
 - `dark`: `"class"` (default) lets `.dark`, `.light` and `data-theme` force a scheme. `"media"` follows the system only.
-- `tokens`: UI SDK's `--ui-*` tokens, by name without the prefix. Each is typed by its kind, so a length given to a color fails in the editor and in `tsc`. A color is a CSS color or `{ light, dark }`, which is written as `light-dark()`.
-- `colors`: your own colors. `brand` becomes `--ui-brand` and a `bg-brand` utility. A token name is not allowed, and a name is lowercase like `brand` or `brand-muted`.
+- `tokens`: UI SDK's `--ui-*` tokens and our nine option colors (`chart-1` to `chart-6`, `info`, `success`, `warning`; base.css defaults them), by name without the prefix. Each is typed by its kind, so a length given to a color fails in the editor and in `tsc`. A color is a CSS color or `{ light, dark }`, which is written as `light-dark()`.
+- `colors`: your own colors. `brand` becomes `--ui-brand` and a `bg-brand` utility. A token name, such as `success`, is not allowed: set it in `tokens`. A name is lowercase like `brand` or `brand-muted`.
 
 The plugin reruns when `ui.config.ts` or a file it imports changes. A bad config fails the build with a message that says what to fix.
 
