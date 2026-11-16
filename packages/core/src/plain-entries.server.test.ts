@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { afterAll, describe, expect, it } from "vitest";
 
-import { publicFolders } from "../scripts/export-map.ts";
+import { uiFolders } from "../scripts/export-map.ts";
 import { bundle, reach, SRC } from "./test/bundle.ts";
 
 // A plain entry never pulls in a form library: everything outside components/form/ bundles, all of it kept, with no
@@ -16,7 +16,7 @@ const TANSTACK_IMPORT = /from\s*"@tanstack\//u;
 
 afterAll(() => rmSync(OUT, { force: true, recursive: true }));
 
-const PLAIN = publicFolders(SRC).filter((folder) => !folder.startsWith(FORM));
+const PLAIN = uiFolders(SRC).filter((folder) => !folder.startsWith(FORM));
 
 /** The @tanstack imports of `folder`'s entry: in its bundle, and in the source of every module it reaches. */
 function tanstackImports(folder: string): string[] {

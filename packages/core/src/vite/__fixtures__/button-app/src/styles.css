@@ -1,0 +1,5 @@
+@layer ui-sdk;
+
+@import "tailwindcss";
+@import "@workerstack/ui/theme.css";
+@import "./ui.generated.css";

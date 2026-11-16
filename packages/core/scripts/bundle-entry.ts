@@ -7,12 +7,17 @@ import { VIRTUAL } from "./virtual.constants.ts";
 // Bundles one module the way an app's build does: Vite with the Solid plugin and tree-shaking on, so what is left is
 // the code an app would ship.
 
+/** A bare import is a package, which stays out of the bundle. */
+export function isExternal(id: string): boolean {
+  return !(id.startsWith("\0") || id.startsWith(".") || id.startsWith("/"));
+}
+
 /** What a bundle holds: its code, the names its entry exports, and the bytes Rollup rendered for each module that kept
     code, by absolute path. */
 export type Bundled = { code: string; exports: string[]; modules: Map<string, number> };
 
-/** Bundles `source` as if it sat in `root`. `isExternal` names the imports that stay out of the bundle. */
-export async function bundleEntry(source: string, root: string, isExternal: (id: string) => boolean): Promise<Bundled> {
+/** Bundles `source` as if it sat in `root`. `external` names the imports that stay out of the bundle. */
+export async function bundleEntry(source: string, root: string, external: (id: string) => boolean): Promise<Bundled> {
   const entry: Plugin = {
     load: (id) => (id === VIRTUAL ? source : null),
     name: "entry",
@@ -23,7 +28,7 @@ export async function bundleEntry(source: string, root: string, isExternal: (id:
     build: {
       minify: true,
       // Kept so a bare `export *` of an entry holds the entry's whole API, as an app that reads it all does.
-      rollupOptions: { external: isExternal, input: VIRTUAL, preserveEntrySignatures: "strict", treeshake: true },
+      rollupOptions: { external, input: VIRTUAL, preserveEntrySignatures: "strict", treeshake: true },
       write: false,
     },
     configFile: false,

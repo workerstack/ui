@@ -4,8 +4,7 @@ import { join, relative } from "node:path";
 
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { exportMap, publicFolders } from "../scripts/export-map.ts";
-import { STYLES } from "../scripts/theme.constants.ts";
+import { exportMap, NON_UI, uiFolders } from "../scripts/export-map.ts";
 import { ARRAY_MESSAGES_EN } from "./components/form/tanstack/array/array.messages.ts";
 import { FORM_DIALOG_MESSAGES_EN } from "./components/form/tanstack/dialog/dialog.messages.ts";
 import { FIELD_MODULE_ERROR_MESSAGES_EN } from "./components/form/tanstack/form/field-module-error.messages.ts";
@@ -61,7 +60,8 @@ afterAll(() => rmSync(TMP, { force: true, recursive: true }));
 
 /** The export keys of folders, as import specifiers. */
 const FILES = new Set(["./package.json", "./theme.css"]);
-const KEYS = [...exportMap(SRC).keys()].filter((key) => !FILES.has(key) && !key.endsWith(`/${STYLES}`));
+
+const KEYS = [...exportMap(SRC).keys()].filter((key) => !FILES.has(key) && !NON_UI.includes(key.slice(2)));
 
 /** A name imported from an entry, and the module that defines it. */
 type NamedCase = [entry: string, name: string, defining: string];
@@ -102,11 +102,11 @@ const FORM_STRINGS: string[] = [
 /** The English of other parts, which a Button has no use for. */
 const NOT_BUTTONS: string[] = ["Choose an option.", "Type to create an option", "(optional)", "No results", "Clear"];
 
-const PLAIN = publicFolders(SRC).filter((folder) => !folder.startsWith(FORM));
+const PLAIN = uiFolders(SRC).filter((folder) => !folder.startsWith(FORM));
 
 describe("an app's build through the export keys", () => {
   it("lists a key for every public folder", () => {
-    expect(KEYS).toStrictEqual(publicFolders(SRC).map((folder) => `./${folder}`));
+    expect(KEYS).toStrictEqual(uiFolders(SRC).map((folder) => `./${folder}`));
   });
 
   it.each(KEYS)("%s imported for nothing keeps no code", async (key) => {

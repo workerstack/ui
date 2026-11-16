@@ -1,12 +1,12 @@
 import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, symlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { extname, join } from "node:path";
 
 import { compile } from "@tailwindcss/node";
 import { Scanner } from "@tailwindcss/oxide";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { publicFolders } from "../scripts/export-map.ts";
+import { uiFolders } from "../scripts/export-map.ts";
 import { buildPackage } from "./test/build-package.ts";
 import { SRC } from "./test/bundle.ts";
 import { consume, specifier } from "./test/consume.ts";
@@ -16,7 +16,7 @@ import { consume, specifier } from "./test/consume.ts";
 
 const ROOT = join(SRC, "..");
 const TMP = mkdtempSync(join(tmpdir(), "workerstack-classes-"));
-const FOLDERS = publicFolders(SRC);
+const FOLDERS = uiFolders(SRC);
 const APP = join(TMP, "app");
 const PACKAGE = join(TMP, "package");
 const PACKAGE_NAME = "@workerstack/ui";
@@ -27,6 +27,9 @@ const BUTTON_CLASS = "cursor-pointer";
 
 /** A class only Dialog's footer sets, in no module Button reaches. */
 const DIALOG_ONLY_CLASS = "flex-col-reverse";
+
+/** A class Radio sets in a static `class="..."`, which Solid compiles to an attribute Tailwind's scanner skips. */
+const RADIO_CLASS = "peer-data-disabled:opacity-50";
 
 /** The key Vitest's module runner adds to every module it imports; it is no export. */
 const MODULE_URL = "$$moduleUrl";
@@ -98,24 +101,63 @@ describe("dist/classes.json", () => {
     });
   });
 
+  it("holds a static class attribute's class for Radio", () => {
+    expect(manifest["components/radio-group"]?.["Radio"]).toContain(RADIO_CLASS);
+  });
+
   it("holds the Dialog-only class for DialogFooter", () => {
     expect(manifest["components/dialog"]?.["DialogFooter"]).toContain(DIALOG_ONLY_CLASS);
   });
 });
 
+/** The lines of a stylesheet, trimmed and without blanks. */
+function linesOf(css: string): string[] {
+  return css
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line !== "");
+}
+
+/** Bundles the export the way an app does, in the app folder that links the built package. */
+function consumeExport(folder: string, name: string): ReturnType<typeof consume> {
+  return consume(`export { ${name} } from ${JSON.stringify(specifier(`./${folder}`))};\n`, APP, realpathSync(PACKAGE));
+}
+
+/** The candidates Tailwind finds in the source text of the dist modules a bundle keeps, read by file extension. */
+function foundInModules(modules: Map<string, number>): Set<string> {
+  const files = [...modules.keys()].map((file) => ({
+    content: readFileSync(file, "utf8"),
+    extension: extname(file).slice(1),
+  }));
+
+  return new Set(new Scanner({}).scanFiles(files));
+}
+
 describe("an export's classes", () => {
+  // The bundle is minified, so its scan also finds code that reads like a class (`gap-1` in `r.gap-1`). Only candidates
+  // the modules' own text holds count as lost.
   it.each(PAIRS)(
-    "%s %s makes the CSS of the export's bundle",
+    "%s %s makes at least the CSS of the export's consumer bundle",
     async (folder, name) => {
-      const { code } = await consume(
-        `export { ${name} } from ${JSON.stringify(specifier(`./${folder}`))};\n`,
-        APP,
-        realpathSync(PACKAGE),
-      );
+      const { code, modules } = await consumeExport(folder, name);
+      const found = foundInModules(modules);
+      const candidates = new Scanner({}).scanFiles([{ content: code, extension: "js" }]);
+      const scanned = candidates.filter((one) => found.has(one));
+      const made = new Set(linesOf(await cssOf(manifest[folder]?.[name] ?? [])));
+      const lost = linesOf(await cssOf(scanned)).filter((line) => !line.startsWith("@layer") && !made.has(line));
 
-      const scanned = new Scanner({}).scanFiles([{ content: code, extension: "js" }]);
+      expect(lost).toStrictEqual([]);
+    },
+    60_000,
+  );
 
-      expect(await cssOf(manifest[folder]?.[name] ?? [])).toBe(await cssOf(scanned));
+  it.each(PAIRS)(
+    "%s %s holds no class outside the modules its bundle keeps",
+    async (folder, name) => {
+      const { modules } = await consumeExport(folder, name);
+      const found = foundInModules(modules);
+
+      expect((manifest[folder]?.[name] ?? []).filter((candidate) => !found.has(candidate))).toStrictEqual([]);
     },
     60_000,
   );

@@ -1,15 +1,13 @@
 // Rebuilds dist/ as sources change, for consumers in the workspace (the playground) that import
 // the package the way an app does: through its exports, from dist. tsc watches the TypeScript;
-// theme.css is copied on change, as `build` copies it, and after every compile each entry's styles.css and
-// dist/classes.json are written, one run at a time: a compile that lands mid-run queues one more run, and repeats
-// collapse into it.
+// theme.css is copied on change, as `build` copies it, and after every compile dist/classes.json is written, one run
+// at a time: a compile that lands mid-run queues one more run, and repeats collapse into it.
 import { spawn } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, watch, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { buildClasses } from "./build-classes.ts";
-import { buildStyles } from "./build-styles.ts";
 import { THEME } from "./theme.constants.ts";
 
 const SIGNALS = ["SIGINT", "SIGTERM"] as const;
@@ -52,13 +50,13 @@ function watchTheme(root: string): void {
   });
 }
 
-/** Writes the styles and the class manifest, in parallel. A failure is reported, not thrown. */
-async function writeOutputs(root: string): Promise<void> {
-  const dist = join(root, "dist");
-  const src = join(root, "src");
-  const results = await Promise.allSettled([buildStyles(dist, src), buildClasses(dist, src)]);
-
-  for (const result of results) if (result.status === "rejected") process.stderr.write(`${String(result.reason)}\n`);
+/** Writes the class manifest. A failure is reported, not thrown. */
+async function writeClasses(root: string): Promise<void> {
+  try {
+    await buildClasses(join(root, "dist"), join(root, "src"));
+  } catch (error) {
+    process.stderr.write(`${String(error)}\n`);
+  }
 }
 
 /** Makes `task` run one at a time. A request while one runs queues one more run, and further requests share it. */
@@ -110,7 +108,7 @@ function run(): void {
     stdio: ["ignore", "pipe", "inherit"],
   });
 
-  const rebuild = serialize(() => writeOutputs(root));
+  const rebuild = serialize(() => writeClasses(root));
 
   tsc.stdout.on("data", (chunk: Buffer) => void pass(rebuild, chunk));
 

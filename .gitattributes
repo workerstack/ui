@@ -1,4 +1,4 @@
-# repo:generated 77c4b913
+# repo:generated 5211294d
 * text=auto eol=lf
 **/_gen/** linguist-generated
 .githooks/commit-msg linguist-generated
@@ -6,6 +6,7 @@
 .githooks/pre-push linguist-generated
 .githooks/reference-transaction linguist-generated
 .repo/.gitkeep linguist-generated
+.repo/lessons/INDEX.md linguist-generated
 .vscode/tasks.json linguist-generated
 bunfig.toml linguist-generated
 packages/core/README.md linguist-generated

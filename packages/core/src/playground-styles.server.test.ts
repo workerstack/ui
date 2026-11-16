@@ -6,31 +6,37 @@ import { describe, expect, it } from "vitest";
 import { publicFolders } from "../scripts/export-map.ts";
 import { SRC } from "./test/bundle.ts";
 
-// The playground is an app that imports the package through its export keys. Its stylesheet must import one styles.css
-// per entry its sources import, so Tailwind builds the classes of those entries, no more and no fewer.
+// The playground is an app that imports the package through its export keys. Its stylesheet imports Tailwind, the theme
+// and the file the ui() plugin writes, and its Vite config runs the plugin after Tailwind's.
 
-const PLAYGROUND = join(SRC, "../../playground/src");
+const PLAYGROUND = join(SRC, "../../playground");
 
 const IMPORTED = /"@workerstack\/ui\/([^".]+)"/gu;
-const STYLED = /^@import "@workerstack\/ui\/([^"]+)\/styles\.css";$/gmu;
 
 /** The entries the playground's modules import, sorted. */
 function importedEntries(): string[] {
-  const files = readdirSync(PLAYGROUND, { recursive: true }).filter((file) => /\.tsx?$/u.test(String(file)));
-  const texts = files.map((file) => readFileSync(join(PLAYGROUND, String(file)), "utf8"));
+  const src = join(PLAYGROUND, "src");
+  const files = readdirSync(src, { recursive: true }).filter((file) => /\.tsx?$/u.test(String(file)));
+  const texts = files.map((file) => readFileSync(join(src, String(file)), "utf8"));
   const specifiers = texts.flatMap((text) => [...text.matchAll(IMPORTED)]);
 
   return [...new Set(specifiers.map((match) => match[1] ?? ""))].toSorted();
 }
 
 describe("the playground's stylesheet", () => {
-  it("imports a styles.css for each entry its sources import", () => {
-    const css = readFileSync(join(PLAYGROUND, "styles.css"), "utf8");
-    const styled = [...css.matchAll(STYLED)].map((match) => match[1] ?? "").toSorted();
+  it("imports Tailwind, the theme and the generated file, and no per-entry styles.css", () => {
+    const css = readFileSync(join(PLAYGROUND, "src/styles.css"), "utf8");
+    const imports = [...css.matchAll(/^@import "([^"]+)";$/gmu)].map((match) => match[1]);
 
-    const hint = 'add or drop an `@import "@workerstack/ui/<entry>/styles.css";` line in the playground styles.css';
+    expect(imports).toStrictEqual(["tailwindcss", "@workerstack/ui/theme.css", "./ui.generated.css"]);
+    expect(css).not.toMatch(/@workerstack\/ui\/.+\/styles\.css/u);
+  });
 
-    expect(styled, hint).toStrictEqual(importedEntries());
+  it("lists ui() in the Vite plugins after Tailwind's", () => {
+    const config = readFileSync(join(PLAYGROUND, "vite.config.ts"), "utf8");
+    const plugins = /plugins:\s*\[([^\]]*)\]/u.exec(config)?.[1] ?? "";
+
+    expect(plugins.replaceAll(/\s/gu, "")).toBe("solid(),tailwind(),ui()");
   });
 
   it("names only entries the package has", () => {

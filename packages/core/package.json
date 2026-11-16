@@ -36,257 +36,217 @@
       "solid": "./dist/components/alert-dialog/index.js",
       "default": "./dist/components/alert-dialog/index.js"
     },
-    "./components/alert-dialog/styles.css": "./dist/components/alert-dialog/styles.css",
     "./components/badge": {
       "types": "./dist/components/badge/index.d.ts",
       "solid": "./dist/components/badge/index.js",
       "default": "./dist/components/badge/index.js"
     },
-    "./components/badge/styles.css": "./dist/components/badge/styles.css",
     "./components/button": {
       "types": "./dist/components/button/index.d.ts",
       "solid": "./dist/components/button/index.js",
       "default": "./dist/components/button/index.js"
     },
-    "./components/button/styles.css": "./dist/components/button/styles.css",
     "./components/card": {
       "types": "./dist/components/card/index.d.ts",
       "solid": "./dist/components/card/index.js",
       "default": "./dist/components/card/index.js"
     },
-    "./components/card/styles.css": "./dist/components/card/styles.css",
     "./components/checkbox": {
       "types": "./dist/components/checkbox/index.d.ts",
       "solid": "./dist/components/checkbox/index.js",
       "default": "./dist/components/checkbox/index.js"
     },
-    "./components/checkbox/styles.css": "./dist/components/checkbox/styles.css",
     "./components/combobox": {
       "types": "./dist/components/combobox/index.d.ts",
       "solid": "./dist/components/combobox/index.js",
       "default": "./dist/components/combobox/index.js"
     },
-    "./components/combobox/styles.css": "./dist/components/combobox/styles.css",
     "./components/dialog": {
       "types": "./dist/components/dialog/index.d.ts",
       "solid": "./dist/components/dialog/index.js",
       "default": "./dist/components/dialog/index.js"
     },
-    "./components/dialog/styles.css": "./dist/components/dialog/styles.css",
     "./components/drawer": {
       "types": "./dist/components/drawer/index.d.ts",
       "solid": "./dist/components/drawer/index.js",
       "default": "./dist/components/drawer/index.js"
     },
-    "./components/drawer/styles.css": "./dist/components/drawer/styles.css",
     "./components/field": {
       "types": "./dist/components/field/index.d.ts",
       "solid": "./dist/components/field/index.js",
       "default": "./dist/components/field/index.js"
     },
-    "./components/field/styles.css": "./dist/components/field/styles.css",
     "./components/form/tanstack/array": {
       "types": "./dist/components/form/tanstack/array/index.d.ts",
       "solid": "./dist/components/form/tanstack/array/index.js",
       "default": "./dist/components/form/tanstack/array/index.js"
     },
-    "./components/form/tanstack/array/styles.css": "./dist/components/form/tanstack/array/styles.css",
     "./components/form/tanstack/checkbox-field": {
       "types": "./dist/components/form/tanstack/checkbox-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/checkbox-field/index.js",
       "default": "./dist/components/form/tanstack/checkbox-field/index.js"
     },
-    "./components/form/tanstack/checkbox-field/styles.css": "./dist/components/form/tanstack/checkbox-field/styles.css",
     "./components/form/tanstack/checkbox-group-field": {
       "types": "./dist/components/form/tanstack/checkbox-group-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/checkbox-group-field/index.js",
       "default": "./dist/components/form/tanstack/checkbox-group-field/index.js"
     },
-    "./components/form/tanstack/checkbox-group-field/styles.css": "./dist/components/form/tanstack/checkbox-group-field/styles.css",
     "./components/form/tanstack/combobox-field": {
       "types": "./dist/components/form/tanstack/combobox-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/combobox-field/index.js",
       "default": "./dist/components/form/tanstack/combobox-field/index.js"
     },
-    "./components/form/tanstack/combobox-field/styles.css": "./dist/components/form/tanstack/combobox-field/styles.css",
     "./components/form/tanstack/dialog": {
       "types": "./dist/components/form/tanstack/dialog/index.d.ts",
       "solid": "./dist/components/form/tanstack/dialog/index.js",
       "default": "./dist/components/form/tanstack/dialog/index.js"
     },
-    "./components/form/tanstack/dialog/styles.css": "./dist/components/form/tanstack/dialog/styles.css",
     "./components/form/tanstack/form": {
       "types": "./dist/components/form/tanstack/form/index.d.ts",
       "solid": "./dist/components/form/tanstack/form/index.js",
       "default": "./dist/components/form/tanstack/form/index.js"
     },
-    "./components/form/tanstack/form/styles.css": "./dist/components/form/tanstack/form/styles.css",
     "./components/form/tanstack/input-group-field": {
       "types": "./dist/components/form/tanstack/input-group-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/input-group-field/index.js",
       "default": "./dist/components/form/tanstack/input-group-field/index.js"
     },
-    "./components/form/tanstack/input-group-field/styles.css": "./dist/components/form/tanstack/input-group-field/styles.css",
     "./components/form/tanstack/multi-combobox-field": {
       "types": "./dist/components/form/tanstack/multi-combobox-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/multi-combobox-field/index.js",
       "default": "./dist/components/form/tanstack/multi-combobox-field/index.js"
     },
-    "./components/form/tanstack/multi-combobox-field/styles.css": "./dist/components/form/tanstack/multi-combobox-field/styles.css",
     "./components/form/tanstack/radio-group-field": {
       "types": "./dist/components/form/tanstack/radio-group-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/radio-group-field/index.js",
       "default": "./dist/components/form/tanstack/radio-group-field/index.js"
     },
-    "./components/form/tanstack/radio-group-field/styles.css": "./dist/components/form/tanstack/radio-group-field/styles.css",
     "./components/form/tanstack/select-field": {
       "types": "./dist/components/form/tanstack/select-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/select-field/index.js",
       "default": "./dist/components/form/tanstack/select-field/index.js"
     },
-    "./components/form/tanstack/select-field/styles.css": "./dist/components/form/tanstack/select-field/styles.css",
     "./components/form/tanstack/switch-field": {
       "types": "./dist/components/form/tanstack/switch-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/switch-field/index.js",
       "default": "./dist/components/form/tanstack/switch-field/index.js"
     },
-    "./components/form/tanstack/switch-field/styles.css": "./dist/components/form/tanstack/switch-field/styles.css",
     "./components/form/tanstack/text-input-field": {
       "types": "./dist/components/form/tanstack/text-input-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/text-input-field/index.js",
       "default": "./dist/components/form/tanstack/text-input-field/index.js"
     },
-    "./components/form/tanstack/text-input-field/styles.css": "./dist/components/form/tanstack/text-input-field/styles.css",
     "./components/form/tanstack/textarea-field": {
       "types": "./dist/components/form/tanstack/textarea-field/index.d.ts",
       "solid": "./dist/components/form/tanstack/textarea-field/index.js",
       "default": "./dist/components/form/tanstack/textarea-field/index.js"
     },
-    "./components/form/tanstack/textarea-field/styles.css": "./dist/components/form/tanstack/textarea-field/styles.css",
     "./components/form/tanstack/unsaved": {
       "types": "./dist/components/form/tanstack/unsaved/index.d.ts",
       "solid": "./dist/components/form/tanstack/unsaved/index.js",
       "default": "./dist/components/form/tanstack/unsaved/index.js"
     },
-    "./components/form/tanstack/unsaved/styles.css": "./dist/components/form/tanstack/unsaved/styles.css",
     "./components/input": {
       "types": "./dist/components/input/index.d.ts",
       "solid": "./dist/components/input/index.js",
       "default": "./dist/components/input/index.js"
     },
-    "./components/input/styles.css": "./dist/components/input/styles.css",
     "./components/menu": {
       "types": "./dist/components/menu/index.d.ts",
       "solid": "./dist/components/menu/index.js",
       "default": "./dist/components/menu/index.js"
     },
-    "./components/menu/styles.css": "./dist/components/menu/styles.css",
     "./components/popover": {
       "types": "./dist/components/popover/index.d.ts",
       "solid": "./dist/components/popover/index.js",
       "default": "./dist/components/popover/index.js"
     },
-    "./components/popover/styles.css": "./dist/components/popover/styles.css",
     "./components/provider": {
       "types": "./dist/components/provider/index.d.ts",
       "solid": "./dist/components/provider/index.js",
       "default": "./dist/components/provider/index.js"
     },
-    "./components/provider/styles.css": "./dist/components/provider/styles.css",
     "./components/radio-group": {
       "types": "./dist/components/radio-group/index.d.ts",
       "solid": "./dist/components/radio-group/index.js",
       "default": "./dist/components/radio-group/index.js"
     },
-    "./components/radio-group/styles.css": "./dist/components/radio-group/styles.css",
     "./components/select": {
       "types": "./dist/components/select/index.d.ts",
       "solid": "./dist/components/select/index.js",
       "default": "./dist/components/select/index.js"
     },
-    "./components/select/styles.css": "./dist/components/select/styles.css",
     "./components/switch": {
       "types": "./dist/components/switch/index.d.ts",
       "solid": "./dist/components/switch/index.js",
       "default": "./dist/components/switch/index.js"
     },
-    "./components/switch/styles.css": "./dist/components/switch/styles.css",
     "./components/tabs": {
       "types": "./dist/components/tabs/index.d.ts",
       "solid": "./dist/components/tabs/index.js",
       "default": "./dist/components/tabs/index.js"
     },
-    "./components/tabs/styles.css": "./dist/components/tabs/styles.css",
     "./components/text-input": {
       "types": "./dist/components/text-input/index.d.ts",
       "solid": "./dist/components/text-input/index.js",
       "default": "./dist/components/text-input/index.js"
     },
-    "./components/text-input/styles.css": "./dist/components/text-input/styles.css",
     "./components/textarea": {
       "types": "./dist/components/textarea/index.d.ts",
       "solid": "./dist/components/textarea/index.js",
       "default": "./dist/components/textarea/index.js"
     },
-    "./components/textarea/styles.css": "./dist/components/textarea/styles.css",
     "./components/toast": {
       "types": "./dist/components/toast/index.d.ts",
       "solid": "./dist/components/toast/index.js",
       "default": "./dist/components/toast/index.js"
     },
-    "./components/toast/styles.css": "./dist/components/toast/styles.css",
     "./components/tooltip": {
       "types": "./dist/components/tooltip/index.d.ts",
       "solid": "./dist/components/tooltip/index.js",
       "default": "./dist/components/tooltip/index.js"
     },
-    "./components/tooltip/styles.css": "./dist/components/tooltip/styles.css",
     "./components/view": {
       "types": "./dist/components/view/index.d.ts",
       "solid": "./dist/components/view/index.js",
       "default": "./dist/components/view/index.js"
     },
-    "./components/view/styles.css": "./dist/components/view/styles.css",
     "./features/dnd/file-drop": {
       "types": "./dist/features/dnd/file-drop/index.d.ts",
       "default": "./dist/features/dnd/file-drop/index.js"
     },
-    "./features/dnd/file-drop/styles.css": "./dist/features/dnd/file-drop/styles.css",
     "./features/dnd/keyboard": {
       "types": "./dist/features/dnd/keyboard/index.d.ts",
       "default": "./dist/features/dnd/keyboard/index.js"
     },
-    "./features/dnd/keyboard/styles.css": "./dist/features/dnd/keyboard/styles.css",
     "./features/dnd/sortable": {
       "types": "./dist/features/dnd/sortable/index.d.ts",
       "default": "./dist/features/dnd/sortable/index.js"
     },
-    "./features/dnd/sortable/styles.css": "./dist/features/dnd/sortable/styles.css",
     "./features/dnd/sortable/core": {
       "types": "./dist/features/dnd/sortable/core/index.d.ts",
       "default": "./dist/features/dnd/sortable/core/index.js"
     },
-    "./features/dnd/sortable/core/styles.css": "./dist/features/dnd/sortable/core/styles.css",
     "./features/dnd/tree": {
       "types": "./dist/features/dnd/tree/index.d.ts",
       "default": "./dist/features/dnd/tree/index.js"
     },
-    "./features/dnd/tree/styles.css": "./dist/features/dnd/tree/styles.css",
     "./utils/cn": {
       "types": "./dist/utils/cn/index.d.ts",
       "default": "./dist/utils/cn/index.js"
     },
-    "./utils/cn/styles.css": "./dist/utils/cn/styles.css",
     "./utils/locale": {
       "types": "./dist/utils/locale/index.d.ts",
       "default": "./dist/utils/locale/index.js"
     },
-    "./utils/locale/styles.css": "./dist/utils/locale/styles.css",
     "./utils/text-hygiene": {
       "types": "./dist/utils/text-hygiene/index.d.ts",
       "default": "./dist/utils/text-hygiene/index.js"
     },
-    "./utils/text-hygiene/styles.css": "./dist/utils/text-hygiene/styles.css",
+    "./vite": {
+      "types": "./dist/vite/index.d.ts",
+      "default": "./dist/vite/index.js"
+    },
     "./package.json": "./package.json",
     "./theme.css": "./dist/theme.css"
   },
@@ -294,9 +254,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.build.json && cp src/theme.css dist/theme.css && bun run build:styles && bun run build:classes",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && cp src/theme.css dist/theme.css && bun run build:classes",
     "build:classes": "node scripts/build-classes.ts",
-    "build:styles": "node scripts/build-styles.ts",
     "dev": "bun scripts/dev.ts",
     "prepublishOnly": "bun run build",
     "sync:exports": "bun scripts/sync-exports.ts",
@@ -322,6 +281,7 @@
     "@workerstack/testing": "catalog:",
     "cn": "catalog:",
     "playwright": "catalog:",
+    "rolldown": "catalog:",
     "solid-js": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
@@ -330,15 +290,21 @@
   },
   "peerDependencies": {
     "@solidjs/web": ">=2.0.0-rc.20 <3",
+    "@tailwindcss/node": "^4.3.0",
+    "@tailwindcss/oxide": "^4.3.0",
     "@tanstack/solid-form": ">=1.33.0",
     "@ui-sdk/core": "^0.1.0-beta.2",
     "@ui-sdk/solid": "^0.1.0-beta.2",
     "cn": "^0.5.2",
     "solid-js": ">=2.0.0-rc.20 <3",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "^4.3.0",
+    "vite": ">=6.0.0"
   },
   "peerDependenciesMeta": {
     "@tanstack/solid-form": {
+      "optional": true
+    },
+    "vite": {
       "optional": true
     }
   },

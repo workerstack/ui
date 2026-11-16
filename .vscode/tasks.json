@@ -130,19 +130,6 @@
       }
     },
     {
-      "label": "workerstack:ui:build:styles",
-      "type": "shell",
-      "command": "bun run build:styles",
-      "options": {
-        "cwd": "${workspaceFolder}/packages/core"
-      },
-      "problemMatcher": [],
-      "presentation": {
-        "panel": "new",
-        "reveal": "always"
-      }
-    },
-    {
       "label": "workerstack:ui:dev",
       "type": "shell",
       "command": "bun run dev",

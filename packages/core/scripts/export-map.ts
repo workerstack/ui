@@ -2,13 +2,15 @@ import { readdirSync } from "node:fs";
 import { relative, sep } from "node:path";
 
 import { INDEX_FILE } from "../src/test/index-file.constants.ts";
-import { STYLES } from "./theme.constants.ts";
 
-// The package's export map, derived from the folders: one key per public folder, and a `styles.css` key beside it,
+// The package's export map, derived from the folders: one key per public folder,
 // so what an app can import is listed and a folder can't become public by accident.
 
 /** Folders that are never public: helpers, private internals and test fixtures. */
 const PRIVATE: readonly string[] = ["__fixtures__", "internal", "test"];
+
+/** Public folders that are not UI entries: they hold build tooling, so they have no classes. */
+export const NON_UI: readonly string[] = ["vite"];
 
 /** A test file, which never ships. */
 const TEST_FILE = /\.test\.tsx?$/u;
@@ -32,6 +34,11 @@ export function publicFolders(root: string): string[] {
     .toSorted();
 }
 
+/** The public folders under `root` that are UI entries: all but `NON_UI`. */
+export function uiFolders(root: string): string[] {
+  return publicFolders(root).filter((folder) => !NON_UI.includes(folder));
+}
+
 /** The export map for the package whose sources are under `src`: a key per folder, sorted, then the two files. */
 export function exportMap(src: string): Map<string, Conditions | string> {
   const files = shipped(src).filter(({ name }) => !TEST_FILE.test(name));
@@ -42,10 +49,9 @@ export function exportMap(src: string): Map<string, Conditions | string> {
     const js = `./dist/${folder}/index.js`;
     const types = `./dist/${folder}/index.d.ts`;
 
-    return [
-      [`./${folder}`, { types, ...(jsx ? { solid: js } : {}), default: js }],
-      [`./${folder}/${STYLES}`, `./dist/${folder}/${STYLES}`],
-    ];
+    const entry: [string, Conditions | string] = [`./${folder}`, { types, ...(jsx ? { solid: js } : {}), default: js }];
+
+    return [entry];
   });
 
   return new Map<string, Conditions | string>([

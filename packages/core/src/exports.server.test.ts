@@ -3,7 +3,7 @@ import { dirname, join, normalize, relative } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { exportMap, publicFolders } from "../scripts/export-map.ts";
+import { exportMap, uiFolders } from "../scripts/export-map.ts";
 import { SRC } from "./test/bundle.ts";
 
 // The export map lists every public folder (one with an index.ts) as its own key, and nothing else. It is generated
@@ -15,7 +15,7 @@ const MANIFEST = JSON.parse(readFileSync(join(SRC, "../package.json"), "utf8")) 
 
 const NAMESPACES = ["components/", "features/", "utils/"];
 
-const FOLDERS = publicFolders(SRC);
+const FOLDERS = uiFolders(SRC);
 
 function inNamespace(folder: string): boolean {
   return NAMESPACES.some((namespace) => folder.startsWith(namespace));

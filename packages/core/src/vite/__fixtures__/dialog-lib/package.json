@@ -1,0 +1,9 @@
+{
+  "name": "dialog-lib",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "@workerstack/ui": "*"
+  }
+}

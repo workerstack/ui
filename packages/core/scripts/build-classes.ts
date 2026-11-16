@@ -8,9 +8,9 @@ import { fileURLToPath } from "node:url";
 import { __unstable__loadDesignSystem } from "@tailwindcss/node";
 import { Scanner } from "@tailwindcss/oxide";
 
-import { bundleEntry } from "./bundle-entry.ts";
-import { publicFolders } from "./export-map.ts";
-import { isExternal } from "./kept-modules.ts";
+import { isExternal } from "./bundle-entry.ts";
+import { bundleJsx } from "./bundle-jsx.ts";
+import { uiFolders } from "./export-map.ts";
 import { CLASSES, INDEX_JS, THEME } from "./theme.constants.ts";
 
 /** The spaces the manifest is indented by. */
@@ -25,15 +25,15 @@ function entryOf(dist: string, folder: string): string {
 
 /** The names `folder`'s built entry exports, sorted. */
 async function exportsOf(dist: string, folder: string): Promise<string[]> {
-  const { exports } = await bundleEntry(`export * from ${entryOf(dist, folder)};\n`, dist, isExternal);
+  const { exports } = await bundleJsx(`export * from ${entryOf(dist, folder)};\n`, isExternal);
 
   return exports.toSorted();
 }
 
 /** The sorted classes of one export: the scanned candidates of its bundle that the design system makes CSS of. */
-async function classesOf(dist: string, entry: string, design: DesignSystem): Promise<string[]> {
-  const { code } = await bundleEntry(entry, dist, isExternal);
-  const candidates = new Scanner({}).scanFiles([{ content: code, extension: "js" }]);
+async function classesOf(entry: string, design: DesignSystem): Promise<string[]> {
+  const { code } = await bundleJsx(entry, isExternal);
+  const candidates = new Scanner({}).scanFiles([{ content: code, extension: "jsx" }]);
   const valid = candidates.filter((candidate) => design.candidatesToCss([candidate])[0] !== null);
 
   return [...new Set(valid)].toSorted();
@@ -46,13 +46,13 @@ export async function buildClasses(dist: string, src: string): Promise<void> {
 
   const [design, folders] = await Promise.all([
     __unstable__loadDesignSystem(css, { base: root }),
-    Promise.all(publicFolders(src).map(async (folder) => ({ folder, names: await exportsOf(dist, folder) }))),
+    Promise.all(uiFolders(src).map(async (folder) => ({ folder, names: await exportsOf(dist, folder) }))),
   ]);
 
   const entries = await Promise.all(
     folders.map(async ({ folder, names }) => {
       const classes = await Promise.all(
-        names.map((name) => classesOf(dist, `export { ${name} } from ${entryOf(dist, folder)};\n`, design)),
+        names.map((name) => classesOf(`export { ${name} } from ${entryOf(dist, folder)};\n`, design)),
       );
 
       return [folder, Object.fromEntries(names.map((name, index) => [name, classes[index]]))] as const;

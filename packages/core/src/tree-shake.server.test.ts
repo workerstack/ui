@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { publicFolders } from "../scripts/export-map.ts";
+import { uiFolders } from "../scripts/export-map.ts";
 import { bundle, reach, SRC } from "./test/bundle.ts";
 
 // Every entry tree-shakes. A named import keeps only the module that defines the name and what that module imports,
@@ -63,7 +63,7 @@ describe("tree-shaking", () => {
     expect(unrelated(entry, name, defining)).toStrictEqual([]);
   });
 
-  it.each(publicFolders(SRC))("%s imported for nothing keeps no code", (folder) => {
+  it.each(uiFolders(SRC))("%s imported for nothing keeps no code", (folder) => {
     const code = ownCode(`import ${JSON.stringify(join(COPY, folder, "index.ts"))};\n`);
 
     expect(code.length, code).toBeLessThanOrEqual(MAX_IMPORT_ONLY_BYTES);
