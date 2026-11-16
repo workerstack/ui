@@ -10,11 +10,13 @@ import { buildPackage } from "../test/build-package.ts";
 import { SRC } from "../test/bundle.ts";
 import {
   buildCss,
+  closeAll,
   FIXTURES,
   GENERATED,
   generatedClasses,
   MAIN,
   makeApp,
+  removeAll,
   serve,
   STYLES,
   until,
@@ -53,7 +55,7 @@ type Manifest = Record<string, Record<string, string[]>>;
 
 let manifest: Manifest = {};
 let env: Env = { apps: APPS, built: PACKAGE, ui: () => ({ name: "unset" }) };
-let servers: ViteDevServer[] = [];
+const servers: ViteDevServer[] = [];
 
 beforeAll(async () => {
   rmSync(CACHE, { force: true, recursive: true });
@@ -67,13 +69,11 @@ beforeAll(async () => {
 }, 300_000);
 
 afterEach(async () => {
-  await Promise.all(servers.map((server) => server.close()));
-  servers = [];
+  await closeAll(servers);
 });
 
 afterAll(() => {
-  rmSync(CACHE, { force: true, recursive: true });
-  rmSync(APPS, { force: true, recursive: true });
+  removeAll(CACHE, APPS);
 });
 
 /** The classes of the listed exports, each as `[folder, name]`, sorted and without repeats. */
@@ -85,7 +85,7 @@ function classesOf(...exports: (readonly [string, string])[]): string[] {
 
 /** Starts a dev server on `app`; `afterEach` closes it. */
 async function serveApp(app: string, warnings: string[] = []): Promise<ViteDevServer> {
-  const server = await serve(env, app, warnings);
+  const server = await serve(env, app, { infos: [], warnings });
 
   servers.push(server);
 
@@ -181,18 +181,6 @@ describe("the dev server", () => {
 });
 
 describe("the dev server's warnings", () => {
-  it("warns when the entry CSS does not import ./ui.generated.css", async () => {
-    const app = makeApp(env, "no-import", "button-app");
-    const warnings: string[] = [];
-
-    write(app, STYLES, `@layer ui-sdk;\n\n@import "tailwindcss";\n@import "@workerstack/ui/theme.css";\n`);
-    await serveApp(app, warnings);
-
-    expect(warnings).toContain(
-      `ui: src/styles.css does not import "./ui.generated.css"; add it after @import "tailwindcss"`,
-    );
-  }, 120_000);
-
   it("warns when no CSS file imports tailwindcss, and writes nothing", async () => {
     const app = makeApp(env, "no-tailwind", "button-app");
     const warnings: string[] = [];

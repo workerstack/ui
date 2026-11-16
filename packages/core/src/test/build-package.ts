@@ -6,7 +6,7 @@ import { buildClasses } from "../../scripts/build-classes.ts";
 import { SRC } from "./bundle.ts";
 
 // The package as `build` lays it out, in a folder of the test's own: dist/ from tsc without maps or declarations,
-// theme.css, the class manifest, and package.json, so an app can link the folder in as a package.
+// base.css, the class manifest, and package.json, so an app can link the folder in as a package.
 
 /** Builds the package into `target`, and returns its `dist/` folder. */
 export async function buildPackage(target: string): Promise<string> {
@@ -16,7 +16,7 @@ export async function buildPackage(target: string): Promise<string> {
 
   mkdirSync(target, { recursive: true });
   execFileSync("bunx", ["tsc", "-p", "tsconfig.build.json", ...flags], { cwd: root, stdio: "pipe" });
-  copyFileSync(join(SRC, "theme.css"), join(dist, "theme.css"));
+  copyFileSync(join(SRC, "base.css"), join(dist, "base.css"));
   await buildClasses(dist, SRC);
   copyFileSync(join(root, "package.json"), join(target, "package.json"));
 

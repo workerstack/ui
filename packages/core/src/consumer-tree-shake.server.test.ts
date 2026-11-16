@@ -59,7 +59,7 @@ beforeAll(async () => {
 afterAll(() => rmSync(TMP, { force: true, recursive: true }));
 
 /** The export keys of folders, as import specifiers. */
-const FILES = new Set(["./package.json", "./theme.css"]);
+const FILES = new Set(["./package.json", "./base.css"]);
 
 const KEYS = [...exportMap(SRC).keys()].filter((key) => !FILES.has(key) && !NON_UI.includes(key.slice(2)));
 

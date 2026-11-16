@@ -92,7 +92,7 @@ function onKeyDown(): void {
 }
 
 // Whether the last input was the pointer or the keyboard, on <html data-focus-source>: a read-only
-// field rings only from the keyboard (theme.css). Set after mount, removed on dispose.
+// field rings only from the keyboard (base.css). Set after mount, removed on dispose.
 function trackFocusSource(): void {
   onSettled(() => {
     document.addEventListener("pointerdown", onPointerDown, true);

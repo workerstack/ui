@@ -3,5 +3,5 @@
     "types": ["node", "vite/client"]
   },
   "extends": "../../tsconfig.base.json",
-  "include": ["src", "scripts", "vite.config.ts"]
+  "include": ["src", "scripts", "ui.config.ts", "vite.config.ts"]
 }

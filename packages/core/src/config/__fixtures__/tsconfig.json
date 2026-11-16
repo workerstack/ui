@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "paths": { "@workerstack/ui/config": ["../index.ts"] },
+    "types": []
+  },
+  "extends": "@workerstack/repo/tsconfig/web"
+}

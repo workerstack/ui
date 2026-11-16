@@ -3,12 +3,13 @@ import { extname } from "node:path";
 import type { Plugin, ResolvedConfig, ViteDevServer } from "vite";
 
 import { generate } from "./generate.ts";
-import type { Pass } from "./generate.ts";
+import type { Pass, Report } from "./generate.ts";
 import { PACKAGE_NAME } from "./package-name.constants.ts";
 import { serialized } from "./serialized.ts";
 
-// The Vite plugin: lists in `ui.generated.css`, beside each CSS entry that imports Tailwind, exactly the classes of the
-// exports the app and the packages it installs import from @workerstack/ui, so Tailwind builds those and no others.
+// The Vite plugin: writes `ui.generated.css` beside each CSS entry that imports Tailwind: UI SDK's base.css, the theme
+// of `ui.config.ts`, and exactly the classes of the exports the app and the packages it installs import from
+// @workerstack/ui, so Tailwind builds those and no others. It adds the import of that file to the entry when missing.
 
 const DEBOUNCE_MS = 50;
 const SOURCE_EXTENSIONS: readonly string[] = [".cjs", ".cts", ".js", ".jsx", ".mjs", ".mts", ".ts", ".tsx"];
@@ -38,9 +39,14 @@ function watcher(
   };
 }
 
+/** Where a pass reports: the app's root and the Vite logger. */
+function reportOf({ logger, root }: ResolvedConfig): Report {
+  return { info: (message) => logger.info(message), root, warn: (message) => logger.warn(message) };
+}
+
 /**
  * The plugin. List it after `tailwindcss()`; it writes `ui.generated.css` beside each CSS file that imports
- * "tailwindcss" before Tailwind reads it, and again when the app's imports change in dev.
+ * "tailwindcss" before Tailwind reads it, and again when the app's imports or `ui.config.ts` change in dev.
  */
 export function ui(): Plugin {
   let config: ResolvedConfig | undefined;
@@ -50,7 +56,7 @@ export function ui(): Plugin {
   const refresh = serialized(async () => {
     if (config === undefined) return;
 
-    pass = await generate({ root: config.root, warn: (message) => config?.logger.warn(message) });
+    pass = await generate(reportOf(config));
     server?.watcher.add([...pass.watched]);
   });
 

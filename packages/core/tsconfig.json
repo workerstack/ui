@@ -3,6 +3,7 @@
     "outDir": "dist",
     "types": ["node", "vite/client"]
   },
+  "exclude": ["src/config/__fixtures__"],
   "extends": "../../tsconfig.base.json",
   "include": ["scripts", "src", "vitest.*.ts", "*.shared.ts"]
 }

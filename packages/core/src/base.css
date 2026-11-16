@@ -1,31 +1,13 @@
 /*
- * @workerstack/ui theme. Import it after Tailwind, below a `@layer ui-sdk;` line, then import the file
- * the `ui()` plugin from `@workerstack/ui/vite` writes. It holds the classes of the exports you import:
- *
- *   @layer ui-sdk;
- *   @import "tailwindcss";
- *   @import "@workerstack/ui/theme.css";
- *   @import "./ui.generated.css";
- *
- * Colors, sizes and icons are UI SDK's `--ui-*` tokens; set them in your own `:root`. Dark mode is
- * `color-scheme`: `.dark` / `.light` (or `data-theme`) force one, neither follows the system.
+ * UI SDK's fixed rules: its tokens and part styles, and the pieces of Tailwind's theme it needs. The file
+ * `ui.generated.css`, which the `ui()` plugin from `@workerstack/ui/vite` writes, imports this one.
  */
 
-/* UI SDK's tokens and part styles, in the `ui-sdk` layer below Tailwind's. */
-@import "@ui-sdk/core/web.css";
+/* UI SDK's tokens and part styles, in a layer inside Tailwind's theme layer: below base, components and utilities. */
+@import "@ui-sdk/core/web.css" layer(theme);
 
 :root {
   --ui-radius: 0.5rem;
-}
-
-.dark,
-[data-theme="dark"] {
-  color-scheme: dark;
-}
-
-.light,
-[data-theme="light"] {
-  color-scheme: light;
 }
 
 /* The last input was the pointer (UiProvider's `data-focus-source`): a wrapper that rings for its
@@ -63,7 +45,7 @@
   --font-mono: var(--ui-font-mono);
 }
 
-@layer ui-sdk {
+@layer theme.ui-sdk {
   /* Our own icon parts (a dialog's close, an input's clear), drawn like UI SDK draws its own:
      a mask over currentColor, replaced by any <svg> child. */
   [data-icon]:not(:has(svg))::before {

@@ -1,5 +1,5 @@
 /** The theme stylesheet's file name, in src/ and in dist/. */
-export const THEME = "theme.css";
+export const THEME = "base.css";
 
 /** The manifest in dist/ of the classes each export of each public folder ships. */
 export const CLASSES = "classes.json";

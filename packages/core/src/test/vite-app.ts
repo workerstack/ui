@@ -9,6 +9,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { stripVTControlCharacters } from "node:util";
 
 import solid from "@solidjs/vite-plugin";
@@ -16,6 +17,8 @@ import tailwindcss from "@tailwindcss/vite";
 import { build, createLogger, createServer } from "vite";
 import type { InlineConfig, Logger, Plugin, PluginOption, ViteDevServer } from "vite";
 
+import type { ui } from "../vite/ui.ts";
+import { buildPackage } from "./build-package.ts";
 import { SRC } from "./bundle.ts";
 import { SCOPE } from "./scope.constants.ts";
 
@@ -64,9 +67,14 @@ export function write(app: string, file: string, text: string): void {
   writeFileSync(path, text);
 }
 
+/** The text of the app's generated file. */
+export function generatedText(app: string): string {
+  return readFileSync(join(app, GENERATED), "utf8");
+}
+
 /** The classes in the `@source inline("...")` of the app's generated file, sorted. */
 export function generatedClasses(app: string): string[] {
-  const text = readFileSync(join(app, GENERATED), "utf8");
+  const text = generatedText(app);
   const list = SOURCE_INLINE.exec(text)?.[1] ?? "";
 
   return list
@@ -75,21 +83,27 @@ export function generatedClasses(app: string): string[] {
     .toSorted();
 }
 
-/** A logger that keeps what a plugin warns, without ANSI color, and prints nothing. */
-function collectingLogger(warnings: string[]): Logger {
+/** What a plugin logged, without ANSI color: its warnings and its info lines. */
+export type Logs = { infos: string[]; warnings: string[] };
+
+/** A logger that keeps what a plugin warns and infos, without ANSI color, and prints nothing. */
+function collectingLogger(logs: Logs): Logger {
   return {
     ...createLogger("silent"),
+    info: (message) => {
+      logs.infos.push(stripVTControlCharacters(message));
+    },
     warn: (message) => {
-      warnings.push(stripVTControlCharacters(message));
+      logs.warnings.push(stripVTControlCharacters(message));
     },
   };
 }
 
 /** A consumer's config: Solid, Tailwind, and the plugin under test. */
-function configOf(env: Env, app: string, warnings: string[]): InlineConfig {
+function configOf(env: Env, app: string, logs: Logs): InlineConfig {
   const plugins: PluginOption[] = [solid(), tailwindcss(), env.ui()];
 
-  return { configFile: false, customLogger: collectingLogger(warnings), plugins, root: app };
+  return { configFile: false, customLogger: collectingLogger(logs), plugins, root: app };
 }
 
 /** The text of a built asset. */
@@ -98,9 +112,9 @@ function textOf(source: string | Uint8Array): string {
 }
 
 /** Builds the app, and returns the text of the CSS it emits. */
-export async function buildCss(env: Env, app: string, warnings: string[] = []): Promise<string> {
+export async function buildCss(env: Env, app: string, logs: Logs = { infos: [], warnings: [] }): Promise<string> {
   const result = await build({
-    ...configOf(env, app, warnings),
+    ...configOf(env, app, logs),
     build: { rollupOptions: { input: join(app, MAIN) }, write: false },
     mode: "production",
   });
@@ -114,8 +128,8 @@ export async function buildCss(env: Env, app: string, warnings: string[] = []): 
 }
 
 /** Starts a dev server without a port, in the app's folder; the caller closes it. */
-export function serve(env: Env, app: string, warnings: string[] = []): Promise<ViteDevServer> {
-  return createServer({ ...configOf(env, app, warnings), appType: "custom", server: { middlewareMode: true } });
+export function serve(env: Env, app: string, logs: Logs = { infos: [], warnings: [] }): Promise<ViteDevServer> {
+  return createServer({ ...configOf(env, app, logs), appType: "custom", server: { middlewareMode: true } });
 }
 
 /** Polls `read` until `done` holds for its value; returns the last value read, which the caller asserts on. */
@@ -128,4 +142,28 @@ export async function until<T>(read: () => T, done: (value: T) => boolean, deadl
   await new Promise((resolve) => setTimeout(resolve, POLL_MS));
 
   return until(read, done, limit);
+}
+
+/** Builds the package under `cache`, as `build` lays it out, and returns the env that runs its built plugin. */
+export async function builtEnv(apps: string, cache: string): Promise<Env> {
+  const built = join(cache, "package");
+
+  rmSync(cache, { force: true, recursive: true });
+  mkdirSync(cache, { recursive: true });
+  const dist = await buildPackage(built);
+  const url = pathToFileURL(join(dist, "vite", "index.js")).href;
+
+  const module = (await import(url)) /* the built twin of ../vite */ as { ui: typeof ui };
+
+  return { apps, built, ui: module.ui };
+}
+
+/** Removes each folder in `paths`, with what is in it. */
+export function removeAll(...paths: string[]): void {
+  for (const path of paths) rmSync(path, { force: true, recursive: true });
+}
+
+/** Closes each dev server in `servers`, and empties the list. */
+export async function closeAll(servers: ViteDevServer[]): Promise<void> {
+  await Promise.all(servers.splice(0).map((server) => server.close()));
 }

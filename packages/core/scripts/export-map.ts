@@ -10,7 +10,7 @@ import { INDEX_FILE } from "../src/test/index-file.constants.ts";
 const PRIVATE: readonly string[] = ["__fixtures__", "internal", "test"];
 
 /** Public folders that are not UI entries: they hold build tooling, so they have no classes. */
-export const NON_UI: readonly string[] = ["vite"];
+export const NON_UI: readonly string[] = ["config", "vite"];
 
 /** A test file, which never ships. */
 const TEST_FILE = /\.test\.tsx?$/u;
@@ -57,6 +57,6 @@ export function exportMap(src: string): Map<string, Conditions | string> {
   return new Map<string, Conditions | string>([
     ...entries,
     ["./package.json", "./package.json"],
-    ["./theme.css", "./dist/theme.css"],
+    ["./base.css", "./dist/base.css"],
   ]);
 }

@@ -74,7 +74,7 @@ afterAll(() => rmSync(TMP, { force: true, recursive: true }));
 
 /** The CSS Tailwind makes of `candidates`, from a fresh compile: a compiler keeps the candidates of earlier builds. */
 async function cssOf(candidates: string[]): Promise<string> {
-  const css = `@import "tailwindcss";\n@import "${join(SRC, "theme.css")}";`;
+  const css = `@import "tailwindcss";\n@import "${join(SRC, "base.css")}";`;
   const compiler = await compile(css, { base: ROOT, onDependency: noop });
 
   return compiler.build(candidates);

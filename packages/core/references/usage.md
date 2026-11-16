@@ -28,17 +28,33 @@ export default defineConfig({ plugins: [solid(), tailwindcss(), ui()] });
 In your app stylesheet:
 
 ```css
-@layer ui-sdk;                       /* must come first: keeps UI SDK's reset below Tailwind */
 @import "tailwindcss";
-@import "@workerstack/ui/theme.css"; /* tokens, no component classes */
-@import "./ui.generated.css";        /* written by the plugin */
+@import "./ui.generated.css"; /* added by the plugin when missing */
 ```
 
-The plugin writes `ui.generated.css` beside each CSS file that imports tailwindcss. It holds the classes of exactly the exports your app imports, and of the installed packages that use `@workerstack/ui`. The file is generated, so you can git-ignore it. `@tailwindcss/node` and `@tailwindcss/oxide` are peer dependencies. Installing `@tailwindcss/vite` brings both.
+The plugin writes `ui.generated.css` beside each CSS file that imports tailwindcss. It holds UI SDK's base styles, the theme from `ui.config.ts`, and the classes of exactly the exports your app imports and of the installed packages that use `@workerstack/ui`. If the CSS file lacks the second import, the plugin adds it after `@import "tailwindcss";`. The file is generated, so you can git-ignore it. `@tailwindcss/node` and `@tailwindcss/oxide` are peer dependencies. Installing `@tailwindcss/vite` brings both. The plugin needs `vite` 6.1 or later.
 
-`theme.css` holds the tokens and base styles and scans nothing.
+### ui.config.ts
 
-Dark mode: put `class="dark"` or `data-theme="dark"` on a parent element (usually `<html>`). To re-theme, override the tokens (`--primary`, `--radius`, …) on `:root`.
+`ui.config.ts` at the Vite root is optional. Without it, dark mode uses `"class"` and no token is set.
+
+```ts
+import { defineConfig } from "@workerstack/ui/config";
+
+export default defineConfig({
+  dark: "class",
+  tokens: { radius: "0.75rem", primary: { light: "oklch(0.55 0.2 255)", dark: "oklch(0.7 0.17 255)" } },
+  colors: { brand: "oklch(0.7 0.15 30)" },
+});
+```
+
+- `dark`: `"class"` (default) lets `.dark`, `.light` and `data-theme` force a scheme. `"media"` follows the system only.
+- `tokens`: UI SDK's `--ui-*` tokens, by name without the prefix. Each is typed by its kind, so a length given to a color fails in the editor and in `tsc`. A color is a CSS color or `{ light, dark }`, which is written as `light-dark()`.
+- `colors`: your own colors. `brand` becomes `--ui-brand` and a `bg-brand` utility. A token name is not allowed, and a name is lowercase like `brand` or `brand-muted`.
+
+The plugin reruns when `ui.config.ts` or a file it imports changes. A bad config fails the build with a message that says what to fix.
+
+Dark mode: put `class="dark"` or `data-theme="dark"` on a parent element (usually `<html>`). To re-theme, set `tokens` in `ui.config.ts`.
 
 ## Components
 
@@ -102,7 +118,7 @@ Every component has four test files next to it:
 | File | Project | Runs in | Covers |
 | --- | --- | --- | --- |
 | `button.test.tsx` | `dom` | Chromium | The component's contract: roles, ARIA, state, events, class merging |
-| `button.browser.test.tsx` | `browser` | Chromium with Tailwind and `theme.css` | Real pointer and keyboard input, computed styles against the theme tokens, layout, focus |
+| `button.browser.test.tsx` | `browser` | Chromium with Tailwind and `base.css` | Real pointer and keyboard input, computed styles against the theme tokens, layout, focus |
 | `button.server.test.tsx` | `server` | Node, Solid compiled for SSR | `renderToString` output: markup, ARIA, ids, classes, Solid warnings |
 | `button.hydration.test.tsx` | `hydration` | HTML rendered in Node, hydrated in Chromium | The client claims every server node, with no hydration warnings, no replaced or added elements, and server ids kept; the hydrated component then works |
 

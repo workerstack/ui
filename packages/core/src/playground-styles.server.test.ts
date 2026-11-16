@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { publicFolders } from "../scripts/export-map.ts";
 import { SRC } from "./test/bundle.ts";
 
-// The playground is an app that imports the package through its export keys. Its stylesheet imports Tailwind, the theme
+// The playground is an app that imports the package through its export keys. Its stylesheet imports Tailwind
 // and the file the ui() plugin writes, and its Vite config runs the plugin after Tailwind's.
 
 const PLAYGROUND = join(SRC, "../../playground");
@@ -24,11 +24,11 @@ function importedEntries(): string[] {
 }
 
 describe("the playground's stylesheet", () => {
-  it("imports Tailwind, the theme and the generated file, and no per-entry styles.css", () => {
+  it("imports Tailwind and the generated file, and no per-entry styles.css", () => {
     const css = readFileSync(join(PLAYGROUND, "src/styles.css"), "utf8");
     const imports = [...css.matchAll(/^@import "([^"]+)";$/gmu)].map((match) => match[1]);
 
-    expect(imports).toStrictEqual(["tailwindcss", "@workerstack/ui/theme.css", "./ui.generated.css"]);
+    expect(imports).toStrictEqual(["tailwindcss", "./ui.generated.css"]);
     expect(css).not.toMatch(/@workerstack\/ui\/.+\/styles\.css/u);
   });
 

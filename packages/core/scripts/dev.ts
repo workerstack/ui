@@ -1,6 +1,6 @@
 // Rebuilds dist/ as sources change, for consumers in the workspace (the playground) that import
 // the package the way an app does: through its exports, from dist. tsc watches the TypeScript;
-// theme.css is copied on change, as `build` copies it, and after every compile dist/classes.json is written, one run
+// base.css is copied on change, as `build` copies it, and after every compile dist/classes.json is written, one run
 // at a time: a compile that lands mid-run queues one more run, and repeats collapse into it.
 import { spawn } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, watch, writeFileSync } from "node:fs";
