@@ -21,7 +21,7 @@ function isExternal(id: string): boolean {
 
 /** Bundles `source` from `app`, keeping the modules under `packageDir` that put code in the bundle. */
 export async function consume(source: string, app: string, packageDir: string): Promise<Bundled> {
-  const { code, modules } = await bundleEntry(source, app, isExternal);
+  const { code, exports, modules } = await bundleEntry(source, app, isExternal);
 
-  return { code, modules: new Map([...modules].filter(([id]) => id.startsWith(packageDir))) };
+  return { code, exports, modules: new Map([...modules].filter(([id]) => id.startsWith(packageDir))) };
 }

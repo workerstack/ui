@@ -7,7 +7,7 @@ import { INDEX_JS } from "./theme.constants.ts";
 // and the modules of ours that put code in the bundle are the ones whose class strings can reach the app's CSS.
 
 /** A bare import is a package, which stays out of the bundle. */
-function isExternal(id: string): boolean {
+export function isExternal(id: string): boolean {
   return !(id.startsWith("\0") || id.startsWith(".") || id.startsWith("/"));
 }
 

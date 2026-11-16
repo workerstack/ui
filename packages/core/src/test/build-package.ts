@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { copyFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
+import { buildClasses } from "../../scripts/build-classes.ts";
 import { buildStyles } from "../../scripts/build-styles.ts";
 import { SRC } from "./bundle.ts";
 
@@ -18,6 +19,7 @@ export async function buildPackage(target: string): Promise<string> {
   execFileSync("bunx", ["tsc", "-p", "tsconfig.build.json", ...flags], { cwd: root, stdio: "pipe" });
   copyFileSync(join(SRC, "theme.css"), join(dist, "theme.css"));
   await buildStyles(dist, SRC);
+  await buildClasses(dist, SRC);
   copyFileSync(join(root, "package.json"), join(target, "package.json"));
 
   return dist;

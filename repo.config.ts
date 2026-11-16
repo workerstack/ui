@@ -27,6 +27,7 @@ export default defineConfig({
     skip: [
       {
         files: [
+          "packages/core/scripts/build-classes.ts",
           "packages/core/scripts/build-styles.ts",
           "packages/core/scripts/dev.ts",
           "packages/core/scripts/sync-exports.ts",

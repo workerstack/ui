@@ -1,11 +1,14 @@
 // Rebuilds dist/ as sources change, for consumers in the workspace (the playground) that import
 // the package the way an app does: through its exports, from dist. tsc watches the TypeScript;
-// theme.css is copied on change, as `build` copies it, and each entry's styles.css is written after every compile.
+// theme.css is copied on change, as `build` copies it, and after every compile each entry's styles.css and
+// dist/classes.json are written, one run at a time: a compile that lands mid-run queues one more run, and repeats
+// collapse into it.
 import { spawn } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, watch, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { buildClasses } from "./build-classes.ts";
 import { buildStyles } from "./build-styles.ts";
 import { THEME } from "./theme.constants.ts";
 
@@ -49,12 +52,47 @@ function watchTheme(root: string): void {
   });
 }
 
-/** Passes tsc's output on. After a compile the styles come first, so whoever waits for the line finds them in dist/. */
-async function pass(root: string, chunk: Buffer): Promise<void> {
+/** Writes the styles and the class manifest, in parallel. A failure is reported, not thrown. */
+async function writeOutputs(root: string): Promise<void> {
+  const dist = join(root, "dist");
+  const src = join(root, "src");
+  const results = await Promise.allSettled([buildStyles(dist, src), buildClasses(dist, src)]);
+
+  for (const result of results) if (result.status === "rejected") process.stderr.write(`${String(result.reason)}\n`);
+}
+
+/** Makes `task` run one at a time. A request while one runs queues one more run, and further requests share it. */
+function serialize(task: () => Promise<void>): () => Promise<void> {
+  let running: Promise<void> | undefined;
+  let queued: Promise<void> | undefined;
+
+  function start(): Promise<void> {
+    const current = task().finally(() => {
+      running = undefined;
+    });
+
+    running = current;
+
+    return current;
+  }
+
+  return () => {
+    if (running === undefined) return start();
+
+    queued ??= running.then(() => {
+      queued = undefined;
+
+      return start();
+    });
+
+    return queued;
+  };
+}
+
+/** Passes tsc's output on. After a compile the outputs come first, so whoever waits for the line finds them there. */
+async function pass(rebuild: () => Promise<void>, chunk: Buffer): Promise<void> {
   try {
-    if (chunk.toString().includes(COMPILED)) await buildStyles(join(root, "dist"), join(root, "src"));
-  } catch (error) {
-    process.stderr.write(`${String(error)}\n`);
+    if (chunk.toString().includes(COMPILED)) await rebuild();
   } finally {
     process.stdout.write(chunk);
   }
@@ -72,7 +110,9 @@ function run(): void {
     stdio: ["ignore", "pipe", "inherit"],
   });
 
-  tsc.stdout.on("data", (chunk: Buffer) => void pass(root, chunk));
+  const rebuild = serialize(() => writeOutputs(root));
+
+  tsc.stdout.on("data", (chunk: Buffer) => void pass(rebuild, chunk));
 
   for (const signal of SIGNALS) process.on(signal, () => tsc.kill(signal));
   tsc.on("exit", (code) => process.exit(code ?? 0));

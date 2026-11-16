@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - A TanStack Form layer at `@workerstack/ui/form`: Form, field modules on our Field, wrappers for text input, textarea, checkbox, checkbox group, switch, radio group, select, combobox and input group, an error summary, server errors, drafts and unsaved-change guards, and FormDialog and FormDrawer.
 - Drag and drop under @workerstack/ui/dnd/sortable, dnd/sortable/core, dnd/tree, dnd/file-drop and dnd/keyboard: pointer, touch and keyboard sorting, boards, trees, auto scroll, announcements and file drops.
 - formArray (Root, Items, Handle, Add, Remove, MoveUp, MoveDown, Error) sorts a form's array field by drag, by buttons and by keyboard.
+- The build writes dist/classes.json, the Tailwind classes each named export ships, so a build tool can give an app only the classes of what it imports.
 
 ### Changed
 

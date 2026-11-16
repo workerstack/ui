@@ -7,8 +7,9 @@ import { VIRTUAL } from "./virtual.constants.ts";
 // Bundles one module the way an app's build does: Vite with the Solid plugin and tree-shaking on, so what is left is
 // the code an app would ship.
 
-/** What a bundle holds: its code, and the bytes Rollup rendered for each module that kept code, by absolute path. */
-export type Bundled = { code: string; modules: Map<string, number> };
+/** What a bundle holds: its code, the names its entry exports, and the bytes Rollup rendered for each module that kept
+    code, by absolute path. */
+export type Bundled = { code: string; exports: string[]; modules: Map<string, number> };
 
 /** Bundles `source` as if it sat in `root`. `isExternal` names the imports that stay out of the bundle. */
 export async function bundleEntry(source: string, root: string, isExternal: (id: string) => boolean): Promise<Bundled> {
@@ -38,5 +39,9 @@ export async function bundleEntry(source: string, root: string, isExternal: (id:
 
   const kept = Object.entries(chunk.modules).filter(([, module]) => module.renderedLength > 0);
 
-  return { code: chunk.code, modules: new Map(kept.map(([id, module]) => [id, module.renderedLength])) };
+  return {
+    code: chunk.code,
+    exports: chunk.exports,
+    modules: new Map(kept.map(([id, module]) => [id, module.renderedLength])),
+  };
 }

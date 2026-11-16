@@ -294,7 +294,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.build.json && cp src/theme.css dist/theme.css && bun run build:styles",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && cp src/theme.css dist/theme.css && bun run build:styles && bun run build:classes",
+    "build:classes": "node scripts/build-classes.ts",
     "build:styles": "node scripts/build-styles.ts",
     "dev": "bun scripts/dev.ts",
     "prepublishOnly": "bun run build",
